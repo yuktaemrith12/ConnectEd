@@ -1,4 +1,5 @@
 import os
+import hashlib
 from datetime import datetime, timedelta, timezone
 
 from dotenv import load_dotenv
@@ -11,28 +12,33 @@ pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
 JWT_SECRET = os.getenv("JWT_SECRET", "change_me_now")
 JWT_EXPIRES_MIN = int(os.getenv("JWT_EXPIRES_MIN", "120"))
 
-# bcrypt only uses the first 72 bytes of the password
 BCRYPT_MAX_BYTES = 72
 
 
-def _normalize_password(password: str) -> str:
+def _bcrypt_safe_password(password: str) -> str:
     """
-    Ensures bcrypt never receives a password longer than 72 bytes.
-    We slice the string; for typical ASCII passwords this matches 72 bytes.
-    (If you later support emojis/non-ascii passwords, we can upgrade this to a byte-safe approach.)
+    bcrypt only uses the first 72 bytes.
+    If password is longer, we pre-hash with SHA-256 so bcrypt gets a fixed short value.
     """
     if password is None:
         return ""
-    return password[:BCRYPT_MAX_BYTES]
+
+    pw_bytes = password.encode("utf-8")
+
+    if len(pw_bytes) <= BCRYPT_MAX_BYTES:
+        return password
+
+    # Pre-hash long passwords to avoid bcrypt 72-byte limit issues
+    return hashlib.sha256(pw_bytes).hexdigest()  # 64 chars
 
 
 def hash_password(password: str) -> str:
-    password = _normalize_password(password)
+    password = _bcrypt_safe_password(password)
     return pwd_ctx.hash(password)
 
 
 def verify_password(password: str, password_hash: str) -> bool:
-    password = _normalize_password(password)
+    password = _bcrypt_safe_password(password)
     return pwd_ctx.verify(password, password_hash)
 
 
