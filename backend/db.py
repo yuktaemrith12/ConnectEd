@@ -2,11 +2,15 @@ import os
 import mysql.connector
 from dotenv import load_dotenv
 
-# Always load .env from the backend folder (reliable no matter where uvicorn is run from)
+# Load .env ONLY if it exists (local dev)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ENV_PATH = os.path.join(BASE_DIR, ".env")
 
-load_dotenv(dotenv_path=ENV_PATH)
+if os.path.exists(ENV_PATH):
+    load_dotenv(dotenv_path=ENV_PATH)
+else:
+    # On Render, env vars are injected automatically
+    load_dotenv()
 
 
 def get_conn():
@@ -16,11 +20,10 @@ def get_conn():
     password = os.getenv("DB_PASSWORD", "")
     database = os.getenv("DB_NAME", "connected")
 
-    # Optional: helpful error if env isn't loading
-    if password == "":
-        # This is the exact symptom that causes: (using password: NO)
+    # Safety check (helps debug Render instantly)
+    if not password:
         raise RuntimeError(
-            "DB_PASSWORD is empty. Check backend/.env exists and is being loaded correctly."
+            "DB_PASSWORD is empty. Check environment variables on Render."
         )
 
     return mysql.connector.connect(
