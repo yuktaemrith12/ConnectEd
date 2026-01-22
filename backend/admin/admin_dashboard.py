@@ -2,8 +2,8 @@ from typing import Optional, Dict, Any, List
 from datetime import datetime, timezone, timedelta
 
 from fastapi import APIRouter, Depends, Header, HTTPException
-from backend.db import get_conn
-from backend.security import decode_token
+from db import get_conn
+from security import decode_token
 
 
 router = APIRouter(prefix="/admin", tags=["admin-dashboard"])

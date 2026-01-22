@@ -3,8 +3,8 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, Header, HTTPException, Path
 from pydantic import BaseModel
 
-from backend.db import get_conn
-from backend.security import decode_token
+from db import get_conn
+from security import decode_token
 
 
 router = APIRouter(prefix="/admin", tags=["admin"])

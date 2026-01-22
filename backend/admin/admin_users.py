@@ -4,8 +4,8 @@ from typing import Optional, Literal, List, Dict, Any
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from pydantic import BaseModel, EmailStr
 
-from backend.db import get_conn
-from backend.security import decode_token, hash_password
+from db import get_conn
+from security import decode_token, hash_password
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 

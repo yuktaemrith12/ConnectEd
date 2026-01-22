@@ -3,8 +3,8 @@ from typing import Optional, List, Dict, Any
 from fastapi import APIRouter, Depends, Header, HTTPException, Path
 from pydantic import BaseModel, field_validator
 
-from backend.db import get_conn
-from backend.security import decode_token
+from db import get_conn
+from security import decode_token
 
 
 
