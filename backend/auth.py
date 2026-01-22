@@ -6,9 +6,11 @@ from security import verify_password, create_token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+
 class LoginIn(BaseModel):
     email: EmailStr
     password: str
+
 
 @router.post("/login")
 def login(payload: LoginIn):
@@ -33,7 +35,13 @@ def login(payload: LoginIn):
     if not user or user["status"] != "active":
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
-    if not verify_password(payload.password, user["password_hash"]):
+    try:
+        ok = verify_password(payload.password, user["password_hash"])
+    except ValueError:
+        # ✅ prevents your Render crash: bcrypt password > 72 bytes (or hash edge case)
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    if not ok:
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     token = create_token(
