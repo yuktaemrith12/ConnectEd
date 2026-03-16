@@ -1,0 +1,35 @@
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+sqlalchemy==2.0.36
+pydantic==2.10.2
+pydantic-settings==2.6.1
+pydantic[email]==2.10.2
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.18
+PyMySQL==1.1.1
+python-dotenv>=1.0.0
+anthropic>=0.30.0
+python-docx==1.1.2
+pymupdf==1.25.3
+requests>=2.31.0
+numpy>=1.24.0
+# AI Tutor dependencies
+chromadb>=0.5.0
+python-pptx>=1.0.0
+# AI Transcript-to-Notes dependencies
+openai>=1.30.0
+google-genai>=1.0.0
+transformers>=4.41.0
+librosa>=0.10.0
+soundfile>=0.12.0
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.0.0
+torchaudio>=2.0.0
+# Video Conferencing — LiveKit
+livekit-api
+# Emotion detection (requires model file at emotion_det_model/best.pt)
+ultralytics>=8.0.0
+opencv-python-headless>=4.8.0
+# bundled ffmpeg binary for MP4 → WAV audio extraction (no system ffmpeg needed)
+imageio-ffmpeg>=0.4.0
