@@ -1,0 +1,94 @@
+# ── Python / Backend ──────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+venv/
+.venv/
+env/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+*.cover
+
+# ── Environment & Secrets ─────────────────────────
+.env
+.env.*
+!.env.example
+*.local
+
+# ── Node / Frontend ───────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.vite/
+.pnpm-store/
+coverage/
+
+# ── Uploaded & Generated Files ────────────────────
+backend/uploads/
+uploads/
+
+# ── ML Model Weights (large binary files) ─────────
+*.pt
+*.pth
+*.h5
+*.pkl
+*.onnx
+*.bin
+
+# ── Vector / Embedded DBs ─────────────────────────
+chroma_db/
+*.db
+*.sqlite
+*.sqlite3
+
+# ── LiveKit / Service Config (may contain API keys) ─
+livekit.yaml
+egress.yaml
+
+# ── IDE & Editor ──────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+pyrightconfig.json
+
+# ── OS ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# ── Logs ──────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Certificates & Keys ───────────────────────────
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# ── Claude / AI assistant files ───────────────────
+.claude/
+.gemini/
+
+# ── Documentation / Planning (internal) ───────────
+ai_features/
+implementation_plans/
