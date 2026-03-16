@@ -1,0 +1,3 @@
+# Place future migration SQL files here.
+# Naming convention: V<version>__<description>.sql
+# Example: V2__add_classes_table.sql
