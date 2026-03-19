@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
 import { loginRequest, saveSession } from "@/app/utils/api";
 import ForgotModal from "@/app/components/auth/ForgotModal";
+import { LoginPanel3D } from "@/app/components/auth/LoginPanel3D";
 
 // Images are now in /public/images/ folder
 // Access them directly without import statements
@@ -344,125 +345,13 @@ export default function Login() {
           </div>
         </motion.div>
 
-        {/* Right Panel - Illustration */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedRole}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="relative p-12 flex flex-col items-center justify-center overflow-hidden"
-            style={{ background: roleConfig[selectedRole].gradient }}
-          >
-            {/* Decorative Circles */}
-            <div className="absolute inset-0 overflow-hidden">
-              <motion.div
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.1, 0.2, 0.1],
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute -top-20 -right-20 w-80 h-80 bg-white rounded-full"
-              />
-              <motion.div
-                animate={{
-                  scale: [1.2, 1, 1.2],
-                  opacity: [0.1, 0.15, 0.1],
-                }}
-                transition={{
-                  duration: 10,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute -bottom-32 -left-32 w-96 h-96 bg-white rounded-full"
-              />
-            </div>
-
-            {/* Role Title Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="relative bg-white/20 backdrop-blur-md rounded-2xl p-6 mb-8 max-w-sm border border-white/30"
-            >
-              <h3 className="font-bold text-2xl text-white mb-3">
-                {roleConfig[selectedRole].title}
-              </h3>
-              <p className="text-base font-medium text-white leading-relaxed">
-                {roleConfig[selectedRole].description}
-              </p>
-            </motion.div>
-
-            {/* Illustration */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                y: passwordFocused ? -8 : [0, -12, 0],
-                rotate: emailFocused ? [0, 2, -2, 0] : [0, -1, 1, 0],
-              }}
-              transition={{
-                opacity: { delay: 0.2 },
-                scale: { delay: 0.2, type: "spring", stiffness: 200 },
-                y: passwordFocused
-                  ? { duration: 0.3 }
-                  : {
-                      duration: 6,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                rotate: emailFocused
-                  ? {
-                      duration: 0.5,
-                      repeat: 0,
-                    }
-                  : {
-                      duration: 8,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-              }}
-              className="relative bg-white rounded-2xl p-6 shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
-              style={{
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 30px rgba(255, 255, 255, 0.1)',
-              }}
-            >
-              <img
-                src={roleConfig[selectedRole].image}
-                alt={selectedRole}
-                className="w-40 h-40 object-contain"
-              />
-            </motion.div>
-
-            {/* Floating Particles */}
-            {[...Array(5)].map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: [0.2, 0.5, 0.2],
-                  y: [0, -100],
-                  x: [0, Math.random() * 40 - 20],
-                }}
-                transition={{
-                  duration: 3 + Math.random() * 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-                className="absolute bottom-0 w-2 h-2 bg-white rounded-full"
-                style={{
-                  left: `${20 + i * 15}%`,
-                }}
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        {/* Right Panel - 3D Interactive Scene */}
+        <div
+          className="hidden md:block relative overflow-hidden"
+          style={{ background: roleConfig[selectedRole].gradient }}
+        >
+          <LoginPanel3D role={selectedRole} />
+        </div>
       </motion.div>
     </div>
   );

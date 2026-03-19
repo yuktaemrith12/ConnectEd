@@ -95,23 +95,23 @@ function fmtDate(iso: string | null) {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  DRAFT:    "bg-gray-100 text-gray-600",
-  ACTIVE:   "bg-blue-100 text-blue-700",
-  CLOSED:   "bg-amber-100 text-amber-700",
-  RELEASED: "bg-green-100 text-green-700",
+  DRAFT:    "bg-gray-50 text-gray-500 border border-gray-200",
+  ACTIVE:   "bg-blue-50 text-blue-700 border border-blue-200",
+  CLOSED:   "bg-amber-50 text-amber-700 border border-amber-200",
+  RELEASED: "bg-emerald-50 text-emerald-700 border border-emerald-200",
 };
 
 const SUB_STATUS_COLORS: Record<string, string> = {
-  PENDING:   "bg-gray-100 text-gray-500",
-  SUBMITTED: "bg-blue-100 text-blue-700",
-  GRADED:    "bg-amber-100 text-amber-700",
-  PUBLISHED: "bg-green-100 text-green-700",
+  PENDING:   "bg-gray-50 text-gray-500 border border-gray-200",
+  SUBMITTED: "bg-blue-50 text-blue-700 border border-blue-200",
+  GRADED:    "bg-amber-50 text-amber-700 border border-amber-200",
+  PUBLISHED: "bg-emerald-50 text-emerald-700 border border-emerald-200",
 };
 
 const CONF_COLORS: Record<string, string> = {
-  high:   "bg-green-100 text-green-700",
-  medium: "bg-amber-100 text-amber-700",
-  low:    "bg-gray-100 text-gray-500",
+  high:   "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  medium: "bg-amber-50 text-amber-700 border border-amber-200",
+  low:    "bg-gray-50 text-gray-500 border border-gray-200",
 };
 
 // ── Convert structured AI feedback → HTML for loading into editor ─────────────
@@ -196,7 +196,7 @@ function ToolbarBtn({
 function RTEToolbar({ editor }: { editor: ReturnType<typeof useEditor> }) {
   if (!editor) return null;
   return (
-    <div className="flex items-center gap-0.5 px-3 py-2 bg-gray-50 border-b border-gray-200 flex-wrap">
+    <div className="flex items-center gap-0.5 px-4 py-2.5 bg-white border-b border-gray-100 flex-wrap">
       {/* Bold / Italic / Underline */}
       <ToolbarBtn
         active={editor.isActive("bold")}
@@ -769,21 +769,30 @@ export default function TeacherGrading() {
               className="w-full max-w-5xl bg-white flex flex-col h-full shadow-2xl"
             >
               {/* Panel header */}
-              <div className="bg-gradient-to-r from-purple-600 to-purple-800 px-6 py-4 text-white flex items-start justify-between flex-shrink-0">
-                <div>
-                  <p className="text-purple-200 text-xs uppercase tracking-widest">Submission Review</p>
-                  <h2 className="text-lg font-bold mt-0.5">{selectedAssignment.title}</h2>
-                  <p className="text-purple-200 text-sm mt-0.5">
+              <div className="relative overflow-hidden bg-gradient-to-br from-[#0c0a1e] via-[#1c1457] to-[#2e1c7a] px-8 py-6 text-white flex items-start justify-between flex-shrink-0">
+                {/* Aurora glow — top right */}
+                <div className="absolute -top-10 -right-10 w-80 h-56 bg-[radial-gradient(ellipse,rgba(139,92,246,0.45),transparent_65%)] blur-2xl pointer-events-none" />
+                {/* Aurora glow — bottom left */}
+                <div className="absolute -bottom-10 -left-6 w-64 h-44 bg-[radial-gradient(ellipse,rgba(79,70,229,0.3),transparent_65%)] blur-2xl pointer-events-none" />
+                {/* Subtle pink accent — centre */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-24 bg-[radial-gradient(ellipse,rgba(167,139,250,0.12),transparent_70%)] pointer-events-none" />
+                {/* Top shimmer line */}
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent pointer-events-none" />
+                {/* Content */}
+                <div className="relative z-10">
+                  <p className="text-violet-300/70 text-xs font-semibold uppercase tracking-widest mb-1">Grading Hub</p>
+                  <h2 className="text-xl font-bold tracking-tight">{selectedAssignment.title}</h2>
+                  <p className="text-violet-300/60 text-sm mt-1">
                     {selectedAssignment.subject_name} · {selectedAssignment.class_name} · Max {selectedAssignment.max_score} pts
                   </p>
                 </div>
-                <button onClick={closeDrill} className="text-white/70 hover:text-white mt-1">
-                  <X size={22} />
+                <button onClick={closeDrill} className="relative z-10 text-white/40 hover:text-white transition-colors mt-1">
+                  <X size={20} />
                 </button>
               </div>
 
               {/* Stats bar */}
-              <div className="flex items-center gap-6 px-6 py-3 bg-purple-50 border-b border-purple-100 text-sm flex-shrink-0 flex-wrap">
+              <div className="flex items-center gap-6 px-8 py-3.5 bg-[#f4f1fd] border-b border-purple-100/70 text-sm flex-shrink-0 flex-wrap">
                 <span className="text-gray-600">Submitted: <strong>{drillSubs.length}</strong></span>
                 <span className="text-amber-600">Graded: <strong>{drillSubs.filter(s => s.status === "GRADED" || s.status === "PUBLISHED").length}</strong></span>
                 <span className="text-purple-600">AI Reviewed: <strong>{drillSubs.filter(s => s.ai_reviewed).length}</strong></span>
@@ -800,9 +809,9 @@ export default function TeacherGrading() {
               <div className="flex-1 overflow-hidden flex min-h-0">
                 {/* Student list */}
                 <div className="w-72 border-r border-gray-200 flex flex-col flex-shrink-0">
-                  <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center gap-1">
-                      <Users size={13} /> Students ({drillSubs.length})
+                  <div className="px-4 py-3.5 border-b border-gray-100 bg-gray-50/80">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <Users size={12} /> Students ({drillSubs.length})
                     </p>
                   </div>
                   <div className="flex-1 overflow-y-auto">
@@ -817,26 +826,30 @@ export default function TeacherGrading() {
                         <button
                           key={sub.id}
                           onClick={() => setDrillStudent(sub)}
-                          className={`w-full text-left px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${drillStudent?.id === sub.id ? "bg-purple-50 border-l-2 border-l-purple-500" : ""}`}
+                          className={`w-full text-left px-4 py-4 border-b border-gray-100 transition-all ${
+                            drillStudent?.id === sub.id
+                              ? "bg-purple-50 border-l-[3px] border-l-purple-500"
+                              : "hover:bg-gray-50/80 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.04)]"
+                          }`}
                         >
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="text-sm font-medium text-gray-800">{sub.student_name ?? `Student #${sub.student_id}`}</p>
-                              {sub.student_code && <p className="text-xs text-gray-400">{sub.student_code}</p>}
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0">
+                              <p className="text-sm font-semibold text-gray-800 truncate">{sub.student_name ?? `Student #${sub.student_id}`}</p>
+                              {sub.student_code && <p className="text-xs text-gray-400 mt-0.5">{sub.student_code}</p>}
                             </div>
-                            <div className="flex flex-col items-end gap-1">
+                            <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                               {sub.ai_reviewed && (
-                                <span className="text-xs bg-purple-100 text-purple-600 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                                  <Bot size={10} /> AI
+                                <span className="text-[10px] font-semibold bg-purple-50 text-purple-600 border border-purple-200 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                                  <Bot size={9} /> AI
                                 </span>
                               )}
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${SUB_STATUS_COLORS[sub.status]}`}>
+                              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full tracking-wide ${SUB_STATUS_COLORS[sub.status]}`}>
                                 {sub.status}
                               </span>
                             </div>
                           </div>
                           {sub.grade !== null && (
-                            <p className="text-xs text-green-600 font-semibold mt-0.5">
+                            <p className="text-xs text-emerald-600 font-semibold mt-1.5">
                               {sub.grade} / {selectedAssignment.max_score} pts
                             </p>
                           )}
@@ -847,7 +860,7 @@ export default function TeacherGrading() {
                 </div>
 
                 {/* Student detail panel */}
-                <div className="flex-1 overflow-y-auto p-6">
+                <div className="flex-1 overflow-y-auto p-8">
                   {!drillStudent ? (
                     <div className="flex flex-col items-center justify-center h-full text-gray-400">
                       <Star size={40} className="mb-3 opacity-30" />
@@ -855,27 +868,27 @@ export default function TeacherGrading() {
                       <p className="text-sm mt-1">Click a name from the list to view details.</p>
                     </div>
                   ) : (
-                    <div className="space-y-5">
+                    <div className="space-y-6">
                       {/* Student header */}
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="text-lg font-bold text-gray-900">{drillStudent.student_name}</h3>
-                          <p className="text-sm text-gray-500">{drillStudent.student_code}</p>
+                          <h3 className="text-xl font-bold text-gray-900 tracking-tight">{drillStudent.student_name}</h3>
+                          <p className="text-sm text-gray-400 mt-0.5">{drillStudent.student_code}</p>
                         </div>
-                        <span className={`text-sm px-3 py-1 rounded-full font-medium ${SUB_STATUS_COLORS[drillStudent.status]}`}>
+                        <span className={`text-xs font-semibold px-3 py-1.5 rounded-full tracking-wide ${SUB_STATUS_COLORS[drillStudent.status]}`}>
                           {drillStudent.status}
                         </span>
                       </div>
 
                       {/* Grade summary */}
                       {drillStudent.grade !== null && (
-                        <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle className="text-green-600" size={20} />
-                            <span className="font-semibold text-green-800">Grade Assigned</span>
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 flex items-center justify-between">
+                          <div className="flex items-center gap-2.5">
+                            <CheckCircle className="text-emerald-600" size={18} />
+                            <span className="font-semibold text-emerald-800">Grade Assigned</span>
                           </div>
-                          <span className="text-2xl font-bold text-green-700">
-                            {drillStudent.grade} / {selectedAssignment.max_score}
+                          <span className="text-2xl font-bold text-emerald-700 tracking-tight">
+                            {drillStudent.grade} <span className="text-emerald-400 font-medium text-lg">/ {selectedAssignment.max_score}</span>
                           </span>
                         </div>
                       )}
@@ -883,7 +896,7 @@ export default function TeacherGrading() {
                       {/* Submitted files */}
                       {drillStudent.sub_attachments.length > 0 && (
                         <div>
-                          <p className="text-xs text-gray-400 uppercase tracking-wide mb-2 font-semibold">Submitted Files</p>
+                          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Submitted Files</p>
                           <div className="flex flex-wrap gap-2">
                             {drillStudent.sub_attachments.map(att => (
                               <a
@@ -901,32 +914,32 @@ export default function TeacherGrading() {
 
                       {/* ── Section 1: AI Draft ──────────────────────────────── */}
                       {latestReview && (
-                        <div className="rounded-xl border border-purple-200 overflow-hidden">
-                          <div className="flex items-center justify-between px-4 py-2.5 bg-purple-50 border-b border-purple-200">
+                        <div className="rounded-xl border border-purple-200 overflow-hidden shadow-sm">
+                          <div className="flex items-center justify-between px-5 py-3.5 bg-gradient-to-r from-purple-50 to-indigo-50/60 border-b border-purple-200">
                             <div className="flex items-center gap-2">
                               <Bot size={14} className="text-purple-600" />
-                              <span className="text-xs font-bold text-purple-700 uppercase tracking-widest">AI Draft (Reference)</span>
+                              <span className="text-xs font-bold text-purple-700 uppercase tracking-widest">AI Draft · Reference</span>
                             </div>
                             <button
                               onClick={loadAIDraftIntoEditor}
                               disabled={!latestReview.structured_feedback}
-                              className="flex items-center gap-1.5 px-3 py-1 bg-purple-600 hover:bg-purple-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold rounded-lg transition-colors"
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold rounded-lg transition-colors shadow-sm"
                               title="Load AI suggestions into the editor below"
                             >
                               <Wand2 size={12} /> Load into Editor
                             </button>
                           </div>
-                          <div className="p-4">
+                          <div className="p-5">
                             <SupportiveFeedback review={latestReview} maxScore={selectedAssignment.max_score} />
                           </div>
                         </div>
                       )}
 
                       {/* ── Section 2: Grade & Feedback Editor ──────────────── */}
-                      <div className="rounded-xl border border-gray-200 overflow-hidden">
-                        <div className="flex items-center justify-between px-4 py-2.5 bg-gray-50 border-b border-gray-200">
-                          <span className="text-xs font-bold text-gray-600 uppercase tracking-widest flex items-center gap-2">
-                            <Edit3 size={13} className="text-gray-500" /> Grade & Feedback
+                      <div className="rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                        <div className="flex items-center justify-between px-5 py-3.5 bg-gray-50/80 border-b border-gray-200">
+                          <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <Edit3 size={12} className="text-gray-400" /> Grade &amp; Feedback
                           </span>
                           <div className="flex items-center gap-2">
                             {gradingSuccess && (
@@ -960,10 +973,10 @@ export default function TeacherGrading() {
                           </div>
                         </div>
 
-                        <div className="p-4 space-y-3">
+                        <div className="p-5 space-y-4">
                           {/* Score input */}
                           <div>
-                            <label className="text-xs text-gray-500 uppercase tracking-wide mb-1.5 block">
+                            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">
                               Score (max {selectedAssignment.max_score})
                             </label>
                             <div className="flex items-center gap-2">
@@ -983,31 +996,31 @@ export default function TeacherGrading() {
 
                           {/* Feedback — Editor or Preview */}
                           <div>
-                            <label className="text-xs text-gray-500 uppercase tracking-wide mb-1.5 block">
+                            <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">
                               Feedback
                             </label>
 
                             {feedbackTab === "editor" ? (
                               /* ── Rich Text Editor (document-like) ── */
-                              <div className="border border-gray-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-purple-300">
+                              <div className="border border-gray-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-purple-200 shadow-sm">
                                 <RTEToolbar editor={editor} />
                                 <div
-                                  className="bg-gray-100 p-3 cursor-text"
+                                  className="bg-gray-50/60 p-4 cursor-text"
                                   onClick={() => editor?.commands.focus()}
                                 >
-                                  <div className="bg-white rounded shadow-sm mx-auto px-6 py-5 min-h-[250px]">
+                                  <div className="bg-white rounded-lg border border-gray-100 mx-auto px-6 py-5 min-h-[250px]">
                                     <EditorContent editor={editor} />
                                   </div>
                                 </div>
                               </div>
                             ) : (
                               /* ── Live Preview ── */
-                              <div className="border border-gray-200 rounded-xl overflow-hidden">
-                                <div className="px-3 py-1.5 bg-gray-50 border-b border-gray-200 flex items-center gap-1.5">
+                              <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                                <div className="px-4 py-2.5 bg-white border-b border-gray-100 flex items-center gap-1.5">
                                   <Eye size={12} className="text-gray-400" />
-                                  <span className="text-xs text-gray-400">Student will see this</span>
+                                  <span className="text-xs font-medium text-gray-400">Student view</span>
                                 </div>
-                                <div className="p-4 bg-white min-h-[120px]">
+                                <div className="p-5 bg-gray-50/50 min-h-[120px]">
                                   {gradingFeedback && gradingFeedback !== "<p></p>" ? (
                                     <FeedbackRenderer content={gradingFeedback} />
                                   ) : (

@@ -97,3 +97,13 @@ pnpm-debug.log*
 # ── Documentation / Planning (internal) ───────────
 ai_features/
 implementation_plans/
+*_implementation_plan*.md
+*_plan_v*.md
+
+# ── 3D Assets (large binary files) ────────────────
+frontend/public/3d_models/
+*.glb
+*.gltf
+*.fbx
+*.obj
+*.mtl
