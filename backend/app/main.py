@@ -12,7 +12,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api import auth, users, students, teachers, parents, admin, admin_extensions, homework, assignments, messages, whatsapp, transcript_to_notes, ai_tutor
-from app.api import video
+from app.api import video, consent
 from app.core.config import settings
 from app.services.ai.transcription_service import prewarm_mms
 
@@ -90,6 +90,7 @@ app.include_router(whatsapp.router,           prefix="/api/v1/whatsapp",        
 app.include_router(transcript_to_notes.router, prefix="/api/v1/transcript-to-notes", tags=["Transcript to Notes"])
 app.include_router(ai_tutor.router,            prefix="/api/v1/ai-tutor",           tags=["AI Tutor"])
 app.include_router(video.router,               prefix="/api/v1/video",               tags=["Video Conferencing"])
+app.include_router(consent.router,             prefix="/api/v1/consent",             tags=["Consent Management"])
 
 # Serve uploaded files (homework attachments, etc.)
 import os as _os

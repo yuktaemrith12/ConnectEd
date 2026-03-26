@@ -9,7 +9,7 @@ Prefixes (set in main.py):
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, Request
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -19,6 +19,8 @@ from app.core.dependencies import require_role
 from app.models.extensions import (
     WhatsAppNotificationSetting,
     WhatsAppSentLog,
+    WhatsAppDeliveryLog,
+    WhatsAppOptout,
 )
 from app.models.admin import ParentStudent
 from app.models.user import User
@@ -197,6 +199,130 @@ def trigger_due_reminders(
     return Response(status_code=204)
 
 
+# ── Webhook Endpoints (public — no auth) ──────────────────────────────────────
+
+@router.get("/webhook")
+def verify_webhook(
+    hub_mode:          str = Query(None, alias="hub.mode"),
+    hub_challenge:     str = Query(None, alias="hub.challenge"),
+    hub_verify_token:  str = Query(None, alias="hub.verify_token"),
+):
+    """
+    GET /whatsapp/webhook — Meta hub.challenge verification.
+    Meta calls this URL once to verify ownership before saving the callback URL
+    in the Developer Console. Responds with the raw challenge string on success.
+    """
+    from app.core.config import settings as _cfg
+    if hub_mode == "subscribe" and hub_verify_token == _cfg.META_WEBHOOK_VERIFY_TOKEN:
+        return Response(content=hub_challenge, media_type="text/plain")
+    raise HTTPException(status_code=403, detail="Webhook verification failed.")
+
+
+@router.post("/webhook", status_code=200)
+async def receive_webhook(request: Request, db: Session = Depends(get_db)):
+    """
+    POST /whatsapp/webhook — incoming event handler.
+
+    Handles three event types from Meta:
+      1. statuses  — delivery receipts (sent / delivered / read / failed)
+      2. messages  — inbound text: STOP opt-out processing + reply logging
+      3. errors    — message-level send failures (captured in delivery log)
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        return {"status": "ignored"}
+
+    for entry in body.get("entry", []):
+        for change in entry.get("changes", []):
+            value = change.get("value", {})
+
+            # ── Delivery receipts ─────────────────────────────────────────────
+            for status_obj in value.get("statuses", []):
+                wa_msg_id = status_obj.get("id")
+                phone     = status_obj.get("recipient_id", "")
+                status    = status_obj.get("status")
+                errors    = status_obj.get("errors", [])
+                err_code  = errors[0].get("code")  if errors else None
+                err_msg   = errors[0].get("title") if errors else None
+
+                if wa_msg_id and status:
+                    try:
+                        existing = (
+                            db.query(WhatsAppDeliveryLog)
+                            .filter(
+                                WhatsAppDeliveryLog.wa_message_id == wa_msg_id,
+                                WhatsAppDeliveryLog.status == status,
+                            )
+                            .first()
+                        )
+                        if not existing:
+                            db.add(WhatsAppDeliveryLog(
+                                wa_message_id=wa_msg_id,
+                                recipient_phone=phone,
+                                status=status,
+                                error_code=err_code,
+                                error_message=err_msg,
+                            ))
+                            db.commit()
+                    except Exception as exc:
+                        db.rollback()
+                        logger.error("Failed to save delivery log: %s", exc)
+
+            # ── Inbound messages (opt-out + reply logging) ────────────────────
+            for msg in value.get("messages", []):
+                from_phone = msg.get("from", "")
+                text       = msg.get("text", {}).get("body", "").strip().upper()
+
+                if text in ("STOP", "UNSUBSCRIBE", "OPTOUT", "CANCEL"):
+                    phone_e164 = f"+{from_phone}" if not from_phone.startswith("+") else from_phone
+                    try:
+                        if not db.query(WhatsAppOptout).filter(WhatsAppOptout.phone_number == phone_e164).first():
+                            db.add(WhatsAppOptout(phone_number=phone_e164))
+                            db.commit()
+                        # Also flip is_connected=False on any matching settings row
+                        row = (
+                            db.query(WhatsAppNotificationSetting)
+                            .filter(WhatsAppNotificationSetting.phone_number == phone_e164)
+                            .first()
+                        )
+                        if row:
+                            row.is_connected = False
+                            db.commit()
+                        logger.info("WhatsApp opt-out processed for %s", phone_e164)
+                    except Exception as exc:
+                        db.rollback()
+                        logger.error("Opt-out processing failed for %s: %s", from_phone, exc)
+
+    return {"status": "ok"}
+
+
+@router.get("/health")
+def whatsapp_health_check(_: User = Depends(require_role("admin"))):
+    """
+    GET /whatsapp/health (admin only)
+    Calls Meta's phone number info endpoint to verify the token and phone
+    number ID are still valid — without sending a real message.
+    """
+    import requests as _req
+    from app.core.config import settings as _cfg
+    token    = _cfg.META_WHATSAPP_TOKEN
+    phone_id = _cfg.META_PHONE_NUMBER_ID
+    if not token or not phone_id:
+        return {"status": "not_configured"}
+    url  = f"https://graph.facebook.com/v22.0/{phone_id}"
+    resp = _req.get(url, headers={"Authorization": f"Bearer {token}"}, timeout=8)
+    if resp.status_code == 200:
+        data = resp.json()
+        return {
+            "status":               "ok",
+            "display_phone_number": data.get("display_phone_number"),
+            "verified_name":        data.get("verified_name"),
+            "use_templates":        _cfg.WHATSAPP_USE_TEMPLATES,
+        }
+    return {"status": "error", "code": resp.status_code, "detail": resp.text}
+
+
 # ── Notification Dispatch (called from other routers) ─────────────────────────
 
 def notify_attendance(
@@ -225,8 +351,11 @@ def notify_attendance(
                 f"You were marked *{status_label}* for *{subject_name}* on {session_date}."
             )
 
-            def _send_s(phone=s_settings.phone_number, msg=body, uid=student_user_id, key=s_key):
-                if whatsapp_service.dispatch(phone, msg, "View Attendance", "/student/attendance"):
+            def _send_s(phone=s_settings.phone_number, msg=body, uid=student_user_id, key=s_key,
+                        bparams=["You", status_label, subject_name, session_date]):
+                if whatsapp_service.dispatch(phone, msg, "View Attendance", "/student/attendance",
+                                             template_name="connected_attendance_alert",
+                                             body_params=bparams):
                     from app.core.database import SessionLocal
                     _db = SessionLocal()
                     try:
@@ -259,8 +388,11 @@ def notify_attendance(
             f"*{student_name}* was marked *{status_label}* for *{subject_name}* on {session_date}."
         )
 
-        def _send_p(phone=p_settings.phone_number, msg=body, pid=parent.id, key=p_key):
-            if whatsapp_service.dispatch(phone, msg, "View Attendance", "/parent/attendance"):
+        def _send_p(phone=p_settings.phone_number, msg=body, pid=parent.id, key=p_key,
+                    bparams=[student_name, status_label, subject_name, session_date]):
+            if whatsapp_service.dispatch(phone, msg, "View Attendance", "/parent/attendance",
+                                         template_name="connected_attendance_alert",
+                                         body_params=bparams):
                 from app.core.database import SessionLocal
                 _db = SessionLocal()
                 try:
@@ -309,8 +441,11 @@ def notify_event_published(
                     f"*{event_title}* — {start_date}"
                 )
 
-                def _send_s(phone=s_settings.phone_number, msg=body, uid=profile.user_id, key=s_key):
-                    if whatsapp_service.dispatch(phone, msg, btn_parent, "/student/timetable"):
+                def _send_s(phone=s_settings.phone_number, msg=body, uid=profile.user_id, key=s_key,
+                            bparams=[kind_label, event_title, start_date]):
+                    if whatsapp_service.dispatch(phone, msg, btn_parent, "/student/timetable",
+                                                 template_name="connected_event_scheduled",
+                                                 body_params=bparams):
                         from app.core.database import SessionLocal
                         _db = SessionLocal()
                         try:
@@ -347,8 +482,11 @@ def notify_event_published(
                 f"*{event_title}* — {start_date}"
             )
 
-            def _send_p(phone=p_settings.phone_number, msg=body, pid=parent.id, key=p_key, btn=btn_parent):
-                if whatsapp_service.dispatch(phone, msg, btn, "/parent/events"):
+            def _send_p(phone=p_settings.phone_number, msg=body, pid=parent.id, key=p_key, btn=btn_parent,
+                        bparams=[kind_label, event_title, start_date]):
+                if whatsapp_service.dispatch(phone, msg, btn, "/parent/events",
+                                             template_name="connected_event_scheduled",
+                                             body_params=bparams):
                     from app.core.database import SessionLocal
                     _db = SessionLocal()
                     try:
@@ -386,8 +524,11 @@ def notify_grade_published(
                 f"Your score: *{grade}*"
             )
 
-            def _send_s(phone=s_settings.phone_number, msg=body, uid=student_user_id, key=s_key):
-                if whatsapp_service.dispatch(phone, msg, "View Grade", "/student/assignments"):
+            def _send_s(phone=s_settings.phone_number, msg=body, uid=student_user_id, key=s_key,
+                        bparams=["Your", assignment_title, subject_name, grade]):
+                if whatsapp_service.dispatch(phone, msg, "View Grade", "/student/assignments",
+                                             template_name="connected_grade_released",
+                                             body_params=bparams):
                     from app.core.database import SessionLocal
                     _db = SessionLocal()
                     try:
@@ -421,8 +562,11 @@ def notify_grade_published(
             f"Score: *{grade}*"
         )
 
-        def _send_p(phone=p_settings.phone_number, msg=body, pid=parent.id, key=p_key):
-            if whatsapp_service.dispatch(phone, msg, "View Grade", "/parent/assignments"):
+        def _send_p(phone=p_settings.phone_number, msg=body, pid=parent.id, key=p_key,
+                    bparams=[student_name, assignment_title, subject_name, grade]):
+            if whatsapp_service.dispatch(phone, msg, "View Grade", "/parent/assignments",
+                                         template_name="connected_grade_released",
+                                         body_params=bparams):
                 from app.core.database import SessionLocal
                 _db = SessionLocal()
                 try:
@@ -466,8 +610,11 @@ def notify_assignment_published(
                     f"By {teacher_name}{due_line}"
                 )
 
-                def _send_s(phone=s_settings.phone_number, msg=body, uid=profile.user_id, key=s_key):
-                    if whatsapp_service.dispatch(phone, msg, "View Assignment", "/student/assignments"):
+                def _send_s(phone=s_settings.phone_number, msg=body, uid=profile.user_id, key=s_key,
+                            bparams=[assignment_title, subject_name, due_at or "No due date"]):
+                    if whatsapp_service.dispatch(phone, msg, "View Assignment", "/student/assignments",
+                                                 template_name="connected_assignment_published",
+                                                 body_params=bparams):
                         from app.core.database import SessionLocal
                         _db = SessionLocal()
                         try:
@@ -505,8 +652,11 @@ def notify_assignment_published(
                 f"By {teacher_name}{due_line}"
             )
 
-            def _send_p(phone=p_settings.phone_number, msg=body, pid=parent.id, key=p_key):
-                if whatsapp_service.dispatch(phone, msg, "View Assignment", "/parent/assignments"):
+            def _send_p(phone=p_settings.phone_number, msg=body, pid=parent.id, key=p_key,
+                        bparams=[assignment_title, subject_name, due_at or "No due date"]):
+                if whatsapp_service.dispatch(phone, msg, "View Assignment", "/parent/assignments",
+                                             template_name="connected_assignment_published",
+                                             body_params=bparams):
                     from app.core.database import SessionLocal
                     _db = SessionLocal()
                     try:
@@ -545,8 +695,11 @@ def notify_unread_message(
         f"*{sender_name}* sent you a message."
     )
 
-    def _send(phone=settings.phone_number, msg=body, pid=parent_user_id, key=event_key):
-        if whatsapp_service.dispatch(phone, msg, "Open Messages", "/parent/messages"):
+    def _send(phone=settings.phone_number, msg=body, pid=parent_user_id, key=event_key,
+              bparams=[sender_name]):
+        if whatsapp_service.dispatch(phone, msg, "Open Messages", "/parent/messages",
+                                     template_name="connected_message_alert",
+                                     body_params=bparams):
             from app.core.database import SessionLocal
             _db = SessionLocal()
             try:
@@ -581,8 +734,11 @@ def notify_student_unread_message(
         f"*{sender_name}* sent you a message."
     )
 
-    def _send(phone=settings.phone_number, msg=body, uid=student_user_id, key=event_key):
-        if whatsapp_service.dispatch(phone, msg, "Open Messages", "/student/messages"):
+    def _send(phone=settings.phone_number, msg=body, uid=student_user_id, key=event_key,
+              bparams=[sender_name]):
+        if whatsapp_service.dispatch(phone, msg, "Open Messages", "/student/messages",
+                                     template_name="connected_message_alert",
+                                     body_params=bparams):
             from app.core.database import SessionLocal
             _db = SessionLocal()
             try:
@@ -624,7 +780,9 @@ def notify_assignment_due_reminder(
     )
 
     for assignment in upcoming:
-        due_str = assignment.due_at.strftime("%b %d, %Y %H:%M") if assignment.due_at else ""
+        due_str         = assignment.due_at.strftime("%b %d, %Y %H:%M") if assignment.due_at else ""
+        hours_remaining = max(1, int((assignment.due_at - now).total_seconds() / 3600))
+        subject_name_str = assignment.subject.name if assignment.subject else "N/A"
         profiles = (
             db.query(StudentProfile)
             .filter(StudentProfile.class_id == assignment.class_id)
@@ -658,8 +816,11 @@ def notify_assignment_due_reminder(
                 f"Make sure to submit before the deadline!"
             )
 
-            def _send(phone=s_settings.phone_number, msg=body, uid=profile.user_id, key=event_key):
-                if whatsapp_service.dispatch(phone, msg, "View Assignment", "/student/assignments"):
+            def _send(phone=s_settings.phone_number, msg=body, uid=profile.user_id, key=event_key,
+                      bparams=[assignment.title, subject_name_str, str(hours_remaining)]):
+                if whatsapp_service.dispatch(phone, msg, "View Assignment", "/student/assignments",
+                                             template_name="connected_due_reminder",
+                                             body_params=bparams):
                     from app.core.database import SessionLocal
                     _db = SessionLocal()
                     try:

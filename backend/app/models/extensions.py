@@ -34,6 +34,10 @@ Tables (in migration order):
     submissions              — per-student submission + grade
     submission_attachments   — student-uploaded files
     ai_reviews               — AI-suggested grade/feedback audit trail
+
+  22_consent_management.sql:
+    consent_records          — per-student GDPR consent per AI feature type
+    consent_audit_logs       — immutable audit trail for every consent change
 """
 
 import enum
@@ -582,6 +586,36 @@ class WhatsAppSentLog(Base):
     )
 
 
+# ── WhatsApp Webhook Support (Migration 23) ───────────────────────────────────
+
+class WhatsAppDeliveryLog(Base):
+    __tablename__ = "whatsapp_delivery_log"
+
+    id              = Column(Integer, primary_key=True, autoincrement=True)
+    wa_message_id   = Column(String(128), nullable=False)
+    recipient_phone = Column(String(20),  nullable=False)
+    status          = Column(
+        Enum("sent", "delivered", "read", "failed", name="wa_delivery_status"),
+        nullable=False,
+    )
+    error_code      = Column(Integer,     nullable=True)
+    error_message   = Column(String(255), nullable=True)
+    event_key       = Column(String(255), nullable=True)
+    updated_at      = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    __table_args__ = (
+        UniqueConstraint("wa_message_id", "status", name="uq_wa_msg_status"),
+    )
+
+
+class WhatsAppOptout(Base):
+    __tablename__ = "whatsapp_optouts"
+
+    id            = Column(Integer, primary_key=True, autoincrement=True)
+    phone_number  = Column(String(20), nullable=False, unique=True)
+    opted_out_at  = Column(DateTime, server_default=func.now())
+
+
 # ── AI Study Materials (Migration 17) ─────────────────────────────────────────
 
 class AIStudyMaterialStatusEnum(str, enum.Enum):
@@ -685,3 +719,45 @@ class MeetingAnalytics(Base):
     updated_at  = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     meeting = relationship("Meeting", back_populates="analytics")
+
+
+# ── Consent Management (Migration 22) ─────────────────────────────────────────
+
+class ConsentRecord(Base):
+    __tablename__ = "consent_records"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    student_id      = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    consent_type    = Column(String(50), nullable=False)   # emotion_detection | session_recording | transcript_generation
+    status          = Column(String(20), nullable=False, default="pending")  # pending | granted | refused | withdrawn | expired
+    granted_by      = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    consent_version = Column(String(10), nullable=False, default="v1.0")
+    expiry_date     = Column(Date, nullable=True)
+    ip_address      = Column(String(45), nullable=True)
+    created_at      = Column(DateTime, server_default=func.now())
+    updated_at      = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    __table_args__ = (
+        UniqueConstraint("student_id", "consent_type", name="uq_consent_student_type"),
+    )
+
+    student    = relationship("User", foreign_keys=[student_id])
+    grantor    = relationship("User", foreign_keys=[granted_by])
+    audit_logs = relationship("ConsentAuditLog", back_populates="consent", cascade="all, delete-orphan")
+
+
+class ConsentAuditLog(Base):
+    __tablename__ = "consent_audit_logs"
+
+    log_id          = Column(Integer, primary_key=True, index=True)
+    consent_id      = Column(Integer, ForeignKey("consent_records.id", ondelete="CASCADE"), nullable=False)
+    action          = Column(String(30), nullable=False)   # granted | refused | withdrawn | expired | renewed | blocked_attempt
+    performed_by    = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    previous_status = Column(String(20), nullable=True)
+    new_status      = Column(String(20), nullable=True)
+    timestamp       = Column(DateTime, server_default=func.now())
+    ip_address      = Column(String(45), nullable=True)
+    notes           = Column(Text, nullable=True)
+
+    consent   = relationship("ConsentRecord", back_populates="audit_logs")
+    performer = relationship("User", foreign_keys=[performed_by])

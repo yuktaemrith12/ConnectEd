@@ -5,10 +5,10 @@
  * Student gets a participant token and joins the LiveKit room.
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router";
 import DashboardLayout from "@/app/components/layout/DashboardLayout";
-import { Loader2, AlertCircle, PhoneOff } from "lucide-react";
+import { Loader2, AlertCircle, PhoneOff, CheckCircle, WifiOff } from "lucide-react";
 import { videoJoinMeeting, type MeetingRead } from "@/app/utils/api";
 import {
   LiveKitRoom,
@@ -43,9 +43,15 @@ export default function StudentLiveClass() {
   const { meetingId } = useParams<{ meetingId: string }>();
   const navigate = useNavigate();
 
-  const [meeting, setMeeting] = useState<MeetingRead | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState<string | null>(null);
+  const [meeting, setMeeting]     = useState<MeetingRead | null>(null);
+  const [loading, setLoading]     = useState(true);
+  const [error, setError]         = useState<string | null>(null);
+  const [roomEnded, setRoomEnded] = useState(false);
+  const [connError, setConnError] = useState<string | null>(null);
+
+  // Track whether we ever successfully connected — prevents a connection
+  // failure from showing the misleading "Class has ended" screen.
+  const wasConnectedRef = useRef(false);
 
   useEffect(() => {
     if (!meetingId) return;
@@ -64,10 +70,58 @@ export default function StudentLiveClass() {
   const token = meeting?.participant_token ?? "";
   const isStubToken = token.startsWith("stub:");
 
+  // ── Class ended (room closed by teacher after we were connected) ─────────
+  if (roomEnded) {
+    return (
+      <DashboardLayout role="student" skipConsent>
+        <div className="max-w-lg mx-auto py-24 text-center">
+          <CheckCircle size={40} className="text-green-500 mx-auto mb-4" />
+          <p className="text-gray-800 font-semibold text-xl mb-2">Class has ended</p>
+          <p className="text-gray-500 text-sm mb-6">
+            The teacher has ended this session. Check Recordings for the playback.
+          </p>
+          <button
+            onClick={() => navigate("/student/timetable")}
+            className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 transition"
+          >
+            Back to Timetable
+          </button>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // ── Connection error (server unreachable) ─────────────────────────────────
+  if (connError) {
+    return (
+      <DashboardLayout role="student" skipConsent>
+        <div className="max-w-lg mx-auto py-24 text-center">
+          <WifiOff size={40} className="text-amber-400 mx-auto mb-4" />
+          <p className="text-gray-800 font-semibold text-xl mb-2">Could not connect</p>
+          <p className="text-gray-500 text-sm mb-6">{connError}</p>
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={() => { setConnError(null); wasConnectedRef.current = false; }}
+              className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 transition"
+            >
+              Retry
+            </button>
+            <button
+              onClick={() => navigate("/student/timetable")}
+              className="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-semibold text-sm hover:bg-gray-200 transition"
+            >
+              Back to Timetable
+            </button>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   // ── Loading ──────────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <DashboardLayout role="student">
+      <DashboardLayout role="student" skipConsent>
         <div className="flex flex-col items-center justify-center py-24 gap-4">
           <Loader2 size={40} className="animate-spin text-blue-500" />
           <p className="text-gray-500 font-medium">Joining class…</p>
@@ -79,7 +133,7 @@ export default function StudentLiveClass() {
   // ── Error / not found ────────────────────────────────────────────────────
   if (error || !meeting) {
     return (
-      <DashboardLayout role="student">
+      <DashboardLayout role="student" skipConsent>
         <div className="max-w-lg mx-auto py-24 text-center">
           <AlertCircle size={40} className="text-red-400 mx-auto mb-4" />
           <p className="text-gray-700 font-semibold text-lg mb-2">
@@ -101,7 +155,7 @@ export default function StudentLiveClass() {
 
   // ── Live Room ─────────────────────────────────────────────────────────────
   return (
-    <DashboardLayout role="student">
+    <DashboardLayout role="student" skipConsent>
       <div className="space-y-4">
         {/* Header bar */}
         <div className="bg-white border border-gray-200 rounded-xl px-5 py-3 flex items-center justify-between">
@@ -140,6 +194,14 @@ export default function StudentLiveClass() {
               video={true}
               data-lk-theme="default"
               style={{ height: "100%" }}
+              onConnected={() => { wasConnectedRef.current = true; }}
+              onDisconnected={() => {
+                if (wasConnectedRef.current) {
+                  setRoomEnded(true);
+                } else {
+                  setConnError("Could not reach the video server. Make sure the LiveKit server is running at " + wsUrl);
+                }
+              }}
             >
               <ConferenceRoomLayout />
               <RoomAudioRenderer />

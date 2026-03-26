@@ -35,6 +35,9 @@ start "ConnectEd Backend" cmd /k "cd /d %~dp0backend && venv\Scripts\activate &&
 :: ── Frontend ─────────────────────────────────────────────────────────────────
 start "ConnectEd Frontend" cmd /k "cd /d %~dp0frontend && pnpm run dev"
 
+:: ── ngrok (WhatsApp webhook tunnel) ──────────────────────────────────────────
+start "ConnectEd ngrok" cmd /k "ngrok http --url=homothetic-kourtney-supportlessly.ngrok-free.dev 8000"
+
 echo.
 echo ========================================================
 echo   All services are starting!
@@ -44,6 +47,7 @@ echo   Frontend UI  :  http://localhost:5173
 echo   LiveKit      :  ws://localhost:7880
 echo   Egress       :  recording enabled
 echo   Redis        :  localhost:6379
+echo   ngrok Tunnel :  https://homothetic-kourtney-supportlessly.ngrok-free.dev
 echo ========================================================
 echo.
 pause

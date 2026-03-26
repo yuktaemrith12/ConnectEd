@@ -7,7 +7,7 @@ import { type Role, ROLE_CONFIG } from './LoginPanel3D.types';
 
 // ─── Per-role title copy ─────────────────────────────────────────────────────
 const HERO_CONFIG: Record<Role, { headline: string; tagline: string }> = {
-  student: { headline: 'The grind \nhas a home now.', tagline: 'Classes, grades, and everything AI in between.' },
+  student: { headline: 'ConnectEd \n to your future.', tagline: 'Classes, grades, and everything AI in between.' },
   teacher: { headline: 'Teach smarter,\nnot harder.', tagline: 'AI-powered insights to help every teacher relax more.' },
   parent: { headline: 'Stay close,\neven from afar.', tagline: 'Real-time visibility into your child\'s journey.' },
   admin: { headline: 'Everything\nunder control.', tagline: 'One dashboard. Every metric. Full command.' },

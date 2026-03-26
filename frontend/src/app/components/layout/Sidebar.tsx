@@ -23,6 +23,7 @@ import {
   FileCheck,
   MapPin,
   RadioTower,
+  Shield,
 } from "lucide-react";
 
 interface NavItem {
@@ -51,6 +52,7 @@ const navigationConfig: Record<string, NavItem[]> = {
     { icon: MapPin, label: "Locations", path: "/admin/locations" },
     { icon: Calendar, label: "Events & Exams", path: "/admin/events" },
     { icon: DollarSign, label: "Fees & Payments", path: "/admin/fees" },
+    { icon: Shield, label: "Consent Compliance", path: "/admin/consent", section: "COMPLIANCE" },
   ],
   teacher: [
     { icon: LayoutDashboard, label: "Dashboard", path: "/teacher", section: "Core Teaching Workflow" },
@@ -76,6 +78,7 @@ const navigationConfig: Record<string, NavItem[]> = {
     { icon: Brain, label: "AI Tutor", path: "/student/ai-tutor" },
     { icon: MessageSquare, label: "Messages", path: "/student/messages" },
     { icon: MessageCircle, label: "WhatsApp Alerts", path: "/student/whatsapp" },
+    { icon: Shield, label: "Privacy & Consent", path: "/student/consent" },
   ],
   parent: [
     { icon: LayoutDashboard, label: "Dashboard", path: "/parent" },
@@ -86,6 +89,7 @@ const navigationConfig: Record<string, NavItem[]> = {
     { icon: Calendar, label: "Events & Exams", path: "/parent/events" },
     { icon: MessageSquare, label: "Messages", path: "/parent/messages" },
     { icon: MessageCircle, label: "WhatsApp Alerts", path: "/parent/whatsapp" },
+    { icon: Shield, label: "Child Data Consent", path: "/parent/consent" },
   ],
 };
 
@@ -129,11 +133,11 @@ export default function Sidebar({ role, collapsed, onToggle }: SidebarProps) {
         >
           <img 
             src={logo} 
-            alt="ConnectEd Logo" 
+            alt="ConnectEd Logo"
             className="w-10 h-10 flex-shrink-0 object-contain"
           />
           {!collapsed && (
-            <motion.span 
+            <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="font-bold text-xl"

@@ -17,7 +17,7 @@
  *   LIVEKIT_API_SECRET   secret
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router";
 import DashboardLayout from "@/app/components/layout/DashboardLayout";
 import { motion, AnimatePresence } from "motion/react";
@@ -85,6 +85,9 @@ export default function TeacherVideoConference() {
   const [meeting, setMeeting] = useState<MeetingRead | null>(null);
   const [error, setError]     = useState<string | null>(null);
   const [loadingClasses, setLoadingClasses] = useState(true);
+  // Ref to track successful connection — prevents connection failures from
+  // silently swallowing the "ended" transition.
+  const wasConnectedRef = useRef(false);
 
   // Derive subjects for the selected class
   const selectedClass = classes.find((c) => c.id === selectedClassId);
@@ -137,8 +140,9 @@ export default function TeacherVideoConference() {
     try {
       await videoEndMeeting(meeting.id);
     } catch {
-      // ignore
+      // ignore — DB may already be updated; still transition UI
     }
+    wasConnectedRef.current = false; // prevent onDisconnected from double-firing
     setState("ended");
     setMeeting(null);
   }
@@ -441,6 +445,13 @@ export default function TeacherVideoConference() {
                     video={true}
                     data-lk-theme="default"
                     style={{ height: "100%" }}
+                    onConnected={() => { wasConnectedRef.current = true; }}
+                    onDisconnected={() => {
+                      if (wasConnectedRef.current) {
+                        wasConnectedRef.current = false;
+                        setState("ended");
+                      }
+                    }}
                   >
                     <ConferenceRoomLayout />
                     <RoomAudioRenderer />

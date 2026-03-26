@@ -1982,3 +1982,124 @@ export async function t2nFromRecording(
   });
   return data;
 }
+
+// ── Consent Management ────────────────────────────────────────────────────────
+
+export type ConsentStatus = "pending" | "granted" | "refused" | "withdrawn" | "expired";
+export type ConsentType = "emotion_detection" | "session_recording" | "transcript_generation";
+
+export interface ConsentRecord {
+  id: number;
+  student_id: number;
+  consent_type: ConsentType;
+  status: ConsentStatus;
+  granted_by: number | null;
+  granted_by_name: string | null;
+  consent_version: string;
+  expiry_date: string | null;
+  ip_address: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+}
+
+export interface ConsentChoiceItem {
+  consent_type: ConsentType;
+  status: "granted" | "refused";
+}
+
+export interface ConsentTypeStats {
+  type: ConsentType;
+  granted: number;
+  refused: number;
+  pending: number;
+  withdrawn: number;
+  rate?: number;
+}
+
+export interface ClassConsentSummary {
+  total_students: number;
+  consent_types: ConsentTypeStats[];
+}
+
+export interface ComplianceOverview {
+  total_students: number;
+  consent_types: ConsentTypeStats[];
+}
+
+export interface ConsentAuditLog {
+  log_id: number;
+  consent_id: number;
+  action: string;
+  performed_by: number | null;
+  previous_status: string | null;
+  new_status: string | null;
+  timestamp: string | null;
+  ip_address: string | null;
+  notes: string | null;
+}
+
+/** Student: fetch own consent records (creates pending rows on first call) */
+export async function consentGetMy(): Promise<ConsentRecord[]> {
+  const { data } = await api.get<ConsentRecord[]>("/consent/my");
+  return data;
+}
+
+/** Student / Parent: batch-save consent choices */
+export async function consentSave(
+  consents: ConsentChoiceItem[],
+  studentId?: number,
+): Promise<{ detail: string }> {
+  const { data } = await api.post<{ detail: string }>("/consent/save", {
+    student_id: studentId ?? null,
+    consents,
+  });
+  return data;
+}
+
+/** Student / Parent: withdraw a single consent type */
+export async function consentWithdraw(
+  consentType: ConsentType,
+  studentId?: number,
+): Promise<{ detail: string }> {
+  const { data } = await api.post<{ detail: string }>("/consent/withdraw", {
+    consent_type: consentType,
+    student_id: studentId ?? null,
+  });
+  return data;
+}
+
+/** Admin: institution-wide compliance overview */
+export async function consentGetComplianceOverview(): Promise<ComplianceOverview> {
+  const { data } = await api.get<ComplianceOverview>("/consent/compliance/overview");
+  return data;
+}
+
+/** Admin: initialise pending consent records for all students */
+export async function consentBulkRequest(): Promise<{ detail: string }> {
+  const { data } = await api.post<{ detail: string }>("/consent/bulk-request");
+  return data;
+}
+
+/** Teacher/Admin: class consent summary */
+export async function consentGetClassSummary(classId: number): Promise<ClassConsentSummary> {
+  const { data } = await api.get<ClassConsentSummary>(`/consent/class/${classId}`);
+  return data;
+}
+
+/** Admin/Teacher: full audit log for a student */
+export async function consentGetAuditLog(studentId: number): Promise<ConsentAuditLog[]> {
+  const { data } = await api.get<ConsentAuditLog[]>(`/consent/audit/${studentId}`);
+  return data;
+}
+
+/** Admin/Teacher: view a student's consent records */
+export async function consentGetStudentRecords(studentId: number): Promise<ConsentRecord[]> {
+  const { data } = await api.get<ConsentRecord[]>(`/consent/${studentId}`);
+  return data;
+}
+
+/** Parent: fetch consent records for a child (uses parent-scoped endpoint) */
+export async function consentGetChildRecords(studentUserId: number): Promise<ConsentRecord[]> {
+  const { data } = await api.get<ConsentRecord[]>(`/consent/child/${studentUserId}`);
+  return data;
+}

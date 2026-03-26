@@ -37,9 +37,12 @@ class Settings(BaseSettings):
     GOOGLE_GENAI_API_KEY: str = ""
 
     # Meta WhatsApp Cloud API
-    META_WHATSAPP_TOKEN:  str = ""   # temporary or permanent access token
-    META_PHONE_NUMBER_ID: str = ""   # phone number ID from Meta Developer Console
-    FRONTEND_URL:         str = ""   # base URL of the frontend, e.g. http://localhost:5173
+    META_WHATSAPP_TOKEN:       str  = ""    # permanent system-user access token (see docs)
+    META_PHONE_NUMBER_ID:      str  = ""    # phone number ID from Meta Developer Console
+    META_WABA_ID:              str  = ""    # WhatsApp Business Account ID
+    META_WEBHOOK_VERIFY_TOKEN: str  = ""    # arbitrary secret — must match Meta Dev Console
+    WHATSAPP_USE_TEMPLATES:    bool = False # set True in production after templates are approved
+    FRONTEND_URL:              str  = ""    # base URL of the frontend, e.g. https://yourapp.com
 
     def get_database_url(self) -> str:
         """Return DATABASE_URL from .env if set, otherwise build from DB_* components."""

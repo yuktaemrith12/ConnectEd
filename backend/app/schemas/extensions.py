@@ -598,6 +598,18 @@ class WhatsAppSettingsUpdate(BaseModel):
     notify_due_reminders: Optional[bool] = None
 
 
+class WhatsAppDeliveryLogRead(BaseModel):
+    model_config = {"from_attributes": True}
+    id:              int
+    wa_message_id:   str
+    recipient_phone: str
+    status:          str
+    error_code:      Optional[int]   = None
+    error_message:   Optional[str]   = None
+    event_key:       Optional[str]   = None
+    updated_at:      Optional[datetime] = None
+
+
 # ── Video Conferencing ────────────────────────────────────────────────────────
 
 class MeetingCreate(BaseModel):
@@ -657,3 +669,69 @@ class EmotionLogRead(BaseModel):
     confidence:  float
 
     model_config = {"from_attributes": True}
+
+
+# ── Consent Management ────────────────────────────────────────────────────────
+
+class ConsentRecordRead(BaseModel):
+    id:              int
+    student_id:      int
+    consent_type:    str
+    status:          str
+    granted_by:      Optional[int]
+    granted_by_name: Optional[str]
+    consent_version: str
+    expiry_date:     Optional[str]
+    ip_address:      Optional[str]
+    created_at:      Optional[str]
+    updated_at:      Optional[str]
+
+    model_config = {"from_attributes": True}
+
+
+class ConsentChoiceItem(BaseModel):
+    consent_type: str   # emotion_detection | session_recording | transcript_generation
+    status: str         # granted | refused
+
+
+class ConsentSaveRequest(BaseModel):
+    student_id: Optional[int] = None   # Required for parents; students may omit (own id used)
+    consents:   List[ConsentChoiceItem]
+
+
+class ConsentWithdrawRequest(BaseModel):
+    consent_type: str
+    student_id:   Optional[int] = None   # Required for parents
+
+
+class ConsentAuditLogRead(BaseModel):
+    log_id:          int
+    consent_id:      int
+    action:          str
+    performed_by:    Optional[int]
+    previous_status: Optional[str]
+    new_status:      Optional[str]
+    timestamp:       Optional[str]
+    ip_address:      Optional[str]
+    notes:           Optional[str]
+
+    model_config = {"from_attributes": True}
+
+
+class ConsentTypeStats(BaseModel):
+    type:      str
+    granted:   int
+    refused:   int
+    pending:   int
+    withdrawn: int
+    rate:      Optional[float] = None   # consent rate % (admin overview only)
+
+
+class ClassConsentSummary(BaseModel):
+    total_students: int
+    consent_types:  List[ConsentTypeStats]
+
+
+class ComplianceOverview(BaseModel):
+    total_students: int
+    consent_types:  List[ConsentTypeStats]

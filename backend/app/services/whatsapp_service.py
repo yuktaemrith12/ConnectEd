@@ -1,12 +1,12 @@
 """
 WhatsApp notification service — Meta Cloud API (no SDK, plain HTTP).
 
-One reminder: the access token you gave me expires in ~24 hours. When it stops working, go back to Meta Developer Console → WhatsApp → API Setup and generate a new one, then update META_WHATSAPP_TOKEN in .env. To get a permanent token later, you'd create a System User in Meta Business Settings.
-
-Set these env vars in your .env file:
-    META_WHATSAPP_TOKEN       = your permanent or temporary access token
-    META_PHONE_NUMBER_ID      = phone number ID from Meta Developer Console
-    FRONTEND_URL              = base URL of the frontend, e.g. http://localhost:5173
+Required .env vars:
+    META_WHATSAPP_TOKEN        = permanent system-user access token (see docs/whatsapp_setup)
+    META_PHONE_NUMBER_ID       = phone number ID from Meta Developer Console
+    META_WEBHOOK_VERIFY_TOKEN  = arbitrary secret matching the Meta Dev Console webhook config
+    WHATSAPP_USE_TEMPLATES     = false (dev) | true (production, after templates are approved)
+    FRONTEND_URL               = base URL of the frontend, e.g. https://yourapp.com
 """
 
 import logging
@@ -115,26 +115,128 @@ def send_interactive(
         return False
 
 
-def dispatch(to_phone: str, body: str, button_text: str, page_path: str) -> bool:
-    """
-    Send notification with a CTA button when FRONTEND_URL is configured.
-    Falls back to plain text automatically.
+def _is_opted_out(phone: str) -> bool:
+    """Return True if this phone number has been added to the opt-out registry."""
+    try:
+        from app.core.database import SessionLocal
+        from app.models.extensions import WhatsAppOptout
+        phone_e164 = f"+{phone}" if not phone.startswith("+") else phone
+        _db = SessionLocal()
+        try:
+            return _db.query(WhatsAppOptout).filter(WhatsAppOptout.phone_number == phone_e164).first() is not None
+        finally:
+            _db.close()
+    except Exception:
+        return False
 
-    page_path — relative path starting with '/', e.g. '/parent/attendance'
+
+def send_template(
+    to_phone: str,
+    template_name: str,
+    language_code: str = "en",
+    body_params: list = None,
+    cta_url: str = None,
+) -> bool:
+    """
+    Send a pre-approved WhatsApp Message Template.
+    Required for cold push notifications (user hasn't messaged in 24h).
+
+    body_params — ordered list of strings matching {{1}}, {{2}}, ... in the template body.
+    cta_url     — optional dynamic URL suffix for a CTA URL button (index 0).
     """
     try:
-        from app.core.config import settings as _cfg
-        frontend_url = getattr(_cfg, "FRONTEND_URL", "").rstrip("/")
-    except Exception:
-        frontend_url = ""
+        token, phone_id = _get_credentials()
+        if not token or not phone_id:
+            logger.warning("WhatsApp template send skipped — credentials not set")
+            return False
 
+        to_clean   = to_phone.lstrip("+")
+        url        = f"https://graph.facebook.com/{_API_VERSION}/{phone_id}/messages"
+        headers    = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+        components = []
+
+        if body_params:
+            components.append({
+                "type": "body",
+                "parameters": [{"type": "text", "text": str(p)} for p in body_params],
+            })
+
+        if cta_url:
+            components.append({
+                "type": "button",
+                "sub_type": "url",
+                "index": "0",
+                "parameters": [{"type": "text", "text": cta_url}],
+            })
+
+        payload = {
+            "messaging_product": "whatsapp",
+            "to": to_clean,
+            "type": "template",
+            "template": {
+                "name": template_name,
+                "language": {"code": language_code},
+                "components": components,
+            },
+        }
+
+        resp = requests.post(url, json=payload, headers=headers, timeout=10)
+
+        if resp.status_code == 200:
+            msg_id = resp.json().get("messages", [{}])[0].get("id", "—")
+            logger.info("WhatsApp template '%s' sent to %s — ID: %s", template_name, to_phone, msg_id)
+            return True
+        else:
+            logger.error("WhatsApp template '%s' failed to %s — %d: %s",
+                         template_name, to_phone, resp.status_code, resp.text)
+            return False
+
+    except Exception as exc:
+        logger.error("WhatsApp template exception to %s: %s", to_phone, exc)
+        return False
+
+
+def dispatch(
+    to_phone: str,
+    body: str,
+    button_text: str,
+    page_path: str,
+    template_name: str = None,
+    body_params: list = None,
+) -> bool:
+    """
+    Send a WhatsApp notification, routing via approved template in production
+    or free-form interactive/text in dev.
+
+    page_path     — relative path starting with '/', e.g. '/parent/attendance'
+    template_name — Meta-approved template name; used when WHATSAPP_USE_TEMPLATES=True
+    body_params   — ordered parameter list matching {{1}}, {{2}}, ... in the template
+    """
+    if _is_opted_out(to_phone):
+        logger.info("WhatsApp send skipped — %s has opted out", to_phone)
+        return False
+
+    try:
+        from app.core.config import settings as _cfg
+        use_templates = getattr(_cfg, "WHATSAPP_USE_TEMPLATES", False)
+        frontend_url  = getattr(_cfg, "FRONTEND_URL", "").rstrip("/")
+    except Exception:
+        use_templates = False
+        frontend_url  = ""
+
+    cta_url = None
     if frontend_url:
-        # Always route through the login page with the destination as ?from=
-        # so users without an active session are prompted to log in first.
         encoded_path = urllib.parse.quote(page_path, safe="/")
-        full_url = f"{frontend_url}/?from={encoded_path}"
-        if send_interactive(to_phone, body, button_text, full_url):
+        cta_url = f"{frontend_url}/?from={encoded_path}"
+
+    # Production path: use approved template
+    if use_templates and template_name:
+        if send_template(to_phone, template_name, body_params=body_params, cta_url=cta_url):
             return True
 
-    # Fall back to plain text
+    # Dev / fallback path: free-form interactive with CTA button, then plain text
+    if cta_url:
+        if send_interactive(to_phone, body, button_text, cta_url):
+            return True
+
     return send(to_phone, body)

@@ -2,17 +2,21 @@ import { ReactNode, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Sidebar from "@/app/components/layout/Sidebar";
 import Header from "@/app/components/layout/Header";
+import ConsentGateway from "@/app/components/ConsentGateway";
 
 interface DashboardLayoutProps {
   children: ReactNode;
   role: "student" | "teacher" | "parent" | "admin";
+  /** Pass true on pages where the consent overlay would block critical UI (e.g. live class room) */
+  skipConsent?: boolean;
 }
 
-export default function DashboardLayout({ children, role }: DashboardLayoutProps) {
+export default function DashboardLayout({ children, role, skipConsent = false }: DashboardLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {role === "student" && !skipConsent && <ConsentGateway />}
       <Sidebar role={role} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
       
       <motion.div

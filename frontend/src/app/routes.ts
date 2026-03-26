@@ -62,6 +62,9 @@ import ParentMessages from "@/app/pages/parent/Messages";
 import ParentSettings from "@/app/pages/parent/Settings";
 import ParentAssignments from "@/app/pages/parent/Assignments";
 import ParentWhatsAppNotifications from "@/app/pages/parent/WhatsAppNotifications";
+import StudentConsent from "@/app/pages/student/Consent";
+import ParentConsent from "@/app/pages/parent/Consent";
+import AdminConsentCompliance from "@/app/pages/admin/ConsentCompliance";
 import ComponentLibrary from "@/app/pages/ComponentLibrary";
 
 // Parent Portal Routing:
@@ -90,6 +93,7 @@ export const router = createBrowserRouter([
       { path: "attendance", Component: AdminAttendanceOverview },
       { path: "locations", Component: AdminLocationsManagement },
       { path: "settings", Component: AdminSettings },
+      { path: "consent", Component: AdminConsentCompliance },
       { path: "*", loader: () => redirect("/admin") },
     ],
   },
@@ -132,6 +136,7 @@ export const router = createBrowserRouter([
       { path: "settings", Component: StudentSettings },
       { path: "whatsapp", Component: StudentWhatsAppNotifications },
       { path: "live/:meetingId", Component: StudentLiveClass },
+      { path: "consent", Component: StudentConsent },
     ],
   },
   {
@@ -147,6 +152,7 @@ export const router = createBrowserRouter([
       { path: "assignments", Component: ParentAssignments },
       { path: "messages", Component: ParentMessages },
       { path: "settings", Component: ParentSettings },
+      { path: "consent", Component: ParentConsent },
       { path: "whatsapp", Component: ParentWhatsAppNotifications },
     ],
   },
