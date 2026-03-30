@@ -1,5 +1,5 @@
 # Transcription Accuracy Evaluation Results
-> Generated: 2026-03-24 16:43:53  |  Platform: Windows-11-10.0.26200-SP0  |  Python 3.12.6
+> Generated: 2026-03-30 14:29:34  |  Platform: Windows-11-10.0.26200-SP0  |  Python 3.12.6
 
 ## Evaluation Summary
 
@@ -72,10 +72,10 @@ Audio corpus: 220 s | Processing times below are for the full corpus.
 | Metric | Value |
 |--------|-------|
 | System RAM Total | 16.97 GB |
-| System RAM Available | 1.9 GB |
-| RAM Used | 88.8% |
-| Process RSS (test runner) | 21.9 MB |
-| CPU Usage at snapshot | 9.3% |
+| System RAM Available | 3.59 GB |
+| RAM Used | 78.9% |
+| Process RSS (test runner) | 21.0 MB |
+| CPU Usage at snapshot | 46.4% |
 
 ### Estimated Model Memory Footprints
 

@@ -1,0 +1,13 @@
+# YOLOv8 Dataset Configuration - 3 Merged Emotion Classes
+# ========================================================
+# Remapped from 10 original Roboflow classes
+
+train: ./training dataset/train/images
+val: ./training dataset/valid/images
+test: ./training dataset/test/images
+
+nc: 3
+names:
+  0: Engaged      # Happy, Thinking, Serious, Excited, neutral
+  1: Confused      # Worried, Fear
+  2: Disengaged    # Disgust, Sad, Angry

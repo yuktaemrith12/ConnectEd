@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Hive — Live Emotion Detection</title>
+    <meta name="description" content="Real-time student emotion detection powered by YOLOv8 AI. Monitor engagement, confusion, and disengagement live.">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-brand">
+            <div class="header-logo">🎓</div>
+            <div>
+                <div class="header-title">Study Hive</div>
+                <div class="header-subtitle">Live Emotion Detection AI</div>
+            </div>
+        </div>
+        <div class="header-status">
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot"></span>
+                <span id="statusText">Disconnected</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Video Section -->
+        <div class="video-section">
+            <div class="video-container" id="videoContainer">
+                <video id="webcamVideo" autoplay playsinline muted></video>
+                <canvas id="outputCanvas"></canvas>
+
+                <div class="video-placeholder" id="videoPlaceholder">
+                    <div class="video-placeholder-icon"></div>
+                    <p>Click "Start Detection" to begin</p>
+                </div>
+
+                <div class="fps-overlay" id="fpsOverlay">
+                    <span id="fpsValue">0</span> FPS
+                </div>
+
+                <div class="inference-overlay" id="inferenceOverlay">
+                    <span id="inferenceValue">0</span>ms inference
+                </div>
+
+                <div class="alert-banner" id="alertBanner">
+                    <span class="alert-banner-icon">⚠️</span>
+                    <span id="alertText">High disengagement detected!</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-primary" id="startBtn" onclick="toggleDetection()">
+                    <span class="btn-icon">▶</span>
+                    <span id="startBtnText">Start Detection</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sidebar Dashboard -->
+        <aside class="sidebar">
+            <!-- Engagement Score -->
+            <div class="card">
+                <div class="card-title">Engagement Score</div>
+                <div class="score-display">
+                    <div class="score-ring">
+                        <svg viewBox="0 0 140 140">
+                            <circle class="score-ring-bg" cx="70" cy="70" r="60" />
+                            <circle class="score-ring-fill" id="scoreRing" cx="70" cy="70" r="60" />
+                        </svg>
+                        <div class="score-ring-value">
+                            <div class="score-value" id="scoreValue">—</div>
+                        </div>
+                    </div>
+                    <div class="score-label">Classroom Engagement</div>
+                </div>
+            </div>
+
+            <!-- Emotion Distribution -->
+            <div class="card">
+                <div class="card-title">Emotion Distribution</div>
+                <div class="emotion-bars">
+                    <div class="emotion-bar">
+                        <div class="emotion-bar-header">
+                            <span class="emotion-bar-label">
+                                <span class="emotion-dot engaged"></span>
+                                Engaged
+                            </span>
+                            <span class="emotion-bar-value" id="engagedValue">0 (0%)</span>
+                        </div>
+                        <div class="emotion-bar-track">
+                            <div class="emotion-bar-fill engaged" id="engagedBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="emotion-bar">
+                        <div class="emotion-bar-header">
+                            <span class="emotion-bar-label">
+                                <span class="emotion-dot confused"></span>
+                                Confused
+                            </span>
+                            <span class="emotion-bar-value" id="confusedValue">0 (0%)</span>
+                        </div>
+                        <div class="emotion-bar-track">
+                            <div class="emotion-bar-fill confused" id="confusedBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="emotion-bar">
+                        <div class="emotion-bar-header">
+                            <span class="emotion-bar-label">
+                                <span class="emotion-dot disengaged"></span>
+                                Disengaged
+                            </span>
+                            <span class="emotion-bar-value" id="disengagedValue">0 (0%)</span>
+                        </div>
+                        <div class="emotion-bar-track">
+                            <div class="emotion-bar-fill disengaged" id="disengagedBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="card">
+                <div class="card-title">Performance</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="statFps">—</div>
+                        <div class="stat-label">Server FPS</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="statInference">—</div>
+                        <div class="stat-label">Inference (ms)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">Detections</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="statFrames">0</div>
+                        <div class="stat-label">Frames Sent</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // ── State ──────────────────────────────────────────────────────────
+        let socket = null;
+        let stream = null;
+        let running = false;
+        let sendReady = true;
+        let frameCount = 0;
+        let displayFps = 0;
+        let lastDisplayTime = performance.now();
+        let displayFrameCount = 0;
+
+        // ── DOM Elements ───────────────────────────────────────────────────
+        const video = document.getElementById('webcamVideo');
+        const canvas = document.getElementById('outputCanvas');
+        const ctx = canvas.getContext('2d');
+        const placeholder = document.getElementById('videoPlaceholder');
+        const startBtn = document.getElementById('startBtn');
+        const startBtnText = document.getElementById('startBtnText');
+        const fpsOverlay = document.getElementById('fpsOverlay');
+        const inferenceOverlay = document.getElementById('inferenceOverlay');
+        const alertBanner = document.getElementById('alertBanner');
+        const statusBadge = document.getElementById('statusBadge');
+        const statusText = document.getElementById('statusText');
+
+        // Hidden canvas for capturing frames to send
+        const sendCanvas = document.createElement('canvas');
+        const sendCtx = sendCanvas.getContext('2d');
+
+        // ── Socket Connection ──────────────────────────────────────────────
+        function connectSocket() {
+            socket = io({ transports: ['websocket'] });
+
+            socket.on('connect', () => {
+                statusBadge.classList.add('connected');
+                statusText.textContent = 'Connected';
+                console.log('✅ Connected to server');
+            });
+
+            socket.on('disconnect', () => {
+                statusBadge.classList.remove('connected');
+                statusText.textContent = 'Disconnected';
+                console.log('❌ Disconnected from server');
+            });
+
+            socket.on('server_ready', (data) => {
+                console.log('🎯 Server ready:', data);
+            });
+
+            socket.on('result', (data) => {
+                if (!running) return;
+                handleResult(data);
+                sendReady = true;  // Back-pressure release: ready for next frame
+            });
+        }
+
+        // ── Handle Result Frame ────────────────────────────────────────────
+        function handleResult(data) {
+            // Draw annotated frame on canvas
+            const img = new Image();
+            img.onload = () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                // Track display FPS
+                displayFrameCount++;
+                const now = performance.now();
+                if (now - lastDisplayTime >= 1000) {
+                    displayFps = displayFrameCount;
+                    displayFrameCount = 0;
+                    lastDisplayTime = now;
+                }
+            };
+            img.src = data.image;
+
+            // Update metrics
+            if (data.metrics) {
+                updateDashboard(data.metrics);
+            }
+        }
+
+        // ── Update Dashboard ───────────────────────────────────────────────
+        function updateDashboard(metrics) {
+            // Score
+            const score = metrics.score || 0;
+            const scoreEl = document.getElementById('scoreValue');
+            scoreEl.textContent = Math.round(score);
+            scoreEl.classList.remove('medium', 'low');
+            if (score < 40) scoreEl.classList.add('low');
+            else if (score < 70) scoreEl.classList.add('medium');
+
+            // Score ring
+            const ring = document.getElementById('scoreRing');
+            const circumference = 2 * Math.PI * 60; // r=60
+            const offset = circumference - (score / 100) * circumference;
+            ring.style.strokeDashoffset = offset;
+            if (score >= 70) ring.style.stroke = 'var(--accent-green)';
+            else if (score >= 40) ring.style.stroke = 'var(--accent-orange)';
+            else ring.style.stroke = 'var(--accent-red)';
+
+            // Emotion bars
+            const counts = metrics.counts || {};
+            const pcts = metrics.percentages || {};
+
+            document.getElementById('engagedValue').textContent =
+                `${counts.Engaged || 0} (${(pcts.Engaged || 0).toFixed(0)}%)`;
+            document.getElementById('confusedValue').textContent =
+                `${counts.Confused || 0} (${(pcts.Confused || 0).toFixed(0)}%)`;
+            document.getElementById('disengagedValue').textContent =
+                `${counts.Disengaged || 0} (${(pcts.Disengaged || 0).toFixed(0)}%)`;
+
+            document.getElementById('engagedBar').style.width = `${pcts.Engaged || 0}%`;
+            document.getElementById('confusedBar').style.width = `${pcts.Confused || 0}%`;
+            document.getElementById('disengagedBar').style.width = `${pcts.Disengaged || 0}%`;
+
+            // Stats
+            const serverFps = metrics.fps || 0;
+            document.getElementById('statFps').textContent = serverFps.toFixed(1);
+            document.getElementById('statInference').textContent = (metrics.inference_ms || 0).toFixed(0);
+            document.getElementById('statTotal').textContent = metrics.total || 0;
+            document.getElementById('statFrames').textContent = frameCount;
+
+            // FPS overlay
+            document.getElementById('fpsValue').textContent = serverFps.toFixed(1);
+            fpsOverlay.classList.add('visible');
+
+            // Inference overlay
+            document.getElementById('inferenceValue').textContent = (metrics.inference_ms || 0).toFixed(0);
+            inferenceOverlay.classList.add('visible');
+
+            // Alert
+            if (metrics.alert) {
+                const confused = counts.Confused || 0;
+                const disengaged = counts.Disengaged || 0;
+                document.getElementById('alertText').textContent =
+                    `High disengagement! Confused: ${confused}, Disengaged: ${disengaged}`;
+                alertBanner.classList.add('visible');
+            } else {
+                alertBanner.classList.remove('visible');
+            }
+        }
+
+        // ── Capture & Send Loop ────────────────────────────────────────────
+        function captureLoop() {
+            if (!running) return;
+
+            if (sendReady && video.readyState >= video.HAVE_CURRENT_DATA) {
+                sendReady = false;
+                frameCount++;
+
+                // Draw video frame to hidden canvas at reduced resolution for speed
+                const maxW = 640;
+                const scale = Math.min(1, maxW / video.videoWidth);
+                sendCanvas.width = Math.round(video.videoWidth * scale);
+                sendCanvas.height = Math.round(video.videoHeight * scale);
+                sendCtx.drawImage(video, 0, 0, sendCanvas.width, sendCanvas.height);
+
+                // Convert to base64 and send
+                const dataUrl = sendCanvas.toDataURL('image/jpeg', 0.7);
+                socket.emit('frame', { image: dataUrl });
+            }
+
+            requestAnimationFrame(captureLoop);
+        }
+
+        // ── Start / Stop Detection ─────────────────────────────────────────
+        async function toggleDetection() {
+            if (running) {
+                stopDetection();
+            } else {
+                await startDetection();
+            }
+        }
+
+        async function startDetection() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        frameRate: { ideal: 30 },
+                    },
+                    audio: false,
+                });
+
+                video.srcObject = stream;
+                await video.play();
+
+                // Wait for video to be ready
+                await new Promise(resolve => {
+                    if (video.readyState >= video.HAVE_CURRENT_DATA) {
+                        resolve();
+                    } else {
+                        video.addEventListener('loadeddata', resolve, { once: true });
+                    }
+                });
+
+                running = true;
+                sendReady = true;
+                frameCount = 0;
+                displayFrameCount = 0;
+                lastDisplayTime = performance.now();
+
+                // Show video, hide placeholder
+                placeholder.classList.add('hidden');
+
+                // Draw local webcam on canvas initially
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+                // Update button
+                startBtn.classList.remove('btn-primary');
+                startBtn.classList.add('btn-danger');
+                startBtn.querySelector('.btn-icon').textContent = '⏹';
+                startBtnText.textContent = 'Stop Detection';
+
+                // Start capture loop
+                captureLoop();
+
+                console.log(`🎥 Detection started (${video.videoWidth}x${video.videoHeight})`);
+
+            } catch (err) {
+                console.error('Camera error:', err);
+                alert('Could not access webcam. Please allow camera permissions and try again.');
+            }
+        }
+
+        function stopDetection() {
+            running = false;
+
+            if (stream) {
+                stream.getTracks().forEach(t => t.stop());
+                stream = null;
+            }
+
+            video.srcObject = null;
+            placeholder.classList.remove('hidden');
+            fpsOverlay.classList.remove('visible');
+            inferenceOverlay.classList.remove('visible');
+            alertBanner.classList.remove('visible');
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update button
+            startBtn.classList.remove('btn-danger');
+            startBtn.classList.add('btn-primary');
+            startBtn.querySelector('.btn-icon').textContent = '▶';
+            startBtnText.textContent = 'Start Detection';
+
+            console.log('⏹ Detection stopped');
+        }
+
+        // ── Init ───────────────────────────────────────────────────────────
+        connectSocket();
+    </script>
+</body>
+</html>

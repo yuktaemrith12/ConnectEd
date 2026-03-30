@@ -1,6 +1,6 @@
 {
   "run_info": {
-    "timestamp": "2026-03-23T16:11:31.585135+00:00",
+    "timestamp": "2026-03-30T10:27:33.917146+00:00",
     "embed_model": "text-embedding-3-small",
     "generation_model": "gpt-4o-mini",
     "judge_model": "claude-haiku-4-5-20251001",
@@ -20,9 +20,9 @@
       "mean_reciprocal_rank": 0.9103
     },
     "generation": {
-      "faithfulness": 0.8733,
+      "faithfulness": 0.8917,
       "answer_relevance": 0.9283,
-      "context_precision": 0.8417
+      "context_precision": 0.8483
     },
     "hallucination": {
       "refusal_rate": 1.0,
@@ -53,7 +53,7 @@
           0.5206,
           0.5359,
           0.539,
-          0.5512
+          0.5511
         ],
         "filenames": [
           "Week01.pdf",
@@ -64,14 +64,14 @@
           "Week01.pdf"
         ]
       },
-      "answer": "The **CST2550** module covers several important topics related to software engineering and C# programming. Here’s a summary of the main topics:\n\n## Main Topics in CST2550\n\n- **Required Programming Concepts in C#**\n- **Software Engineering**\n  - Software Development Life Cycle\n  - Testing\n  - Tools and Techniques\n- **Algorithms and Data Structures**\n  - Timing Algorithms\n  - Analyzing Algorithms\n  - Asymptotic Notation\n  - Data Structures\n  - Graphs and Graph Algorithms\n\nThese topics are designed to provide a comprehensive understanding of software development principles and practices, particularly using the C# language and the .NET framework.\n\n## Quick Summary\n- Focus on C# programming concepts.\n- In-depth study of software engineering principles.\n- Exploration of algorithms and data structures.\n- Emphasis on testing and development techniques.\n\n**Try This:** Can you list one or two specific areas within the algorithms and data structures topic that you find interesting?",
+      "answer": "The **CST2550** module covers several key topics essential for understanding software engineering and C# programming. Here’s a summary of the main topics:\n\n## Main Topics in CST2550\n\n- **Required Programming Concepts in C#**\n  - Fundamental principles and syntax of the C# language.\n\n- **Software Engineering**\n  - **Software Development Life Cycle**: Understanding the phases of software development from conception to deployment and maintenance.\n  - **Testing**: Techniques and methods for ensuring software quality.\n  - **Tools/Techniques**: Various tools and methodologies used in software engineering.\n\n- **Algorithms and Data Structures**\n  - **Timing Algorithms**: Evaluating the efficiency of algorithms.\n  - **Analyzing Algorithms**: Understanding how to assess algorithm performance.\n  - **Asymptotic Notation**: Notation for describing algorithm efficiency and performance.\n  - **Data Structures**: Various structures for organizing and storing data.\n  - **Graphs and Graph Algorithms**: Concepts related to graph theory and algorithms used for graph operations.\n\n## Quick Summary\n- Focus on C# programming concepts.\n- In-depth study of software engineering principles.\n- Exploration of algorithms and data structures, including timing and analysis.\n\nWhat topic are you most interested in exploring further? Or would you like to dive into a specific area, like algorithms or C# programming?",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, accurately listing all main topics from the module outline without any unsupported additions.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses the question about main topics covered in CST2550, providing well-organized and clear information.",
-        "context_precision_reason": "The retrieved context contains a complete and explicit list of module topics that perfectly matches the question, making it directly sufficient to answer the query."
+        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, which explicitly lists all topics covered in the CST2550 module with matching detail and organization.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by providing a well-organized breakdown of all main topics covered in CST2550.",
+        "context_precision_reason": "The retrieved context contains complete and directly relevant information about the CST2550 module topics, presented clearly in a bulleted list format that perfectly matches the question."
       }
     },
     {
@@ -90,8 +90,8 @@
           0.4596,
           0.5574,
           0.5973,
-          0.6214,
-          0.6226,
+          0.6213,
+          0.6225,
           0.6791
         ],
         "filenames": [
@@ -103,14 +103,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "The lecturer for CST2550 is **Ahmed Eissa**, and he is associated with **Middlesex University (MDX)**. \n\n## Quick Summary\n- **Lecturer**: Ahmed Eissa\n- **University**: Middlesex University (MDX)\n\n**Try This**: Can you find out more about the other teaching team members for this module?",
+      "answer": "The lecturer for CST2550 is **Ahmed Eissa**, and he belongs to **Middlesex University (MDX)**. \n\n## Quick Summary\n- Lecturer: **Ahmed Eissa**\n- University: **Middlesex University (MDX)**\n\n**Try This:** Can you find out more about the other teaching team members for this module?",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer directly quotes information from the retrieved context: 'Ahmed Eissa a.eissa@mdx.ac.uk AHMED EISSA (MDX)' appears multiple times, and the context explicitly identifies him as the Module Leader and associates him with MDX (Middlesex University).",
-        "answer_relevance_reason": "The answer fully and directly addresses both parts of the question: it identifies Ahmed Eissa as the lecturer and confirms he belongs to Middlesex University (MDX).",
-        "context_precision_reason": "The retrieved context contains comprehensive information about Ahmed Eissa as the CST2550 lecturer, his email address, and his affiliation with MDX, appearing consistently across multiple sources in the retrieval."
+        "faithfulness_reason": "The answer correctly identifies Ahmed Eissa as the lecturer and Middlesex University (MDX) as his affiliation, both directly stated in the retrieved context.",
+        "answer_relevance_reason": "The answer directly and completely addresses both parts of the question: the lecturer's name and their university affiliation.",
+        "context_precision_reason": "The retrieved context explicitly contains the required information in multiple places, making it highly relevant and sufficient to answer the question."
       }
     },
     {
@@ -126,12 +126,12 @@
         "num_chunks_retrieved": 6,
         "num_relevant_chunks": 6,
         "distances": [
-          0.3715,
-          0.4308,
-          0.5337,
-          0.5451,
-          0.5474,
-          0.5952
+          0.3718,
+          0.4311,
+          0.534,
+          0.5453,
+          0.5476,
+          0.5954
         ],
         "filenames": [
           "Week01.pdf",
@@ -142,14 +142,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "The assessment for CST2550 is split equally between an online test and coursework, each contributing 50% to the overall grade. Here’s the breakdown:\n\n## Assessment Breakdown\n- **Online Test**: 50%\n- **Coursework**: 50%\n  - Software design and implementation of a mini-project (presentation and report): 25%\n  - Algorithms and data structures of the mini-project (code, testing, and demonstration): 25%\n\nThis structure ensures that both theoretical knowledge and practical skills are evaluated. \n\n## Quick Summary\n- Total assessment is 100%.\n- Online test accounts for 50%.\n- Coursework also accounts for 50%.\n- Coursework includes a mini-project with two components.\n\n**Try This**: Can you list what elements might be included in your mini-project for the coursework? Think about both the design and the coding aspects!",
+      "answer": "The assessment for CST2550 is split evenly between an online test and coursework. Here’s the breakdown:\n\n## Assessment Weighting\n- **Online Test**: 50%\n- **Coursework**: 50%\n  - Software design and implementation of a mini-project (presentation and report): 25%\n  - Algorithms and data structures of the mini-project (code, testing, and demonstration): 25%\n\nThis structure ensures that both theoretical knowledge (through the online test) and practical application (through the coursework) are evaluated.\n\n## Quick Summary\n- **Total Assessment**: 100%\n- **Online Test**: 50%\n- **Coursework**: 50%\n  - Mini-project presentation/report: 25%\n  - Mini-project code/testing: 25%\n\n**Try This**: Can you think of a topic you might want to focus on for your mini-project? Write down a few ideas!",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer uses only information directly present in the retrieved context, accurately reporting the 50/50 split and the exact coursework breakdown.",
-        "answer_relevance_reason": "The answer completely and directly addresses the question about how CST2550 assessment is split between online tests and coursework.",
-        "context_precision_reason": "The retrieved context contains the exact assessment weighting information needed to fully answer the question, with clear details on both online tests and coursework components."
+        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, accurately presenting the 50/50 split and the exact breakdown of the coursework components as stated in the source material.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question about how CST2550 assessment is split between online tests and coursework, providing exact percentages and detailed breakdowns.",
+        "context_precision_reason": "The retrieved context directly contains complete information about the assessment weighting, with Source 1 and Source 2 both explicitly stating the 50% online tests and 50% coursework split with full sub-component details."
       }
     },
     {
@@ -181,14 +181,14 @@
           "Week01.pdf"
         ]
       },
-      "answer": "The **CST2550 online test** uses the following format:\n\n- **Type of Questions**: \n  - Multiple choice\n  - Short answer\n  - Matching\n\n- **Delivery**: \n  - Conducted online via Moodle.\n\n- **Time Limit**: \n  - There is a time limit for completing the test.\n\nWould you like to know more about the topics covered in the test, or perhaps how to prepare for it?",
+      "answer": "The **CST2550 online test** uses the following format:\n\n- **Type of Questions**: \n  - Multiple choice\n  - Short answer\n  - Matching\n\n- **Delivery**: \n  - Conducted online via Moodle\n\n- **Additional Details**: \n  - There will be a time limit for completing the test.\n  - Questions will be randomly selected.\n\nDoes this help clarify the test format? If you have any more questions or need further details, feel free to ask! **Try This**: Can you think of a topic you might want to study for the online test? Write down a few key points!",
       "scores": {
-        "faithfulness": 0.5,
+        "faithfulness": 0.4,
         "answer_relevance": 0.6,
         "context_precision": 0.3,
-        "faithfulness_reason": "The answer correctly identifies Moodle as the platform and mentions multiple choice, but 'short answer' and 'matching' question types are not supported by the retrieved context, and the time limit claim is also unsupported.",
-        "answer_relevance_reason": "The answer partially addresses the question about test format by mentioning question types and delivery platform, but lacks completeness regarding the specific format details from the ground truth (random questions covering specific topics).",
-        "context_precision_reason": "The retrieved context only partially mentions 'The Online Test • A short test • Specific' (truncated), confirming Moodle hosting but not providing sufficient detail about question types or format specifications needed to fully answer the question."
+        "faithfulness_reason": "The answer includes multiple-choice and random questions which align with the ground truth, but fabricates 'short answer' and 'matching' question types not mentioned in retrieved context, and adds unsupported claims about time limits.",
+        "answer_relevance_reason": "The answer addresses the question about test format but includes significant fabricated details beyond what the context supports, reducing overall relevance to what can be actually confirmed.",
+        "context_precision_reason": "The retrieved context only confirms that the online test is 'A short test' and 'Specific' (text cuts off), but does not provide complete information about format; ground truth mentions Moodle, multiple-choice, and random questions which are partially but incompletely supported in the context."
       }
     },
     {
@@ -206,10 +206,10 @@
         "distances": [
           0.4582,
           0.5282,
-          0.5865,
+          0.5864,
           0.5937,
           0.595,
-          0.6422
+          0.6421
         ],
         "filenames": [
           "Week01.pdf",
@@ -220,14 +220,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "Yes, attendance does affect student grades in CST2550!\n\n## Explanation\n- **Better Attendance Leads to Better Grades**: The materials clearly indicate that there is a correlation between attendance and grades. The more consistently you attend classes, the better your chances of achieving higher grades.\n- **Engagement**: Attending classes not only helps you grasp the material better but also allows you to engage fully with lab sessions and coursework activities. This engagement is crucial for your understanding and performance in assessments.\n\nThink of attendance like watering a plant. Just as a plant needs consistent watering to thrive, you need regular attendance to nurture your understanding and performance in the course!\n\n## Worked Example\nImagine two students, Alex and Jamie:\n- **Alex** attends all classes, participates actively, and completes all lab tasks.\n- **Jamie** misses several classes and only completes the minimum required tasks.\n\nAt the end of the semester, Alex likely has a deeper understanding of the material and performs better on both the online test and coursework compared to Jamie, who struggles due to gaps in knowledge.\n\n## Quick Summary\n- Attendance is linked to better grades.\n- Engaging in class enhances understanding.\n- Regular participation in lab sessions is essential.\n- Missing classes can lead to gaps in knowledge and lower performance.\n\n## Try This\nReflect on your own attendance. How many classes have you attended so far? What strategies can you implement to ensure you attend all future classes? Write down at least two actions you can take!",
+      "answer": "Yes, attendance does affect student grades in CST2550! \n\n## Explanation\nIn the context of your coursework, there is a clear correlation between attendance and academic performance. The materials indicate that better attendance leads to better grades. This means that being present in class and engaging with the material can significantly enhance your understanding and retention of the concepts being taught.\n\nThink of attendance as a key ingredient in a recipe. Just like you need all the right ingredients to bake a delicious cake, attending classes is essential for achieving good grades. When you miss class, you might miss out on important discussions, explanations, and interactions that can help solidify your understanding of the subject matter.\n\n## Worked Example\nImagine you have two students: \n- **Student A** attends every class, participates actively, and completes all assignments.\n- **Student B** only attends half of the classes and skips some assignments.\n\nAt the end of the module, Student A is likely to have a deeper understanding of the material and perform better on assessments compared to Student B, who may struggle to catch up on missed content.\n\n## Quick Summary\n- Attendance is crucial for academic success in CST2550.\n- Better attendance correlates with better grades.\n- Engaging in class helps reinforce learning and understanding.\n- Missing classes can lead to gaps in knowledge and lower performance.\n\n**Try This:** Reflect on your own attendance. How can you improve it? Maybe set a goal to attend every class for the next few weeks. What strategies will you use to stay engaged during lectures?",
       "scores": {
-        "faithfulness": 0.7,
-        "answer_relevance": 1.0,
+        "faithfulness": 0.85,
+        "answer_relevance": 0.95,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer correctly cites Figure 1 showing attendance leads to better grades, but adds unsupported elaborations (plant metaphor, detailed worked example with Alex/Jamie) not present in the retrieved context.",
-        "answer_relevance_reason": "The answer directly and fully addresses the question about whether attendance affects grades in CST2550 with a clear 'yes' and supporting evidence.",
-        "context_precision_reason": "The retrieved context directly contains the answer: 'Better Attendance Leads to Better Grades' with explicit reference to Figure 1 demonstrating this relationship."
+        "faithfulness_reason": "The answer accurately states that attendance affects grades based on Figure 1 in the retrieved context, but adds interpretive elements (the cake analogy, worked example) not explicitly in the source material.",
+        "answer_relevance_reason": "The answer directly addresses the question with a clear affirmative response supported by the module materials.",
+        "context_precision_reason": "The retrieved context explicitly contains Figure 1 showing 'Grades as a function of attendance' and the statement 'Better Attendance Leads to Better Grades,' fully supporting the question."
       }
     },
     {
@@ -244,8 +244,8 @@
         "num_relevant_chunks": 6,
         "distances": [
           0.4993,
-          0.5708,
-          0.5778,
+          0.5707,
+          0.5777,
           0.5819,
           0.7148,
           0.7186
@@ -259,14 +259,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "**Encapsulation** in C# is a fundamental concept of Object-Oriented Programming (OOP) that restricts access to certain parts of an object and exposes only the necessary interfaces. This means that the internal state of an object is hidden from the outside world, and access to that state is controlled through public methods.\n\n### Importance of Encapsulation\n\n1. **Data Integrity**: By restricting access to the internal state of an object, encapsulation helps protect data integrity. It prevents unauthorized access or modification of the object's data, ensuring that it can only be changed in controlled ways. For example, if you have a class representing a bank account, you wouldn't want someone to directly change the balance without going through methods that validate the operation.\n\n2. **Loose Coupling**: Encapsulation enables loose coupling between components. This means that changes to one part of a system (like a class) can be made with minimal impact on other parts. If the internal implementation of a class changes, as long as the public interface remains the same, other components that use this class won't need to change.\n\n### ## Worked Example\n\nLet's look at a simple example of encapsulation in C#:\n\n```csharp\npublic class BankAccount\n{\n    private decimal balance; // Private variable\n\n    // Constructor\n    public BankAccount(decimal initialBalance)\n    {\n        balance = initialBalance;\n    }\n\n    // Public method to deposit money\n    public void Deposit(decimal amount)\n    {\n        if (amount > 0)\n        {\n            balance += amount; // Update balance\n        }\n    }\n\n    // Public method to get the balance\n    public decimal GetBalance()\n    {\n        return balance; // Return balance\n    }\n}\n```\n\nIn this example:\n- The **balance** variable is private, meaning it cannot be accessed directly from outside the class.\n- The **Deposit** method allows controlled access to modify the balance, ensuring that only valid deposits are made.\n- The **GetBalance** method provides a way to read the balance without allowing direct modification.\n\n### ## Quick Summary\n\n- **Encapsulation** restricts access to an object's internal state.\n- It **protects data integrity** by preventing unauthorized access.\n- It enables **loose coupling**, making systems more adaptable.\n- Example: Using private variables with public methods in a class.\n\n### **Try This**\nCreate a simple class called `Student` with private properties for `ID`, `Name`, and `Grade`. Implement public methods to set and get these properties, ensuring that the grade can only be set if it's a valid score (e.g., between 0 and 100). Give it a try and share your code!",
+      "answer": "**Encapsulation in C#** is a fundamental concept in object-oriented programming that involves restricting access to certain parts of an object and exposing only the necessary interfaces. \n\n## Explanation of Encapsulation\n\nThink of **encapsulation** like a car's dashboard. Just as the dashboard displays essential information like speed and fuel level while hiding the complex workings of the engine, encapsulation in C# allows you to protect the internal state of an object. By using **private variables** and **public methods**, you can control how the data is accessed and modified. This approach helps to maintain the integrity of the data and prevents unauthorized access or changes.\n\nFor example, if you have a class called `BankAccount`, you might want to keep the account balance private. You would provide public methods to deposit or withdraw money, ensuring that the balance can only be modified in controlled ways. This prevents accidental or malicious changes to the balance, which could lead to errors in your application.\n\n## Worked Example\n\nLet's look at a simple C# example:\n\n```csharp\npublic class BankAccount\n{\n    private decimal balance; // Private variable\n\n    public BankAccount(decimal initialBalance)\n    {\n        balance = initialBalance;\n    }\n\n    public void Deposit(decimal amount)\n    {\n        if (amount > 0)\n        {\n            balance += amount; // Modify balance safely\n        }\n    }\n\n    public void Withdraw(decimal amount)\n    {\n        if (amount > 0 && amount <= balance)\n        {\n            balance -= amount; // Modify balance safely\n        }\n    }\n\n    public decimal GetBalance() // Public method to access balance\n    {\n        return balance;\n    }\n}\n```\n\nIn this example:\n- The `balance` variable is private, meaning it can't be accessed directly from outside the class.\n- The `Deposit` and `Withdraw` methods provide controlled access to modify `balance`.\n- The `GetBalance` method allows safe access to the current balance.\n\n## Quick Summary\n\n- **Encapsulation** restricts access to an object's internal state.\n- It protects data integrity by preventing unauthorized access or modification.\n- It enables loose coupling between components, making systems more adaptable.\n\n**Try This**: Create your own class in C# with private variables and public methods. For example, design a `Student` class with properties for `ID`, `Name`, and `Grade`, and implement methods to update these properties safely. What methods would you include to ensure data integrity?",
       "scores": {
         "faithfulness": 0.95,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is almost entirely grounded in the retrieved context, which explicitly defines encapsulation as restricting access and exposing necessary interfaces, protects data integrity, and enables loose coupling; the bank account example is a reasonable illustration but not explicitly in the source material.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by defining encapsulation in C# and explaining its importance with clear reasoning.",
-        "context_precision_reason": "The retrieved context directly contains the definition of encapsulation, its purposes (data integrity and loose coupling), and implementation details (private variables and public methods) needed to fully answer the question."
+        "faithfulness_reason": "The answer is almost entirely grounded in the retrieved context; the car dashboard analogy and bank account example are reasonable illustrations not explicitly in the source but are consistent with the concept as presented.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by defining encapsulation, explaining its purpose, and demonstrating implementation with private variables and public methods in C#.",
+        "context_precision_reason": "The retrieved context directly contains the definition and explanation of encapsulation in C#, including its purpose (protecting data integrity, enabling loose coupling) and implementation approach (private variables and public methods)."
       }
     },
     {
@@ -284,7 +284,7 @@
         "distances": [
           0.52,
           0.5773,
-          0.6802,
+          0.6803,
           0.6806,
           0.7282,
           0.7296
@@ -298,14 +298,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "**Just-In-Time (JIT) compilation** is a key feature of the .NET runtime that enhances application performance by converting intermediate code (IL) into machine code at runtime.\n\n## Explanation of JIT Compilation\n\n- **Runtime Optimization**: When a .NET application is executed, the code is initially in an intermediate language (IL). The JIT compiler takes this IL and translates it into native machine code that the processor can execute directly. This translation happens just before the code is needed, hence the name \"Just-In-Time.\"\n\n- **Performance Benefits**: By compiling the code at runtime, JIT can optimize the machine code for the specific environment it is running on. This means that the JIT compiler can take advantage of the current hardware capabilities, leading to better performance compared to pre-compiled code.\n\n## Worked Example\n\nImagine you have a C# program that performs calculations. When you run this program:\n\n1. **Initial Execution**: The program starts, and the JIT compiler kicks in.\n2. **IL to Machine Code**: The JIT compiler converts the IL of the calculation methods into machine code.\n3. **Execution**: The CPU executes this machine code. If the method is called again, the JIT compiler can reuse the already compiled code, saving time.\n\nHere’s a simple example of a method that might be JIT-compiled:\n\n```csharp\npublic int Add(int a, int b)\n{\n    return a + b;\n}\n```\n\nWhen this method is called for the first time, the JIT compiler compiles it into machine code, allowing the CPU to execute it efficiently.\n\n## Quick Summary\n\n- **JIT Compilation** converts IL to machine code at runtime.\n- It optimizes performance based on the current execution environment.\n- It allows for reuse of compiled code on subsequent calls.\n\n**Try This**: Can you think of a scenario where JIT compilation would significantly improve performance in a .NET application? Write a short example!",
+      "answer": "**Just-In-Time (JIT) compilation** is a crucial feature of the .NET runtime that enhances performance by converting intermediate code (IL) into machine code at runtime.\n\n## Explanation\n- **JIT Compilation Process**: When you run a .NET application, the code is first compiled into an intermediate language (IL). The JIT compiler takes this IL code and translates it into machine code that the CPU can execute directly. This conversion happens at runtime, meaning it only occurs when the code is needed, which optimizes performance by ensuring that the application runs efficiently.\n\n- **Benefits of JIT Compilation**: \n  - **Optimal Performance**: Since JIT compilation occurs at runtime, it can make optimizations based on the current execution environment, leading to better performance compared to pre-compiled code.\n  - **Memory Management**: JIT compilation works closely with the **Garbage Collection** feature of .NET, which automatically manages memory allocation and cleanup, further enhancing application performance and stability.\n\n## Worked Example\nImagine you have a recipe (the IL code) that needs to be cooked (executed). Instead of preparing the entire meal (machine code) beforehand, you only cook what you need when you need it. This way, you can adjust the recipe based on the ingredients you have available at that moment, making the meal more tailored and potentially tastier!\n\n## Quick Summary\n- **JIT Compilation** converts IL code to machine code at runtime.\n- It optimizes performance by adapting to the execution environment.\n- Works in conjunction with **Garbage Collection** for efficient memory management.\n\n**Try This**: \nCan you think of a scenario in your own coding experience where you might benefit from JIT compilation? Write a short paragraph about it!",
       "scores": {
-        "faithfulness": 0.7,
-        "answer_relevance": 0.85,
+        "faithfulness": 0.95,
+        "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is mostly grounded in the retrieved context but adds unsupported claims about hardware optimization and environment-specific benefits that are not mentioned in the source material.",
-        "answer_relevance_reason": "The answer directly addresses what JIT compilation does in the .NET runtime, though it extends beyond the core definition with speculative details not fully supported by the context.",
-        "context_precision_reason": "The retrieved context directly contains a clear definition of JIT compilation that matches the ground truth, providing sufficient information to answer the question."
+        "faithfulness_reason": "The answer is grounded in the retrieved context, which explicitly states JIT converts IL into machine code at runtime for optimal performance; the explanation about memory management and garbage collection is also from the context, though the 'recipe' analogy is a reasonable illustrative addition.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses what JIT compilation does in the .NET runtime, covering the conversion process, benefits, and relationship to garbage collection.",
+        "context_precision_reason": "The retrieved context contains the exact definition needed ('Converts intermediate code (IL) into machine code at runtime for optimal performance') and supporting information about garbage collection and CLR services."
       }
     },
     {
@@ -326,7 +326,7 @@
           0.6837,
           0.7209,
           0.7248,
-          0.7556
+          0.7555
         ],
         "filenames": [
           "Week01.pdf",
@@ -337,14 +337,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "The **.NET runtime** manages memory automatically through a process known as **Garbage Collection**. This process helps ensure that memory resources are efficiently allocated and deallocated during program execution, which is crucial for maintaining application performance and preventing memory leaks.\n\n## Explanation of Garbage Collection\n\n- **Automatic Memory Management**: The .NET runtime automatically reclaims memory that is no longer in use. When objects are created, memory is allocated for them. Once these objects are no longer reachable or needed, the garbage collector identifies them and frees up that memory for future use. This means you don't have to manually release memory, reducing the risk of errors.\n\n- **Efficient Resource Use**: Garbage Collection not only helps in reclaiming unused memory but also optimizes the overall memory usage of the application. It runs periodically, checking for objects that are no longer referenced by the application. This helps in keeping the application running smoothly without unnecessary memory consumption.\n\n## Worked Example\n\nConsider a simple C# program that creates an object:\n\n```csharp\npublic class SampleObject\n{\n    public int Value { get; set; }\n}\n\npublic class Program\n{\n    public static void Main()\n    {\n        SampleObject obj = new SampleObject();\n        obj.Value = 10;\n\n        // After this point, if there are no references to 'obj', it becomes eligible for garbage collection.\n        obj = null; // Now 'obj' is no longer reachable.\n    }\n}\n```\n\nIn this example:\n- When `obj` is set to `null`, the memory occupied by the `SampleObject` instance becomes eligible for garbage collection.\n- The garbage collector will eventually reclaim this memory, ensuring efficient use of resources.\n\n## Quick Summary\n\n- **Garbage Collection** automatically manages memory in .NET applications.\n- It reclaims memory from objects that are no longer in use, preventing memory leaks.\n- This process optimizes resource usage and enhances application performance.\n\n**Try This**: Write a small C# program that creates several objects in a loop and then nullifies their references. Observe how the garbage collector works by monitoring memory usage before and after the nullification. What changes do you notice?",
+      "answer": "The **.NET runtime** manages memory automatically through a process called **Garbage Collection**. This mechanism helps in reclaiming memory that is no longer in use, thereby preventing memory leaks and reducing the need for manual memory management by developers.\n\n## Explanation of Garbage Collection\n\n- **Automatic Memory Reclamation**: When objects are created in .NET, they are allocated memory on the heap. The garbage collector (GC) periodically checks for objects that are no longer referenced or needed by the application. Once it identifies such objects, it reclaims their memory for future use. This is similar to cleaning out a closet; when you remove items you no longer need, you create space for new ones.\n\n- **Efficiency**: The garbage collector optimizes memory usage by consolidating free memory spaces and ensuring that the application runs smoothly without interruptions. It can run in the background while the application is executing, which means developers don't have to worry about when to free up memory.\n\n## Worked Example\n\nHere’s a simple illustration of how garbage collection works:\n\n1. **Creating Objects**: Imagine you create a few objects in your application:\n   ```csharp\n   var car = new Car();\n   var bike = new Bike();\n   ```\n\n2. **Losing References**: If you later set the references to `null` or go out of scope:\n   ```csharp\n   car = null; // The Car object is now eligible for garbage collection\n   bike = null; // The Bike object is also eligible for garbage collection\n   ```\n\n3. **Garbage Collection Trigger**: At some point, the garbage collector will run and reclaim the memory used by the `Car` and `Bike` objects since there are no references to them anymore.\n\n## Quick Summary\n\n- **Garbage Collection** is an automatic memory management feature of the .NET runtime.\n- It identifies and reclaims memory from objects that are no longer in use.\n- This process helps prevent memory leaks and reduces manual memory management efforts.\n\n**Try This**: Write a simple C# program that creates several objects, sets some of them to `null`, and then observe how the garbage collector might reclaim memory. Can you think of scenarios where you might want to manually handle memory instead?",
       "scores": {
         "faithfulness": 0.7,
-        "answer_relevance": 0.9,
+        "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is mostly grounded in the retrieved context (Garbage Collection automatically manages memory), but adds unsupported details about 'periodically checking' and 'reachability' that are not in the provided materials.",
-        "answer_relevance_reason": "The answer directly addresses how .NET handles memory management automatically through Garbage Collection, matching the ground truth and fully answering the question.",
-        "context_precision_reason": "The retrieved context explicitly states that the CLR uses Garbage Collection to automatically manage memory allocation and cleanup, directly containing the answer needed."
+        "faithfulness_reason": "The answer is mostly grounded in the retrieved context (GC automatically manages memory), but adds unsupported details about heap allocation, background execution, and memory consolidation not explicitly stated in the materials.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question about how .NET runtime handles memory management automatically.",
+        "context_precision_reason": "The retrieved context explicitly states that the CLR uses Garbage Collection to automatically manage memory allocation and cleanup, directly supporting the answer."
       }
     },
     {
@@ -376,14 +376,14 @@
           "Week01.pdf"
         ]
       },
-      "answer": "The **Base Class Library (BCL)** in the .NET Framework is a collection of reusable classes and methods designed to facilitate common programming tasks. Think of it as a toolbox filled with tools that developers can use to build applications without having to reinvent the wheel for every functionality.\n\n## Explanation\n- **Purpose**: The BCL provides a wide range of functionalities that cover essential programming needs, such as file input/output operations, data manipulation (like sorting and searching), and string handling. This allows developers to focus more on the unique aspects of their applications rather than on basic functionalities.\n  \n- **Capabilities**: By using the BCL, developers can efficiently perform tasks that would otherwise require extensive coding. For example, instead of writing complex code to handle file operations, developers can simply use the classes provided in the BCL, which are optimized and tested for performance and reliability.\n\n## Worked Example\nImagine you want to read a text file and display its contents on the console. Instead of writing the code from scratch, you can utilize the BCL's `System.IO` namespace, which contains classes for handling file operations.\n\nHere's a simple example in C#:\n\n```csharp\nusing System;\nusing System.IO;\n\nclass Program\n{\n    static void Main()\n    {\n        string filePath = \"example.txt\";\n        try\n        {\n            string content = File.ReadAllText(filePath);\n            Console.WriteLine(content);\n        }\n        catch (Exception ex)\n        {\n            Console.WriteLine($\"An error occurred: {ex.Message}\");\n        }\n    }\n}\n```\n\nIn this example, the `File` class from the BCL is used to read the contents of a file, demonstrating how the BCL simplifies common tasks.\n\n## Quick Summary\n- The **Base Class Library (BCL)** is a collection of reusable classes and methods in the .NET Framework.\n- It provides functionalities for common programming tasks, enhancing developer productivity.\n- Key capabilities include file I/O operations, data manipulation, and string handling.\n\n**Try This**: Create a small console application that uses the BCL to read a text file and count the number of words in it. What classes from the BCL will you use to accomplish this?",
+      "answer": "The **Base Class Library (BCL)** in the .NET Framework is a collection of reusable classes and methods that provide essential functionalities for common programming tasks. Think of it as a toolbox filled with tools that developers can use to build their applications more efficiently.\n\n## Explanation\n- The BCL simplifies the development process by offering pre-built functionalities that developers can leverage instead of writing everything from scratch. For example, if you need to perform **file I/O operations**, manipulate data, or handle strings, the BCL provides classes and methods tailored for these tasks.\n- This library is designed to support various programming needs, including data manipulation (like sorting and searching), string handling, and working with regular expressions. By using the BCL, developers can focus on the unique aspects of their applications while relying on these robust, tested components for standard operations.\n\n## Worked Example\nImagine you are creating a console application that needs to read a text file and display its contents. Instead of writing all the code to handle file operations, you can utilize the BCL's `System.IO` namespace, which provides classes like `File` and `StreamReader` to simplify this process.\n\nHere’s a simple example of how you might read a file using the BCL:\n\n```csharp\nusing System;\nusing System.IO;\n\nclass Program\n{\n    static void Main()\n    {\n        string path = \"example.txt\";\n        try\n        {\n            // Read all text from the file\n            string content = File.ReadAllText(path);\n            Console.WriteLine(content);\n        }\n        catch (Exception ex)\n        {\n            Console.WriteLine($\"An error occurred: {ex.Message}\");\n        }\n    }\n}\n```\n\nIn this code:\n- The `File.ReadAllText` method from the BCL is used to read the entire contents of a file, making it easy to handle file operations without delving into the complexities of file handling.\n\n## Quick Summary\n- **Base Class Library (BCL)**: A collection of reusable classes and methods in the .NET Framework.\n- **Purpose**: Provides essential functionalities for common programming tasks.\n- **Capabilities**: Includes file I/O operations, data manipulation, and string handling.\n- **Benefits**: Saves time and effort by offering pre-built solutions for standard tasks.\n\n**Try This**: Create a simple console application that uses the BCL to write a message to a text file. Use the `File.WriteAllText` method and then read it back using `File.ReadAllText`. What message will you write?",
       "scores": {
-        "faithfulness": 0.95,
+        "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is grounded in the retrieved context, accurately defining BCL and its capabilities (file I/O, data manipulation, string handling); the toolbox analogy is a helpful addition not contradicted by the source material.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses the question about what the BCL is in the .NET Framework, providing definition, purpose, and capabilities.",
-        "context_precision_reason": "The retrieved context contains explicit information about BCL's definition and capabilities, directly supporting a complete answer to the question."
+        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, which explicitly defines BCL as 'a collection of reusable classes and methods for common programming tasks' and lists specific capabilities like file I/O, data manipulation, and string handling.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by providing the definition, explaining its purpose, detailing its capabilities, and offering a practical example.",
+        "context_precision_reason": "The retrieved context contains the exact definition and detailed capabilities of the BCL, providing all the information needed to fully answer the question."
       }
     },
     {
@@ -415,14 +415,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "C# is described as a **type-safe** language primarily due to its strict adherence to defined data types, which helps prevent errors during program execution. \n\n## Explanation of Type Safety in C#\n\n- **Strong Type Checking**: C# enforces that variables must be declared with a specific type. This means you cannot assign a value of one type to a variable of another incompatible type. For example, if you try to assign a string to an integer variable, the compiler will raise an error. This prevents many common programming mistakes that could lead to runtime errors.\n\n- **Type Inference**: C# also supports type inference, allowing the compiler to deduce the type of a variable based on the assigned value. For instance, if you declare a variable like this:\n\n  ```csharp\n  var name = \"John\"; // The compiler infers that 'name' is of type string.\n  ```\n\n  This feature makes the code more concise while still maintaining type safety.\n\n- **Generic Types**: C# provides **generic types** which enable the creation of type-agnostic definitions for collections and methods. For example, `List<T>` allows you to create a list that can hold any specified type, ensuring that all elements are of the same type and reducing the risk of type-related errors.\n\n## Worked Example\n\nLet’s illustrate type safety with a simple example:\n\n```csharp\nint age = 25; // Correct: age is an integer.\nstring name = \"Alice\"; // Correct: name is a string.\n\n// Incorrect: Trying to assign a string to an integer variable\n// age = \"twenty-five\"; // This will cause a compile-time error.\n```\n\nIn this example, if you uncomment the last line, the compiler will catch the error before the program runs, demonstrating C#'s type safety.\n\n## Quick Summary\n\n- **Type Safety**: Ensures variables adhere strictly to their defined types.\n- **Strong Type Checking**: Prevents incompatible type assignments.\n- **Type Inference**: Allows the compiler to deduce variable types for cleaner code.\n- **Generic Types**: Facilitates type-safe collections and methods.\n\n**Try This**: Create a simple C# program where you define variables of different types (e.g., int, string, double). Try to assign an incompatible type to see how the compiler reacts. What error message do you get?",
+      "answer": "C# is described as a **type-safe** language because it enforces strict adherence to defined data types, which helps prevent errors during program execution. This characteristic is crucial for developing modern applications that require reliability and maintainability.\n\n## Explanation of Type Safety in C#\n\n- **Strong Type Checking**: C# prevents the assignment of incompatible types. For example, if you try to assign a string value to an integer variable, the compiler will generate an error. This ensures that variables are used correctly according to their defined types, reducing runtime errors.\n\n- **Type Inference**: C# allows the compiler to deduce the type of a variable automatically using the `var` keyword. For instance, when you declare `var name = \"John\";`, the compiler understands that `name` is a string. This feature simplifies the code while maintaining type safety.\n\n- **Generic Types**: C# supports generic types, which enable you to define classes and methods that can operate on any data type while still enforcing type safety. For example, `List<T>` can be used to create a list of any type, ensuring that only the specified type can be added to the list.\n\n## Worked Example\n\nLet's look at a simple example to illustrate type safety:\n\n```csharp\n// Strong Type Checking\nint age = 25; // Correct\n// age = \"twenty-five\"; // This will cause a compile-time error\n\n// Type Inference\nvar name = \"Alice\"; // Compiler infers that 'name' is of type string\n\n// Generic Types\nList<int> numbers = new List<int>(); // List that can only hold integers\nnumbers.Add(1); // Correct\n// numbers.Add(\"two\"); // This will cause a compile-time error\n```\n\nIn this example:\n- The first part shows that assigning a string to an integer variable results in an error.\n- The second part demonstrates how type inference works with `var`.\n- The last part illustrates how generic types enforce type safety in collections.\n\n## Quick Summary\n\n- **Type Safety** ensures variables and operations conform to defined types.\n- **Strong Type Checking** prevents type mismatches at compile time.\n- **Type Inference** allows for cleaner code while maintaining type safety.\n- **Generic Types** provide flexibility without sacrificing type integrity.\n\n**Try This**: Create a small C# program that defines a generic list for storing strings. Try adding both strings and integers to see how type safety works in action!",
       "scores": {
         "faithfulness": 0.95,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is fully grounded in the retrieved context, accurately explaining type safety features (strong type checking, type inference, generic types) with only minor truncation at the end.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses why C# is type-safe, providing specific mechanisms and examples that explain the concept thoroughly.",
-        "context_precision_reason": "The retrieved context contains detailed information about C# type safety features that perfectly match the question, including definitions, advantages, and specific features with examples."
+        "faithfulness_reason": "The answer is almost entirely grounded in the retrieved context, accurately describing type safety features (strong type checking, type inference, generic types) with only minor elaboration beyond the source material.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses what makes C# type-safe, explaining the three key mechanisms (strong type checking, type inference, generic types) with concrete examples.",
+        "context_precision_reason": "The retrieved context contains a detailed section on 'Type Safety' that directly provides all the information needed to answer the question, including definitions, advantages, and specific features with examples."
       }
     },
     {
@@ -438,9 +438,9 @@
         "num_chunks_retrieved": 6,
         "num_relevant_chunks": 6,
         "distances": [
-          0.4353,
-          0.4472,
-          0.5093,
+          0.4352,
+          0.4471,
+          0.5092,
           0.5102,
           0.5249,
           0.5278
@@ -454,14 +454,14 @@
           "Week01.pdf"
         ]
       },
-      "answer": "## Objectives and Prerequisites for Lab 1\n\n### **Objectives**\nIn Lab 1 of the CST2550 lab booklet, the objectives are:\n- **Set up the development environment**\n- **Create your first C# application**\n- **Understand basic Object-Oriented Programming (OOP) concepts**\n\n### **Prerequisites**\nTo successfully participate in Lab 1, you need to have:\n- **Visual Studio 2022 installed**\n\nThis setup will ensure you can follow along with the tasks and exercises effectively. \n\nNow that you know the objectives and prerequisites, which part of the lab are you most excited to tackle first?",
+      "answer": "## Objectives and Prerequisites for Lab 1\n\n### **Objectives**\n- Set up the **development environment**.\n- Create your first **C# application**.\n- Understand basic **Object-Oriented Programming (OOP)** concepts.\n\n### **Prerequisites**\n- **Visual Studio 2022** installed.\n\nThis lab is designed to help you get started with C# and familiarize yourself with the tools and concepts you'll be using throughout the course. \n\n### Quick Summary\n- **Objectives**: Environment setup, first C# app, basic OOP concepts.\n- **Prerequisite**: Visual Studio 2022.\n\n**Try This**: Can you think of a simple application you might want to create in C#? Write down your idea!",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer directly quotes and accurately represents information from the retrieved context without adding unsupported claims.",
-        "answer_relevance_reason": "The answer fully and directly addresses the question by clearly stating all objectives and prerequisites for Lab 1.",
-        "context_precision_reason": "The retrieved context contains the complete and exact information needed to answer the question, with Lab 1 objectives and prerequisites clearly documented."
+        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, accurately extracting the objectives and prerequisites directly from the Lab 1 section of the CST2550 lab booklet.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question, providing clear information about both Lab 1 objectives and prerequisites as requested.",
+        "context_precision_reason": "The retrieved context contains complete and specific information about Lab 1 objectives and prerequisites, making it highly relevant and sufficient to answer the question."
       }
     },
     {
@@ -493,14 +493,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "In Lab 3, the advanced data structures covered are **hash tables** and **graphs**. \n\n## Explanation\n- **Hash Tables**: These are used to store key-value pairs, allowing for efficient data retrieval. In the lab, you'll implement a hash table with methods to add, remove, and retrieve values based on keys. This structure is great for situations where quick lookups are necessary.\n\n- **Graphs**: This structure consists of vertices (or nodes) connected by edges. You'll learn to create a graph structure, add vertices and edges, and perform graph traversal methods like Depth-First Search (DFS) and Breadth-First Search (BFS). Graphs are particularly useful for representing relationships and connections, such as social networks or pathways in maps.\n\n## Worked Example\nLet's say you want to implement a simple **hash table** in C#. Here’s a basic structure to get you started:\n\n```csharp\npublic class SimpleHashTable<TKey, TValue> {\n    private LinkedList<KeyValuePair<TKey, TValue>>[] buckets;\n    private int size;\n\n    public SimpleHashTable(int capacity) {\n        buckets = new LinkedList<KeyValuePair<TKey, TValue>>[capacity];\n        size = 0;\n    }\n\n    public void Add(TKey key, TValue value) {\n        int index = GetHash(key);\n        if (buckets[index] == null) {\n            buckets[index] = new LinkedList<KeyValuePair<TKey, TValue>>();\n        }\n        buckets[index].AddLast(new KeyValuePair<TKey, TValue>(key, value));\n        size++;\n    }\n\n    // Other methods like Remove and Get would follow a similar pattern.\n}\n```\n\n## Quick Summary\n- **Advanced Data Structures**: Hash Tables and Graphs\n- **Hash Tables**: Store key-value pairs for efficient lookups.\n- **Graphs**: Consist of vertices and edges; used for relationships and connections.\n- **Traversal Methods**: DFS and BFS for exploring graph structures.\n\n**Try This**: Can you think of a real-world example where a hash table would be more efficient than a list? Write down your thoughts!",
+      "answer": "Lab 3 covers two advanced data structures:\n\n## Advanced Data Structures in Lab 3\n1. **Hash Tables**\n   - Implementation of a hash table is a key task.\n   - You'll work with methods like `Add`, `Remove`, `Get`, and `Contains`.\n\n2. **Graphs**\n   - You'll create a graph structure using an adjacency list.\n   - Key operations include adding/removing vertices and edges, and retrieving neighbors of a vertex.\n\nAdditionally, you'll perform graph traversal using:\n- **Depth-First Search (DFS)**\n- **Breadth-First Search (BFS)**\n\n## Quick Summary\n- **Data Structures**: Hash Tables and Graphs\n- **Hash Table Methods**: Add, Remove, Get, Contains\n- **Graph Operations**: Add/Remove Vertex, Add/Remove Edge, Get Neighbors\n- **Graph Traversal Techniques**: DFS and BFS\n\n**Try This**: Can you think of a real-world scenario where you might use a hash table or a graph? Write down a brief example for each!",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, which explicitly states Lab 3 covers graphs and hash tables with the exact objectives mentioned.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by identifying both advanced data structures (hash tables and graphs) covered in Lab 3.",
-        "context_precision_reason": "The retrieved context contains complete and directly relevant information, including Lab 3 title, objectives, and implementation details for both data structures."
+        "faithfulness_reason": "The answer exclusively uses information from the retrieved context, accurately describing hash tables, graphs, and graph traversal methods (DFS/BFS) covered in Lab 3.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by clearly identifying and explaining the advanced data structures covered in Lab 3.",
+        "context_precision_reason": "The retrieved context contains complete and detailed information about Lab 3, including objectives, implementation tasks, and traversal methods, fully sufficient to answer the question."
       }
     },
     {
@@ -532,14 +532,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "Lab 5 focuses on **Implementing Database in a C# Application**. The main objectives of this lab include:\n\n- Connecting C# to a database\n- Implementing **CRUD operations** (Create, Read, Update, Delete)\n- Using the **Entity Framework Core** for database interactions.\n\n### Key Components of Lab 5:\n1. **Database Connection**: \n   - You will set up a `DatabaseContext` class that inherits from `DbContext`. This class will define `DbSet<Book>`, `DbSet<Member>`, and `DbSet<Lending>` to represent the database tables.\n\n2. **Repository Implementation**: \n   - You will create an interface `IBookRepository` to define methods for accessing book data asynchronously, such as `GetByIdAsync`, `GetAllAsync`, `AddAsync`, `UpdateAsync`, and `DeleteAsync`.\n\n3. **Business Logic Layer**: \n   - This involves implementing a service layer that includes validation logic, transaction handling, and error handling.\n\n### Worked Example\nHere’s a brief example of how you might set up the `DatabaseContext` class:\n\n```csharp\npublic class DatabaseContext : DbContext\n{\n    public DbSet<Book> Books { get; set; }\n    public DbSet<Member> Members { get; set; }\n    public DbSet<Lending> Lendings { get; set; }\n\n    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)\n    {\n        // Configure connection string here\n        optionsBuilder.UseSqlServer(\"YourConnectionStringHere\");\n    }\n\n    protected override void OnModelCreating(ModelBuilder modelBuilder)\n    {\n        // Configure relationships here\n    }\n}\n```\n\n### Quick Summary\n- **Lab 5**: Implementing Database in C# Application.\n- **Framework Used**: **Entity Framework Core**.\n- **Main Tasks**: Database connection, CRUD operations, repository pattern.\n- **Focus Areas**: Asynchronous programming, validation, and error handling.\n\n### Try This\nCan you create a simple `Book` class with properties like `Title`, `Author`, and `ISBN`? Once you have that, think about how you would implement the `AddAsync` method in your repository interface!",
+      "answer": "Lab 5 focuses on **Implementing Database in a C# Application**. The main objectives of this lab are to connect C# to a database and implement **CRUD operations** (Create, Read, Update, Delete) using the **Entity Framework Core**.\n\n## Key Components of Lab 5:\n- **Database Connection**: You will set up a connection to the database using the `DatabaseContext` class.\n- **CRUD Operations**: The lab involves implementing these operations through a repository pattern, which includes methods for adding, updating, deleting, and retrieving books.\n- **Business Logic Layer**: You will also work on implementing a service layer that adds validation logic, handles transactions, and manages error handling.\n\n### Example of Database Connection:\n```csharp\npublic class DatabaseContext : DbContext {\n    public DbSet<Book> Books { get; set; }\n    public DbSet<Member> Members { get; set; }\n    public DbSet<Lending> Lendings { get; set; }\n\n    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {\n        // Configure connection string\n    }\n\n    protected override void OnModelCreating(ModelBuilder modelBuilder) {\n        // Configure relationships\n    }\n}\n```\n\n## Quick Summary:\n- **Lab 5**: Implementing Database in C# Application.\n- **Framework Used**: Entity Framework Core.\n- **Main Tasks**: Connect to the database, implement CRUD operations, and create a business logic layer.\n\n### **Try This**:\nCan you outline what CRUD operations you would implement for a library management system? Think about how you would structure the methods in your repository!",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, accurately stating that Lab 5 is about implementing a database in a C# application and uses Entity Framework Core.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses both parts of the question: what Lab 5 is about and which framework it uses.",
-        "context_precision_reason": "The retrieved context directly contains all necessary information to answer the question, including Lab 5's title, objectives, and explicit mention of Entity Framework Core."
+        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, accurately stating that Lab 5 is about implementing a database in a C# application using Entity Framework Core, with all supporting details from the source material.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses both parts of the question: what Lab 5 is about and which framework it uses to connect C# to a database.",
+        "context_precision_reason": "The retrieved context contains complete and directly relevant information about Lab 5, including its objectives, framework (Entity Framework Core), and implementation details."
       }
     },
     {
@@ -571,14 +571,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "Lab 7 focuses on **Debugging and Testing Software** in C#. Here’s a brief overview of what it covers:\n\n## Overview of Lab 7\n- **Duration**: 2 hours\n- **Prerequisites**: Completed previous labs\n- **Objectives**:\n  - Debug C# applications\n  - Write unit tests\n  - Perform integration testing\n\n## Key Tasks\n1. **Debugging Practice** (40 minutes)\n   - You will work with a class called `OrderProcessor` that contains a method `CalculateTotal(Order order)`. This method has intentionally buggy code, allowing you to practice debugging skills.\n\n   ```csharp\n   public class OrderProcessor {\n       public decimal CalculateTotal(Order order) {\n           decimal total = 0;\n           foreach (var item in order.Items) {\n               total += item.Price * item.Quantity; // Add tax calculation // Apply discounts\n           }\n           return total;\n       }\n   }\n   ```\n\n2. **Unit Testing** (40 minutes)\n   - You will create unit tests for the `OrderProcessor` class using a testing framework. The example provided shows how to set up tests for the `CalculateTotal` method.\n\n   ```csharp\n   [TestClass]\n   public class OrderProcessorTests {\n       private OrderProcessor _processor;\n\n       [TestInitialize]\n       public void Setup() {\n           _processor = new OrderProcessor();\n       }\n\n       [TestMethod]\n       public void CalculateTotal_WithValidOrder_ReturnsCorrectTotal() {\n           // Arrange\n           // Act\n           // Assert\n       }\n   }\n   ```\n\n3. **Integration Testing** (40 minutes)\n   - This involves testing database operations, API endpoints, and user interface components to ensure they work together as expected.\n\n## Quick Summary\n- **Debugging**: Practice identifying and fixing bugs in C# applications.\n- **Unit Testing**: Write tests to ensure individual components work correctly.\n- **Integration Testing**: Test how different parts of the application work together.\n\n**Try This**: Create a simple class with a method that has a bug (like adding two numbers incorrectly). Write a unit test to check if it returns the correct sum. What would your test look like?",
+      "answer": "Lab 7 focuses on **Debugging and Testing Software** in C#. It has three main objectives:\n\n1. **Debugging C# Applications**: You'll practice debugging techniques by working with intentionally buggy code. For example, you'll be given a class called `OrderProcessor` that contains a method `CalculateTotal` with some errors. Your task will be to identify and fix these bugs.\n\n2. **Writing Unit Tests**: You'll learn how to create unit tests for your code. This involves setting up a test class (like `OrderProcessorTests`) and writing test methods to ensure your code behaves as expected. You'll follow the Arrange, Act, Assert pattern to structure your tests.\n\n3. **Performing Integration Testing**: You'll conduct integration tests that check how different parts of your application work together. This includes testing database operations, API endpoints, and user interfaces.\n\n## Worked Example\n\nLet's take a look at a simple debugging scenario with the `OrderProcessor` class:\n\n```csharp\npublic class OrderProcessor {\n    public decimal CalculateTotal(Order order) {\n        // Intentionally buggy code for debugging\n        decimal total = 0;\n        foreach (var item in order.Items) {\n            total += item.Price * item.Quantity; // Add tax calculation // Apply discounts\n        }\n        return total;\n    }\n}\n```\n\n### Steps to Debug:\n1. **Identify the Bug**: Notice that tax calculation and discounts are mentioned but not implemented.\n2. **Fix the Code**: You might add tax and discount calculations to the total.\n3. **Test the Fix**: Run your unit tests to ensure the method returns the correct total.\n\n## Quick Summary\n- Lab 7 covers debugging techniques, unit testing, and integration testing.\n- You'll work with a buggy `OrderProcessor` class to practice debugging.\n- You'll write unit tests using the Arrange, Act, Assert methodology.\n- Integration tests will ensure that different parts of your application function well together.\n\n**Try This**: Can you write a unit test for the `CalculateTotal` method? Think about what inputs you would use and what the expected output should be!",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer uses only information directly present in the retrieved context about Lab 7, including the duration, prerequisites, objectives, and task details.",
-        "answer_relevance_reason": "The answer fully and directly addresses the question by comprehensively covering all aspects of Lab 7 on debugging and testing.",
-        "context_precision_reason": "The retrieved context contains the complete Lab 7 section with all necessary details to fully answer the question, including objectives, tasks, and code examples."
+        "faithfulness_reason": "The answer uses only information directly present in the retrieved context, accurately describing the three main components of Lab 7 with specific examples from the source material.",
+        "answer_relevance_reason": "The answer directly and comprehletely addresses the question about what Lab 7 covers, providing a well-organized breakdown of debugging, unit testing, and integration testing.",
+        "context_precision_reason": "The retrieved context contains the full Lab 7 section with clear objectives and tasks that directly answer the question about what the lab covers."
       }
     },
     {
@@ -610,14 +610,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "## CI/CD Extension Activities in CST2550\n\nIn the CST2550 lab exercises, the following **CI/CD extension activities** are included:\n\n- **Create complex branching strategy**: This involves developing a more intricate branching strategy in your version control system to manage multiple features and bug fixes effectively.\n  \n- **Implement git hooks**: Git hooks are scripts that run automatically at certain points in the Git workflow, allowing you to enforce rules or automate tasks during the commit and push processes.\n\n- **Set up automated testing**: This includes configuring tests to run automatically as part of the CI/CD pipeline, ensuring that code changes do not introduce new bugs.\n\nThese activities enhance the CI/CD pipeline by promoting better code management and quality assurance.\n\n## Quick Summary\n- **Complex branching strategy**: Manage features and fixes effectively.\n- **Git hooks**: Automate tasks and enforce rules in Git.\n- **Automated testing**: Ensure code quality with continuous testing.\n\n**Try This**: Can you think of a scenario where implementing a git hook would be beneficial in your workflow? Write down your thoughts!",
+      "answer": "## CI/CD Extension Activities in CST2550\n\nIn the CST2550 lab exercises, the following **CI/CD extension activities** are included:\n\n- **Create complex branching strategy**: This involves developing a more sophisticated approach to managing branches in your version control system, which can help in handling multiple features or fixes simultaneously.\n  \n- **Implement git hooks**: Git hooks are scripts that run automatically at certain points in the Git workflow. Implementing them can help automate tasks like testing or formatting code before commits.\n\n- **Set up automated testing**: This activity focuses on creating tests that run automatically during the CI/CD process to ensure code quality and functionality.\n\nThese activities are designed to enhance your understanding and application of CI/CD practices in software development.\n\n## Quick Summary\n- **Complex branching strategy**: Manage branches effectively.\n- **Git hooks**: Automate tasks in the Git workflow.\n- **Automated testing**: Ensure code quality through automatic tests.\n\n**Try This**: Can you think of a scenario where implementing a git hook would be beneficial in your workflow? Write down your ideas!",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, which explicitly lists the three CI/CD extension activities: create complex branching strategy, implement git hooks, and set up automated testing.",
+        "faithfulness_reason": "The answer is entirely grounded in the retrieved context, which explicitly lists the three CI/CD extension activities with no hallucinated or fabricated content.",
         "answer_relevance_reason": "The answer directly and fully addresses the question by identifying and explaining all CI/CD extension activities included in CST2550 lab exercises.",
-        "context_precision_reason": "The retrieved context directly contains the exact information needed to answer the question, appearing verbatim in Lab 6 extension activities section."
+        "context_precision_reason": "The retrieved context contains the exact information needed to answer the question, with Lab 6 explicitly listing the three extension activities under the CI/CD pipeline section."
       }
     },
     {
@@ -649,14 +649,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "In Lab 8, students must complete the following **Software Development Life Cycle (SDLC)** activities:\n\n1. **Project Setup (40 minutes)**\n   - Create project charter\n   - Define requirements\n   - Design system architecture\n   - Plan iterations\n\n2. **Implementation Planning (40 minutes)**\n   - Break down tasks\n   - Estimate effort\n\nThese activities help students practice the various phases of the SDLC and manage project documentation effectively. \n\n## Quick Summary\n- Create project charter and define requirements.\n- Design system architecture and plan iterations.\n- Break down tasks and estimate effort.\n\n**Try This:** Can you think of a project you would like to work on? Try outlining a project charter for it! What would be the main goals and requirements?",
+      "answer": "## Summary of SDLC Activities in Lab 8\n\nIn Lab 8, students will practice various activities related to the **Software Development Life Cycle (SDLC)**.\n\n## Explanation of SDLC Activities\n\nThe SDLC is a structured process that ensures the successful development of software projects. In Lab 8, students will engage in several key activities:\n\n1. **Project Setup**: This involves creating foundational documents and plans for the project. Students will:\n   - Create a **project charter** that outlines the project's purpose and objectives.\n   - Define **requirements** to understand what the software needs to accomplish.\n   - Design the **system architecture**, which is like creating a blueprint for how the software will be structured.\n   - Plan **iterations**, which are phases of development that allow for incremental progress and adjustments.\n\n2. **Implementation Planning**: After the initial setup, students will break down the project into manageable tasks and estimate the effort required for each task. This step is crucial for organizing work and ensuring that the project stays on schedule.\n\nThese activities are essential for ensuring that the software is developed systematically and meets the intended goals.\n\n## Worked Example\n\nLet's say you're working on a library management system. In your project setup, you might:\n\n- **Project Charter**: Outline that the system will manage books, members, and lending operations.\n- **Requirements**: List features such as adding books, registering members, and tracking borrowed books.\n- **System Architecture**: Create a diagram showing how the database, user interface, and business logic will interact.\n- **Iterations**: Plan to complete the user registration feature in the first iteration, followed by book management in the next.\n\n## Quick Summary\n\n- **Project Setup**: Create project charter, define requirements, design system architecture, plan iterations.\n- **Implementation Planning**: Break down tasks and estimate effort.\n- **Focus on organization**: Helps in managing the software development process effectively.\n\n## Try This\n\nImagine you are tasked with developing a simple to-do list application. Write down a brief project charter, list three main requirements, and sketch a simple system architecture. How would you plan your iterations?",
       "scores": {
         "faithfulness": 0.5,
         "answer_relevance": 0.6,
-        "context_precision": 0.5,
-        "faithfulness_reason": "The answer accurately reflects what is explicitly stated in the retrieved context for Lab 8, but the context is incomplete (cuts off mid-sentence), and the ground truth lists additional SDLC activities (project documentation) not mentioned in the retrieved context.",
-        "answer_relevance_reason": "The answer addresses Lab 8 activities but only covers partial information; the ground truth specifies seven SDLC phases while the answer only covers five due to incomplete context retrieval.",
-        "context_precision_reason": "The retrieved context contains Lab 8 information but is truncated and incomplete, missing the full task list and the project documentation component mentioned in the ground truth."
+        "context_precision": 0.4,
+        "faithfulness_reason": "The answer correctly cites project charter, requirements, system architecture, and iteration planning from the context, but adds unsupported elaborations (e.g., 'like creating a blueprint') and omits task breakdown, effort estimation, and project documentation that appear in the context.",
+        "answer_relevance_reason": "The answer addresses Lab 8 SDLC activities but is incomplete—it covers only project setup and implementation planning while missing task breakdown, effort estimation, and project documentation mentioned in the context.",
+        "context_precision_reason": "The retrieved context contains Lab 8 information but shows only partial content; the Lab 8 section cuts off mid-sentence after 'Estimate effort', preventing complete retrieval of all required SDLC activities."
       }
     },
     {
@@ -673,8 +673,8 @@
         "num_relevant_chunks": 6,
         "distances": [
           0.4257,
-          0.4504,
-          0.4614,
+          0.4503,
+          0.4615,
           0.6088,
           0.6221,
           0.6247
@@ -688,14 +688,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "Thread pooling in C# allows multiple threads to be reused for executing tasks, which helps improve performance and resource management. \n\n## Explanation of Thread Pooling\nIn the lab exercises, thread pooling is demonstrated using the `ThreadPool` class. Instead of creating a new thread for each task, you can queue tasks to the thread pool, which manages a pool of worker threads. This is similar to having a team of workers who can be assigned different tasks without the overhead of hiring new workers each time a task comes up.\n\nWhen you call `ThreadPool.QueueUserWorkItem`, you provide a delegate (a method) that defines the work to be done. The thread pool picks an available thread from its pool to execute this task. After the task is completed, the thread returns to the pool, ready to take on new tasks. This efficient reuse of threads helps reduce the overhead associated with thread creation and destruction.\n\n## Worked Example\nHere's a simple example from the lab exercises that demonstrates thread pooling:\n\n```csharp\npublic void ThreadPoolExample() {\n    for (int i = 0; i < 5; i++) {\n        ThreadPool.QueueUserWorkItem(state => {\n            Console.WriteLine($\"Task {state} executing on thread {Thread.CurrentThread.ManagedThreadId}\");\n            Thread.Sleep(1000); // Simulate work\n        }, i);\n    }\n}\n```\n\n### Breakdown:\n1. **Loop through 5 iterations**: For each iteration, a new task is queued.\n2. **QueueUserWorkItem**: This method takes a delegate that defines the work (in this case, printing the task number and simulating work with `Thread.Sleep`).\n3. **Thread Management**: The thread pool manages how many threads are running and reuses them for the queued tasks.\n\n## Quick Summary\n- **Thread Pooling**: Reuses threads for executing tasks, improving efficiency.\n- **QueueUserWorkItem**: Queues a task to be executed by a thread from the pool.\n- **Managed Threads**: Threads are automatically managed by the thread pool, reducing overhead.\n\n### **Try This**\nTry modifying the `ThreadPoolExample` method to queue 10 tasks instead of 5. What happens when you run it? How does the output differ?",
+      "answer": "**Thread pooling in C# allows for efficient management of multiple threads by reusing a pool of threads instead of creating new ones for each task.**\n\nIn the context of the lab exercises, thread pooling is implemented using the `ThreadPool` class, which manages a set of threads that can be used to execute tasks concurrently. This approach is beneficial because it reduces the overhead of thread creation and destruction, allowing for better performance when executing multiple tasks.\n\n### How Thread Pooling Works:\n- **Queueing Tasks**: You can queue tasks to be executed by the thread pool using the `ThreadPool.QueueUserWorkItem` method. This method takes a delegate (a method reference) and a state object.\n- **Execution**: The thread pool picks up the queued tasks and executes them on available threads. This means that multiple tasks can run simultaneously without the need for manual thread management.\n- **Example from the Lab**: The lab exercise demonstrates this with a loop that queues five tasks, each printing a message and simulating work with `Thread.Sleep(1000)`. Each task is executed on a separate thread managed by the thread pool.\n\n### Worked Example\nHere's a simplified version of the thread pool implementation from the lab:\n\n```csharp\npublic void ThreadPoolExample() {\n    for (int i = 0; i < 5; i++) {\n        ThreadPool.QueueUserWorkItem(state => {\n            Console.WriteLine($\"Task {state} executing on thread {Thread.CurrentThread.ManagedThreadId}\");\n            Thread.Sleep(1000); // Simulating work\n        }, i);\n    }\n}\n```\n\nIn this example:\n- A loop queues five tasks.\n- Each task prints its state and the thread ID it is executing on.\n- The `Thread.Sleep(1000)` simulates a delay to mimic work being done.\n\n### Quick Summary\n- **Thread Pool**: A collection of threads managed by the system.\n- **Efficiency**: Reduces overhead by reusing threads.\n- **Task Execution**: Tasks are queued and executed concurrently.\n- **Example Usage**: Demonstrated in the lab with `ThreadPool.QueueUserWorkItem`.\n\n**Try This**: Modify the `ThreadPoolExample` method to queue 10 tasks instead of 5 and change the sleep duration to 500 milliseconds. What do you observe about the output and thread usage?",
       "scores": {
         "faithfulness": 0.95,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer is almost entirely grounded in the retrieved context; it accurately describes ThreadPool.QueueUserWorkItem() and includes the exact lab example with 5 queued tasks. The added conceptual explanation (team of workers analogy) is a reasonable elaboration not contradicted by the source.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses the question about how thread pooling works in C# according to the lab exercises, providing both explanation and the concrete code example.",
-        "context_precision_reason": "The retrieved context contains the exact ThreadPoolExample() method from the lab exercises showing ThreadPool.QueueUserWorkItem() queuing 5 tasks with parallel execution on different managed threads, perfectly matching the ground truth."
+        "faithfulness_reason": "The answer is nearly entirely grounded in the retrieved context, accurately describing ThreadPool.QueueUserWorkItem(), the queueing of 5 tasks, and parallel execution; the introductory sentence about reducing overhead is a minor inference but well-established in threading theory.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question about how thread pooling works in C# according to the lab exercises, covering both the mechanism and the specific lab example.",
+        "context_precision_reason": "The retrieved context contains the exact lab code demonstrating ThreadPool.QueueUserWorkItem() with 5 queued tasks, providing complete and direct evidence needed to answer the question."
       }
     },
     {
@@ -711,10 +711,10 @@
         "num_chunks_retrieved": 6,
         "num_relevant_chunks": 6,
         "distances": [
-          0.5269,
+          0.527,
           0.5794,
-          0.5996,
-          0.6963,
+          0.5997,
+          0.6964,
           0.7416,
           0.7426
         ],
@@ -727,14 +727,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "The synchronization mechanism used in the **producer-consumer pattern** in the labs is the **SemaphoreSlim**. \n\n## Explanation\n- The **SemaphoreSlim** is a lightweight synchronization primitive that can be used to manage access to a resource pool. In the context of the producer-consumer pattern, it helps control the number of items that can be processed concurrently.\n- The **Producer** adds items to a queue and signals the **Consumer** that an item is available by releasing the semaphore. The **Consumer** waits for the semaphore to ensure that it only processes items when they are available in the queue.\n\nHere's a brief breakdown of how it works:\n- The **Producer** uses the semaphore's `Release()` method to signal that a new item has been added to the queue.\n- The **Consumer** uses the semaphore's `WaitAsync()` method to wait until there is an item to consume.\n\n## Worked Example\nHere’s a simplified version of the producer-consumer pattern from the lab materials:\n\n```csharp\npublic class ProducerConsumer {\n    private readonly Queue<int> _queue = new Queue<int>();\n    private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(0, 10);\n    private readonly object _lockObject = new object();\n\n    public async Task ProduceAsync() {\n        for (int i = 0; i < 10; i++) {\n            lock (_lockObject) {\n                _queue.Enqueue(i);\n                Console.WriteLine($\"Produced: {i}\");\n            }\n            _semaphore.Release(); // Signal that an item is available\n            await Task.Delay(100); // Simulate work\n        }\n    }\n\n    public async Task ConsumeAsync() {\n        while (true) {\n            await _semaphore.WaitAsync(); // Wait for an item to be available\n            int item;\n            lock (_lockObject) {\n                if (_queue.Count == 0) break; // Exit if no items left\n                item = _queue.Dequeue();\n            }\n            Console.WriteLine($\"Consumed: {item}\");\n        }\n    }\n}\n```\n\n## Quick Summary\n- **SemaphoreSlim** is used for synchronization in the producer-consumer pattern.\n- It allows the **Producer** to signal when items are available.\n- The **Consumer** waits for the signal before processing items.\n- This mechanism ensures that resources are accessed safely and efficiently.\n\n**Try This:** Can you modify the `ProduceAsync` method to produce 15 items instead of 10? What changes would you need to make in the `ConsumeAsync` method to handle this?",
+      "answer": "The **producer-consumer pattern** in the labs uses a **SemaphoreSlim** for synchronization. \n\n## Explanation\n- The **SemaphoreSlim** is a lightweight synchronization primitive that can be used to manage access to a limited number of resources. In the context of the producer-consumer pattern, it helps to control how many items can be produced and consumed concurrently.\n- The producer adds items to a queue and signals the semaphore to indicate that an item is available for consumption. The consumer waits on the semaphore until it is signaled, ensuring that it only processes items when they are available.\n\nHere's a brief breakdown of how it works:\n- The producer calls `_semaphore.Release()` after adding an item to the queue, which increments the semaphore count, signaling that there’s an item to consume.\n- The consumer calls `_semaphore.WaitAsync()` to wait until there is an item available, effectively blocking until the producer has produced something.\n\n## Worked Example\nHere’s a simplified version of the producer-consumer pattern from the labs:\n\n```csharp\npublic class ProducerConsumer {\n    private readonly Queue<int> _queue = new Queue<int>();\n    private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(0, 10);\n    private readonly object _lockObject = new object();\n\n    public async Task ProduceAsync() {\n        for (int i = 0; i < 10; i++) {\n            lock (_lockObject) {\n                _queue.Enqueue(i);\n                Console.WriteLine($\"Produced: {i}\");\n            }\n            _semaphore.Release(); // Signal that an item has been produced\n            await Task.Delay(100); // Simulate production time\n        }\n    }\n\n    public async Task ConsumeAsync() {\n        while (true) {\n            await _semaphore.WaitAsync(); // Wait for an item to be available\n            int item;\n            lock (_lockObject) {\n                if (_queue.Count == 0) break; // Exit if no items left\n                item = _queue.Dequeue();\n            }\n            Console.WriteLine($\"Consumed: {item}\");\n        }\n    }\n}\n```\n\n## Quick Summary\n- The **producer-consumer pattern** uses **SemaphoreSlim** for synchronization.\n- The producer signals the semaphore after producing an item.\n- The consumer waits on the semaphore to ensure it only consumes when items are available.\n\n**Try This:** Can you modify the `ProduceAsync` method to produce 15 items instead of 10? What changes would you need to make?",
       "scores": {
         "faithfulness": 0.9,
-        "answer_relevance": 1.0,
-        "context_precision": 1.0,
-        "faithfulness_reason": "The answer correctly identifies SemaphoreSlim and lock object as synchronization mechanisms; it accurately describes WaitAsync/Release usage with only minor omission of explicit emphasis on the lock object's equal importance.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses the question about synchronization mechanisms in the producer-consumer pattern with clear explanation and code example.",
-        "context_precision_reason": "The retrieved context contains the complete producer-consumer implementation showing both SemaphoreSlim and lock object usage, fully supporting the answer."
+        "answer_relevance": 0.95,
+        "context_precision": 0.95,
+        "faithfulness_reason": "The answer correctly identifies SemaphoreSlim and lock as synchronization mechanisms used in the producer-consumer pattern, with accurate explanations of their roles; minor incompleteness as the answer doesn't fully emphasize the lock object's role alongside the semaphore.",
+        "answer_relevance_reason": "The answer directly addresses the question about synchronization mechanisms in the producer-consumer pattern, providing clear explanations of how SemaphoreSlim and lock work together.",
+        "context_precision_reason": "The retrieved context contains the complete producer-consumer pattern implementation with both SemaphoreSlim and lock mechanisms clearly shown in the code, providing sufficient information to answer the question comprehensively."
       }
     },
     {
@@ -750,12 +750,12 @@
         "num_chunks_retrieved": 6,
         "num_relevant_chunks": 6,
         "distances": [
-          0.4021,
-          0.4494,
-          0.454,
-          0.4712,
-          0.4928,
-          0.5028
+          0.4019,
+          0.449,
+          0.4538,
+          0.4709,
+          0.4926,
+          0.5026
         ],
         "filenames": [
           "All-labs-exercises.pdf",
@@ -766,14 +766,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "In the CST2550 lab exercises, the following **design patterns** are practiced:\n\n- **Singleton Pattern**: Implemented as `public class SingletonLogger`.\n- **Factory Pattern**: Represented by `public abstract class PaymentFactory`.\n- **Observer Pattern**: Implemented as `public class OrderObserver`.\n- **Strategy Pattern**: Defined by `public interface IPaymentStrategy`.\n\nThese patterns are essential for creating flexible and maintainable software designs. \n\n## Worked Example\n### Singleton Pattern\n- **Purpose**: Ensure that a class has only one instance and provide a global point of access to it.\n- **Implementation**:\n```csharp\npublic class SingletonLogger\n{\n    private static SingletonLogger _instance;\n\n    private SingletonLogger() { }\n\n    public static SingletonLogger Instance\n    {\n        get\n        {\n            if (_instance == null)\n            {\n                _instance = new SingletonLogger();\n            }\n            return _instance;\n        }\n    }\n\n    public void Log(string message)\n    {\n        Console.WriteLine(message);\n    }\n}\n```\n\n### Factory Pattern\n- **Purpose**: Define an interface for creating an object, but let subclasses alter the type of objects that will be created.\n- **Implementation**:\n```csharp\npublic abstract class PaymentFactory\n{\n    public abstract IPaymentStrategy CreatePayment();\n}\n```\n\n## Quick Summary\n- **Design Patterns** help in structuring code for better maintainability.\n- **Singleton** ensures a single instance of a class.\n- **Factory** allows for object creation without specifying the exact class.\n- **Observer** enables a subscription model to notify multiple objects about changes.\n- **Strategy** defines a family of algorithms, encapsulating each one.\n\n**Try This**: Can you create a simple implementation of the Observer pattern? Think about how you would notify observers when a certain event occurs!",
+      "answer": "In the CST2550 lab exercises, the following **design patterns** are practiced:\n\n- **Singleton Pattern**: This pattern ensures a class has only one instance and provides a global point of access to it. For example, the `SingletonLogger` class can be implemented to manage logging throughout the application.\n\n- **Factory Pattern**: This is an abstract pattern that allows for the creation of objects without specifying the exact class of the object that will be created. The `PaymentFactory` class is an example where different payment strategies can be instantiated.\n\n- **Observer Pattern**: This pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified. The `OrderObserver` class can be used to notify observers when an order's state changes.\n\n- **Strategy Pattern**: This pattern enables selecting an algorithm's behavior at runtime. The `IPaymentStrategy` interface allows different payment strategies to be implemented and used interchangeably.\n\n## Quick Summary\n- **Singleton Pattern**: Ensures a single instance of a class.\n- **Factory Pattern**: Creates objects without specifying their concrete classes.\n- **Observer Pattern**: Notifies multiple objects about state changes.\n- **Strategy Pattern**: Allows choosing an algorithm's behavior at runtime.\n\n**Try This**: Can you think of a real-world scenario where you might use the Singleton pattern? Write a brief description of that scenario!",
       "scores": {
-        "faithfulness": 0.7,
+        "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer correctly identifies all four design patterns from the retrieved context, but adds a detailed worked example of Singleton implementation that is not present in the context, constituting minor unsupported elaboration.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by listing all design patterns practiced in CST2550 lab exercises with their implementations.",
-        "context_precision_reason": "The retrieved context explicitly contains all four design patterns (SingletonLogger, PaymentFactory, OrderObserver, IPaymentStrategy) mentioned in Lab 12, directly answering the question."
+        "faithfulness_reason": "The answer uses only information directly present in the retrieved context, specifically naming SingletonLogger, PaymentFactory, OrderObserver, and IPaymentStrategy from Lab 12.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by identifying all four design patterns practiced in CST2550 lab exercises with accurate descriptions.",
+        "context_precision_reason": "The retrieved context explicitly lists all four design patterns in Lab 12 (Pattern Implementation section), providing complete and direct information needed to fully answer the question."
       }
     },
     {
@@ -805,14 +805,14 @@
           "Week01.pdf"
         ]
       },
-      "answer": "The **SOLID principles** aim to enhance software design and maintainability by promoting best practices in object-oriented programming. In the context of your labs, they focus on:\n\n1. **Refactoring Existing Code**: The SOLID principles guide you in restructuring code to improve its readability and maintainability without changing its external behavior. This is crucial when you want to make your codebase more efficient and easier to work with.\n\n2. **Applying Principles**: By applying the SOLID principles, you learn how to create systems that are more flexible and scalable. Each principle addresses a specific aspect of software design, helping you to avoid common pitfalls such as tight coupling and code duplication.\n\n3. **Improving Design**: The principles encourage you to think critically about your software architecture. By adhering to SOLID, you can create designs that are easier to understand, modify, and extend over time, which is essential for long-term project success.\n\n## Worked Example\n\nLet's break down the **SOLID principles**:\n\n- **S**: **Single Responsibility Principle** - A class should have one reason to change, meaning it should only have one job. For instance, if you have a class that handles both user input and data processing, you should split it into two classes.\n\n- **O**: **Open/Closed Principle** - Software entities should be open for extension but closed for modification. This means you can add new functionality without altering existing code, often achieved through interfaces or abstract classes.\n\n- **L**: **Liskov Substitution Principle** - Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program. For example, if you have a class `Bird` and a subclass `Penguin`, the `Penguin` should still be able to be used wherever `Bird` is expected.\n\n- **I**: **Interface Segregation Principle** - Clients should not be forced to depend on interfaces they do not use. This encourages the creation of smaller, more specific interfaces rather than one large, general-purpose interface.\n\n- **D**: **Dependency Inversion Principle** - High-level modules should not depend on low-level modules; both should depend on abstractions. This can be achieved by using interfaces to decouple the code.\n\n## Quick Summary\n\n- **SOLID principles** improve software design and maintainability.\n- They encourage **refactoring** for better code quality.\n- Help create **flexible** and **scalable** systems.\n- Promote separation of concerns and **decoupling** of components.\n\n**Try This**: Pick one of the SOLID principles and think of a class in your current project. How could you apply that principle to improve its design? Share your thoughts!",
+      "answer": "The **SOLID principles** aim to improve software design and maintainability in your labs. Here's a breakdown of what they focus on:\n\n## Explanation of SOLID Principles\n\n- **Systematic Approach**: The SOLID principles provide a structured methodology for writing code that is easier to manage and extend. By following these principles, you can create systems that are more resilient to change.\n  \n- **Design Quality**: The principles help in refactoring existing code, ensuring that the design is flexible and can accommodate new requirements without significant rewrites. This is crucial in software engineering, where requirements often evolve.\n\n- **Improved Collaboration**: By adhering to SOLID principles, teams can work more effectively together. The principles promote modularity and clear interfaces, which allows different team members to work on separate components without stepping on each other’s toes.\n\n## Worked Example\n\nLet’s say you have a class that handles payment processing. Without SOLID principles, it might look like this:\n\n```csharp\npublic class PaymentProcessor {\n    public void ProcessPayment(Payment payment) {\n        // Process payment\n        // Send confirmation email\n        // Log transaction\n    }\n}\n```\n\nThis class violates several SOLID principles. By applying them, you could refactor it into:\n\n1. **Single Responsibility Principle (SRP)**: Separate the payment processing, email sending, and logging into different classes.\n2. **Open/Closed Principle (OCP)**: Ensure that the payment processor can accept new payment methods without modifying existing code.\n3. **Liskov Substitution Principle (LSP)**: Create interfaces for payment methods that can be substituted without altering the correctness of the program.\n4. **Interface Segregation Principle (ISP)**: Ensure that clients only depend on the methods they use.\n5. **Dependency Inversion Principle (DIP)**: Depend on abstractions rather than concrete implementations.\n\n## Quick Summary\n\n- **SOLID Principles** enhance code maintainability and flexibility.\n- They promote a **systematic approach** to software design.\n- Following these principles leads to better **collaboration** among team members.\n- They help in **refactoring** existing code for improved design.\n\n## Try This\n\nThink of a class you've worked on recently. How could you apply one of the SOLID principles to improve its design? Write a brief note on which principle you would use and how it would enhance your class!",
       "scores": {
-        "faithfulness": 0.85,
-        "answer_relevance": 0.95,
+        "faithfulness": 0.4,
+        "answer_relevance": 0.6,
         "context_precision": 0.9,
-        "faithfulness_reason": "The answer is mostly grounded in the retrieved context (refactoring code, applying principles, improving design), but adds unsupported elaboration about 'tight coupling' and 'code duplication' not explicitly mentioned in the context.",
-        "answer_relevance_reason": "The answer directly addresses what SOLID principles aim to achieve in the labs by identifying the three main objectives from the retrieved context.",
-        "context_precision_reason": "The retrieved context clearly states the SOLID principles section focuses on 'Refactor existing code, Apply principles, Improve design,' providing sufficient information to answer the question."
+        "faithfulness_reason": "The answer contains significant unsupported additions (systematic approach explanation, design quality justification, improved collaboration section) not present in the retrieved context; only the core refactoring/design improvement goals are grounded.",
+        "answer_relevance_reason": "The answer addresses the question but goes well beyond what the context supports, adding speculative explanations and a worked example that are not in the retrieved materials.",
+        "context_precision_reason": "The retrieved context directly states the lab's SOLID objectives: 'Refactor existing code, Apply principles, Improve design,' which is sufficient to answer the question concisely."
       }
     },
     {
@@ -831,9 +831,9 @@
           0.4015,
           0.6862,
           0.6878,
-          0.7042,
+          0.7043,
           0.708,
-          0.7126
+          0.7127
         ],
         "filenames": [
           "Transcript #1",
@@ -844,14 +844,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "## Everyday AI Examples\n\nIn the class materials, several examples of **everyday AI** are highlighted:\n\n- **Voice Assistants**: Technologies like **Siri** and **Alexa** help users perform tasks through voice commands.\n- **Recommendation Systems**: Platforms such as **Netflix** and **Spotify** use AI to suggest shows, movies, or music based on user preferences.\n- **Navigation Tools**: **Google Maps** employs AI to find the shortest routes for drivers.\n- **Healthcare**: AI assists doctors in accurately diagnosing diseases.\n- **Education**: AI provides personalized learning experiences for students.\n\nThese examples illustrate how AI is integrated into various aspects of our daily lives, often without us even realizing it!\n\n## Quick Summary\n- AI is present in voice assistants like Siri and Alexa.\n- Recommendation systems in Netflix and Spotify use AI.\n- Google Maps utilizes AI for navigation.\n- AI aids in healthcare diagnostics.\n- AI enhances personalized learning in education.\n\n**Try This**: Can you think of any other examples of AI that you use in your daily life? Write down two more examples and how they help you!",
+      "answer": "AI is integrated into our daily lives in several ways, as mentioned in the class transcript. Here are some examples:\n\n- **Voice Assistants**: Technologies like **Siri** and **Alexa** help users perform tasks through voice commands.\n- **Recommendation Systems**: Platforms such as **Netflix** and **Spotify** use AI to suggest content based on user preferences and behavior.\n- **Navigation**: **Google Maps** utilizes AI to find the shortest routes for users, making travel more efficient.\n- **Healthcare**: AI assists doctors in diagnosing diseases accurately, enhancing patient care.\n- **Education**: AI provides personalized learning experiences for students, tailoring education to individual needs.\n\nThese examples show how AI is seamlessly integrated into various aspects of our lives, often without us realizing it!\n\n## Quick Summary\n- AI is present in voice assistants (e.g., Siri, Alexa).\n- It powers recommendation systems (e.g., Netflix, Spotify).\n- AI helps with navigation (e.g., Google Maps).\n- In healthcare, AI aids in disease diagnosis.\n- AI enhances personalized learning in education.\n\n**Try This**: Think of one more example of AI you encounter daily. How does it make your life easier? Write it down!",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "All examples provided (Siri, Alexa, Netflix, Spotify, Google Maps, healthcare diagnostics, personalized learning) are directly quoted or paraphrased from Source 1 with no fabricated information.",
-        "answer_relevance_reason": "The answer comprehensively addresses the question by listing all everyday AI examples mentioned in the retrieved context with clear explanations.",
-        "context_precision_reason": "Source 1 contains explicit mention of all everyday AI examples cited in the answer, making it directly relevant and sufficient for answering the question."
+        "faithfulness_reason": "The answer is entirely grounded in Source 1, which explicitly lists all the AI examples mentioned: Siri and Alexa, Netflix and Spotify recommendation systems, Google Maps, healthcare diagnosis assistance, and personalized learning in education.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by providing multiple specific examples of everyday AI from the transcript with clear explanations of each use case.",
+        "context_precision_reason": "Source 1 contains the complete answer to the question, providing all the everyday AI examples mentioned in the class transcript with sufficient detail."
       }
     },
     {
@@ -867,12 +867,12 @@
         "num_chunks_retrieved": 6,
         "num_relevant_chunks": 6,
         "distances": [
-          0.6725,
-          0.6779,
+          0.6724,
+          0.6778,
           0.7368,
           0.7754,
-          0.7863,
-          0.8019
+          0.7862,
+          0.8018
         ],
         "filenames": [
           "Week01.pdf",
@@ -883,14 +883,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "**Abstraction vs. Encapsulation in OOP**\n\nAbstraction and encapsulation are both fundamental concepts in **Object-Oriented Programming (OOP)**, but they serve different purposes in managing complexity and protecting data.\n\n## Explanation\n\n- **Abstraction** is the process of simplifying a system by hiding unnecessary details and exposing only the essential features. Think of it like a car dashboard: you see the speedometer and fuel gauge, but you don’t need to know how the engine works to drive the car. In programming, abstraction allows developers to focus on high-level functionalities without getting bogged down by the intricate workings of the system.\n\n- **Encapsulation**, on the other hand, is about restricting access to certain parts of an object and exposing only the necessary interfaces. This is like having a safe where you keep your valuables; you have a key (or a combination) that allows access to the safe, but others cannot see or modify its contents. In OOP, encapsulation protects the integrity of the data by preventing unauthorized access or modifications, often implemented through access modifiers like `private` and `public` in languages like C#.\n\n## Worked Example\n\nLet's illustrate these concepts with a simple C# example:\n\n```csharp\npublic class Car\n{\n    // Encapsulation: private field\n    private int speed;\n\n    // Abstraction: public method to set speed\n    public void SetSpeed(int newSpeed)\n    {\n        if (newSpeed >= 0)\n        {\n            speed = newSpeed;\n        }\n    }\n\n    // Abstraction: public method to get speed\n    public int GetSpeed()\n    {\n        return speed;\n    }\n}\n```\n\nIn this example:\n- **Encapsulation** is shown by the private field `speed`, which cannot be accessed directly from outside the `Car` class.\n- **Abstraction** is demonstrated through the `SetSpeed` and `GetSpeed` methods, which allow interaction with the `speed` property without exposing its internal workings.\n\n## Quick Summary\n- **Abstraction** hides complex details, focusing on essential features.\n- **Encapsulation** restricts access to certain parts of an object, protecting data integrity.\n- Both concepts help manage complexity in software design.\n\n**Try This**: Create a simple class for a `Book` with properties like title and author. Use encapsulation to protect these properties and provide methods to access them. How would you implement this?",
+      "answer": "**One-line summary:** Abstraction and encapsulation are both key principles of Object-Oriented Programming (OOP), but they serve different purposes in managing complexity.\n\n## Understanding Abstraction and Encapsulation\n\n- **Abstraction** is the process of hiding unnecessary details and exposing only the essential features of a system. This simplifies complexity, making it easier to manage and understand. For example, think of a car dashboard: it abstracts the complexities of the engine and other systems, showing only necessary information like speed and fuel level. This allows drivers to focus on driving without needing to understand the intricate workings of the vehicle.\n\n- **Encapsulation**, on the other hand, restricts access to certain parts of an object and exposes only the necessary interfaces. This protects data integrity by preventing unauthorized access or modification. For instance, in C#, a class can have private variables and public methods to access them. This means that while the internal state of the object is hidden, it can still be manipulated through defined methods, ensuring that the object remains in a valid state.\n\n## Worked Example\n\nLet's look at a simple example in C# to illustrate both concepts:\n\n```csharp\npublic class Car\n{\n    // Encapsulation: Private variable\n    private int speed;\n\n    // Abstraction: Public method to set speed\n    public void SetSpeed(int newSpeed)\n    {\n        if (newSpeed >= 0)\n        {\n            speed = newSpeed;\n        }\n    }\n\n    // Abstraction: Public method to get speed\n    public int GetSpeed()\n    {\n        return speed;\n    }\n}\n```\n\n- In this example, the **speed** variable is encapsulated (private), meaning it can't be accessed directly from outside the `Car` class. Instead, we provide public methods `SetSpeed` and `GetSpeed` to interact with it.\n- The methods abstract the complexity of how speed is stored and validated, allowing users to simply call these methods without needing to know how they work internally.\n\n## Quick Summary\n\n- **Abstraction** hides unnecessary details, simplifying system complexity.\n- **Encapsulation** restricts access to an object's internal state, protecting data integrity.\n- Both principles enhance code maintainability and readability.\n\n**Try This:** Can you create a simple class in C# that uses both abstraction and encapsulation? For example, design a `BankAccount` class with private variables for balance and methods to deposit and withdraw money. What would your methods look like?",
       "scores": {
-        "faithfulness": 0.85,
+        "faithfulness": 0.95,
         "answer_relevance": 0.95,
-        "context_precision": 0.75,
-        "faithfulness_reason": "The answer is largely grounded in the retrieved context (definitions of abstraction and encapsulation with car dashboard and C# examples), but the safe analogy for encapsulation is not explicitly in the materials and represents a minor unsupported addition.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by clearly distinguishing between abstraction and encapsulation with explanations and examples.",
-        "context_precision_reason": "The context provides explicit definitions and examples for both abstraction and encapsulation separately, but does not explicitly compare or contrast them as a discussion of their differences, which partially limits the sufficiency of context for a complete answer."
+        "context_precision": 0.85,
+        "faithfulness_reason": "The answer faithfully reproduces definitions and examples directly from the retrieved context with only minor editorial additions (the worked example begins but is incomplete).",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by explaining both concepts and clearly differentiating their purposes in OOP.",
+        "context_precision_reason": "The retrieved context provides explicit definitions of both abstraction and encapsulation with examples, though it notes these are covered together rather than comparing them as distinct concepts."
       }
     },
     {
@@ -922,14 +922,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "The programming language used throughout all CST2550 lab exercises is **C#**. \n\n## Explanation\n- In the lab exercises, tasks involve creating C# applications, such as setting up a **C# Console Application** and implementing classes like **Person** and **StudentManager**.\n- The exercises also cover various C# programming concepts, including **Object-Oriented Programming (OOP)** principles, data structures, and database connections using C#.\n\n## Quick Summary\n- The primary programming language is **C#**.\n- Lab exercises include creating console applications and classes.\n- Focus on **OOP** concepts and data structures.\n- Use of **Entity Framework Core** for database connections in later labs.\n\n**Try This:** Can you think of a simple application you would like to create using C#? What features would it have?",
+      "answer": "The programming language used throughout all CST2550 lab exercises is **C#**. \n\n## Explanation\n- C# is emphasized as a robust and type-safe language suitable for modern applications, particularly within the context of the .NET framework.\n- The lab exercises focus on various aspects of C# programming, including creating classes, implementing data structures, and connecting to databases.\n\n## Quick Summary\n- **C#** is the primary programming language.\n- It is used in all lab exercises.\n- The language is part of the **.NET framework**.\n\n**Try This:** Can you list some features of C# that make it suitable for software engineering?",
       "scores": {
-        "faithfulness": 0.85,
+        "faithfulness": 0.95,
         "answer_relevance": 1.0,
         "context_precision": 1.0,
-        "faithfulness_reason": "The answer correctly identifies C# as the programming language, but mentions 'Entity Framework Core for database connections in later labs' which is not present in the retrieved context, constituting a minor unsupported addition.",
-        "answer_relevance_reason": "The answer directly and fully addresses the question by identifying C# as the language used throughout all CST2550 lab exercises.",
-        "context_precision_reason": "The retrieved context explicitly shows C# usage across multiple labs (Lab 1, 2, 3) with code examples and objectives, directly supporting the answer to the question."
+        "faithfulness_reason": "The answer correctly states C# is the primary language used throughout CST2550 labs, fully supported by the retrieved context; the mention of 'connecting to databases' is not explicitly referenced in the provided context but is a minor addition.",
+        "answer_relevance_reason": "The answer directly and comprehensively addresses the question by identifying C# as the programming language used throughout all CST2550 lab exercises.",
+        "context_precision_reason": "The retrieved context directly contains evidence of C# usage across multiple labs (Lab 1, 2, 3) with specific code examples and explicit references to C# and .NET framework as the core technologies."
       }
     },
     {
@@ -946,7 +946,7 @@
         "num_relevant_chunks": 6,
         "distances": [
           0.5147,
-          0.5457,
+          0.5456,
           0.5537,
           0.6103,
           0.6272,
@@ -961,14 +961,14 @@
           "Week01.pdf"
         ]
       },
-      "answer": "The **Software Development Life Cycle (SDLC)** is a structured process used for developing software applications. It outlines the stages involved in the development, from initial planning to deployment and maintenance.\n\n## Explanation of SDLC\n\nIn this module, the SDLC is covered comprehensively, emphasizing its **phases** and importance in managing software projects effectively. The SDLC typically includes the following stages:\n\n1. **Planning**: This is where project goals are defined, and requirements are gathered. It sets the foundation for the entire project.\n2. **Design**: In this phase, the system architecture is designed, detailing how the software will function and interact with users and other systems.\n3. **Implementation**: This is the actual coding phase where developers write the software based on the design specifications.\n4. **Testing**: After implementation, the software is rigorously tested to identify and fix any bugs or issues. This phase ensures the software meets the required standards.\n5. **Deployment**: Once testing is complete, the software is deployed to the production environment where users can access it.\n6. **Maintenance**: This ongoing phase involves updating the software to fix issues, improve performance, or add new features based on user feedback.\n\nThe module emphasizes practical engagement with these phases through various lab exercises, where students will create project documentation, manage requirements, and practice each phase of the SDLC.\n\n## Worked Example\n\nLet's consider a simple project to illustrate the SDLC:\n\n1. **Planning**: A team decides to develop a library management system. They gather requirements from potential users.\n2. **Design**: They create a system architecture that includes modules for user management, book inventory, and lending processes.\n3. **Implementation**: The team writes the code for each module using C# and .NET.\n4. **Testing**: They perform unit tests on each module and integration tests on the entire system.\n5. **Deployment**: The library management system is deployed for use in the library.\n6. **Maintenance**: They regularly update the system based on user feedback and fix any reported bugs.\n\n## Quick Summary\n\n- The **SDLC** consists of planning, design, implementation, testing, deployment, and maintenance.\n- Each phase is crucial for ensuring the software is developed systematically and meets user needs.\n- This module provides hands-on experience with the SDLC through practical lab exercises.\n\n**Try This**: Can you outline a mini SDLC plan for a project you have in mind? What would be the first three steps you would take?",
+      "answer": "The **Software Development Life Cycle (SDLC)** is a structured process that guides the development of software applications from initial conception to deployment and maintenance.\n\n## Understanding SDLC\nThe SDLC consists of several phases, each with specific objectives and tasks. In this module, the SDLC is emphasized as a crucial framework for managing software projects effectively. Here’s a breakdown of the key phases:\n\n1. **Project Setup**: This phase involves creating a project charter, defining requirements, designing system architecture, and planning iterations. It's like laying the foundation for a house before building it.\n  \n2. **Implementation Planning**: Here, tasks are broken down into manageable pieces, and effort is estimated. This step ensures that the project is organized and that team members know their responsibilities.\n\n3. **Development**: The actual coding and implementation of the software occur in this phase, where developers write the code based on the planned architecture and requirements.\n\n4. **Testing**: This phase involves various testing methods, including unit testing, integration testing, and performance testing, to ensure that the software works as intended.\n\n5. **Deployment**: Once testing is complete, the software is deployed to the production environment, where users can access it.\n\n6. **Maintenance**: After deployment, the software requires ongoing support and updates to fix bugs or add new features based on user feedback.\n\n## Worked Example\nIn Lab 9 of this module, students practice the SDLC phases by:\n\n- **Creating a project charter**: This document outlines the project’s purpose and scope.\n- **Defining requirements**: Students gather and specify what the software needs to achieve.\n- **Designing system architecture**: They plan how different components of the software will interact.\n- **Planning iterations**: Breaking down the project into smaller, manageable tasks helps in tracking progress and making adjustments.\n\n## Quick Summary\n- **SDLC** is a structured process for software development.\n- Key phases include **Project Setup**, **Implementation Planning**, **Development**, **Testing**, **Deployment**, and **Maintenance**.\n- This module emphasizes practical application of SDLC through lab exercises.\n\nWhat part of the SDLC do you find most interesting or challenging? **Try This**: Create a simple project charter for a software application idea you have! What would be its purpose and requirements?",
       "scores": {
-        "faithfulness": 0.6,
-        "answer_relevance": 0.7,
-        "context_precision": 0.8,
-        "faithfulness_reason": "The answer provides a generic SDLC explanation that is mostly grounded in the context, but fabricates some details (e.g., the five generic phases) not explicitly mentioned; the context specifically lists only four SDLC phases in Lab 9.",
-        "answer_relevance_reason": "The answer addresses the question about what SDLC is and mentions it's covered in the module, but provides only partial details about how it's specifically covered in this module compared to the ground truth.",
-        "context_precision_reason": "The retrieved context contains Lab 9 details about SDLC phases (project charter, requirements, architecture, iteration planning) and mentions SDLC as a module topic, directly supporting an answer to this question."
+        "faithfulness": 0.85,
+        "answer_relevance": 0.9,
+        "context_precision": 0.75,
+        "faithfulness_reason": "The answer accurately reflects context information about SDLC phases (project charter, requirements, architecture, iteration planning) from Lab 9, but adds generic descriptions like 'Development' phase that aren't explicitly detailed in the retrieved context.",
+        "answer_relevance_reason": "The answer directly addresses what SDLC is and how it's covered in the module, covering the main phases practiced in Lab 9, though the answer appears truncated at the end.",
+        "context_precision_reason": "The retrieved context contains Lab 9 on SDLC with project setup tasks matching the ground truth, but lacks complete details about all phases; Sources 2-3 provide general SDLC overview but Source 1 Lab 8 is misidentified (it covers algorithms, not SDLC as the answer implies)."
       }
     },
     {
@@ -984,12 +984,12 @@
         "num_chunks_retrieved": 6,
         "num_relevant_chunks": 6,
         "distances": [
-          0.4533,
+          0.4532,
           0.5073,
           0.5797,
           0.5817,
           0.6015,
-          0.6305
+          0.6304
         ],
         "filenames": [
           "Week01.pdf",
@@ -1000,14 +1000,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "Moodle plays a significant role in the CST2550 module by serving as the primary platform for course materials and communication. Here’s a breakdown of its functions:\n\n## Role of Moodle in CST2550\n\n- **Course Materials Access**: Moodle provides students with access to teaching materials, including lecture notes, handbooks, and lab exercises.\n- **Coursework Submission**: Students can submit their coursework through Moodle, ensuring a streamlined process for both students and instructors.\n- **Online Tests**: The online test for the module is conducted on Moodle, featuring various question types like multiple choice and short answers.\n- **Communication**: It serves as a communication tool where students can check announcements, updates, and feedback from the instructors.\n- **Independent Study**: Students are encouraged to use Moodle for independent study activities, helping them to stay on track with their learning objectives.\n\n## Quick Summary\n\n- Moodle is the main platform for accessing course materials.\n- It facilitates coursework submission and online testing.\n- It enhances communication between students and instructors.\n- It supports independent study activities.\n\n**Try This**: Take a moment to log into Moodle and explore the available resources for the CST2550 module. What materials do you find most helpful for your studies?",
+      "answer": "Moodle plays a significant role in the CST2550 module as a central platform for various academic activities. Here’s a breakdown of its functions:\n\n## Role of Moodle in CST2550\n\n- **Course Materials**: Moodle is where students can access teaching materials related to the module, including lecture notes, lab exercises, and additional resources.\n  \n- **Communication**: It serves as a communication tool where students can receive announcements, updates, and feedback from the teaching team.\n\n- **Assessment**: Moodle is used for online tests, which account for 50% of the module's assessment. These tests include various question types such as multiple choice, short answer, and matching.\n\n- **Coursework Submission**: Students can submit their coursework through Moodle, ensuring a streamlined process for both submission and feedback.\n\n- **Independent Study**: It supports independent study by providing access to reading materials and resources that students can use to enhance their understanding of the topics covered in class.\n\n## Quick Summary\n\n- Moodle provides access to course materials and resources.\n- It facilitates communication between students and the teaching team.\n- Online tests and coursework submissions are managed through Moodle.\n- It supports independent study and learning activities.\n\n**Try This**: Check your Moodle page and identify at least three resources or announcements related to the CST2550 module. What do you find most helpful?",
       "scores": {
         "faithfulness": 0.6,
         "answer_relevance": 0.7,
         "context_precision": 0.5,
-        "faithfulness_reason": "The answer adds unsupported claims about coursework submission and communication functions not mentioned in the retrieved context; only online tests and teaching materials/Module Handbook access are explicitly confirmed.",
-        "answer_relevance_reason": "The answer addresses the question but includes several speculative functions beyond what the ground truth and context explicitly state about Moodle's role.",
-        "context_precision_reason": "The retrieved context mentions Moodle hosting online tests and providing teaching materials/Module Handbook access, but lacks detail on other claimed functions like coursework submission and communication features."
+        "faithfulness_reason": "The answer correctly identifies that Moodle hosts online tests and provides access to teaching materials, but includes unsupported claims about communication tools, coursework submission through Moodle, and independent study support that are not explicitly mentioned in the retrieved context.",
+        "answer_relevance_reason": "The answer addresses the question about Moodle's role but goes beyond what the ground truth specifies (online tests and Module Handbook access), adding inferential details not directly supported by the context.",
+        "context_precision_reason": "The retrieved context confirms Moodle hosts online tests and contains the Module Handbook, but does not explicitly detail other functions like coursework submission, communication features, or independent study support that the generated answer claims."
       }
     },
     {
@@ -1027,7 +1027,7 @@
           0.5805,
           0.589,
           0.5893,
-          0.6072,
+          0.6073,
           0.616
         ],
         "filenames": [
@@ -1039,14 +1039,14 @@
           "Week01.pdf"
         ]
       },
-      "answer": "The module approaches **algorithms** and **data structures** through a structured curriculum that emphasizes practical implementation and analysis. Here’s a breakdown of how this is done:\n\n## Overview of Approach\n\n1. **Core Concepts**: The module covers essential programming concepts in C#, focusing on algorithms and data structures. This includes understanding timing algorithms, analyzing algorithms, and using **asymptotic notation** to evaluate performance.\n\n2. **Hands-On Implementation**: Students engage in lab exercises that require them to implement various data structures and algorithms. For example, students will work on:\n   - **Hash Tables**: Implementing a hash table with methods for adding, removing, and retrieving values.\n   - **Graphs**: Creating a graph structure, adding vertices and edges, and performing graph traversal techniques like Depth-First Search (DFS) and Breadth-First Search (BFS).\n\n3. **Performance Comparison**: The module includes tasks that involve creating large datasets and comparing the operational speeds of different data structures. This helps students understand the efficiency of various algorithms in practical scenarios.\n\n## Worked Example\n\n### Hash Table Implementation\nHere’s a brief example of how a hash table might be implemented in C#:\n\n```csharp\npublic class SimpleHashTable<TKey, TValue> {\n    private LinkedList<KeyValuePair<TKey, TValue>>[] buckets;\n    private int size;\n\n    public void Add(TKey key, TValue value) {\n        // Logic to add key-value pair\n    }\n\n    public bool Remove(TKey key) {\n        // Logic to remove key\n    }\n\n    public TValue Get(TKey key) {\n        // Logic to retrieve value by key\n    }\n\n    public bool Contains(TKey key) {\n        // Logic to check if key exists\n    }\n}\n```\n\n### Graph Implementation\nSimilarly, a graph can be structured like this:\n\n```csharp\npublic class Graph<T> {\n    private Dictionary<T, List<T>> adjacencyList;\n\n    public void AddVertex(T vertex) {\n        // Logic to add vertex\n    }\n\n    public void AddEdge(T source, T destination) {\n        // Logic to add edge\n    }\n\n    public List<T> GetNeighbors(T vertex) {\n        // Logic to get neighbors\n    }\n}\n```\n\n## Quick Summary\n\n- The module emphasizes practical implementation of algorithms and data structures.\n- Key topics include hash tables and graph structures.\n- Students perform hands-on tasks, including performance comparisons.\n- Understanding of asymptotic notation is developed for analyzing algorithms.\n\n## Try This\nCan you create a simple method to add a vertex in the graph implementation? What parameters would you need, and how would you handle duplicates? Give it a try!",
+      "answer": "The module approaches **algorithms** and **data structures** through a structured learning path that emphasizes both theoretical understanding and practical implementation. Here’s a breakdown of how these concepts are integrated into the coursework:\n\n## Overview of Module Approach\n\n- **Timing Algorithms**: The module includes analysis of algorithms, which helps students understand how to measure the efficiency of different algorithms using time complexity.\n- **Asymptotic Notation**: Students learn to express the performance of algorithms in terms of big O notation, which is crucial for evaluating algorithm efficiency as input size grows.\n- **Data Structures**: The curriculum covers various data structures, including arrays, lists, hash tables, and graphs, focusing on their implementation and performance characteristics.\n\n## Practical Implementation\n\n- **Lab Exercises**: Students engage in hands-on lab exercises where they implement data structures like hash tables and graphs. For example, in Lab 3, students create a hash table and a graph structure, allowing them to apply theoretical concepts practically.\n- **Graph Algorithms**: The module includes specific tasks like implementing graph traversal algorithms, such as **Depth-First Search (DFS)** and **Breadth-First Search (BFS)**, which are essential for navigating graph structures.\n- **Performance Comparison**: Students are tasked with creating large datasets to compare the operation speeds of different data structures, enhancing their understanding of efficiency in real-world applications.\n\n## Worked Example\n\nLet’s look at a simple implementation of a hash table based on the class materials:\n\n```csharp\npublic class SimpleHashTable<TKey, TValue> {\n    private LinkedList<KeyValuePair<TKey, TValue>>[] buckets;\n    private int size;\n\n    public void Add(TKey key, TValue value) {\n        // Implementation for adding a key-value pair\n    }\n\n    public bool Remove(TKey key) {\n        // Implementation for removing a key-value pair\n    }\n\n    public TValue Get(TKey key) {\n        // Implementation for retrieving a value by key\n    }\n\n    public bool Contains(TKey key) {\n        // Implementation to check if a key exists\n    }\n}\n```\n\nIn this example, students learn how to manage collision resolution and understand the underlying mechanics of hash tables.\n\n## Quick Summary\n\n- The module emphasizes both theoretical and practical aspects of algorithms and data structures.\n- Key topics include timing algorithms, asymptotic notation, and various data structures.\n- Hands-on lab exercises reinforce learning through implementation and performance comparison.\n- Students engage with graph algorithms and hash tables to deepen their understanding.\n\n**Try This**: Can you implement a method in the `SimpleHashTable` class to retrieve a value by its key? Think about how you would handle cases where the key might not exist!",
       "scores": {
-        "faithfulness": 0.95,
-        "answer_relevance": 1.0,
-        "context_precision": 1.0,
-        "faithfulness_reason": "The answer is almost entirely grounded in the retrieved context, with minor incompleteness (the answer cuts off mid-section) but no hallucinations or unsupported claims.",
-        "answer_relevance_reason": "The answer directly and comprehensively addresses how the module approaches algorithms and data structures, covering timing, analysis, implementation, and performance comparison.",
-        "context_precision_reason": "The retrieved context contains extensive relevant information about the module's approach to algorithms and data structures, including timing algorithms, asymptotic notation, hash tables, graphs, and performance comparisons."
+        "faithfulness": 0.85,
+        "answer_relevance": 0.9,
+        "context_precision": 0.8,
+        "faithfulness_reason": "The answer is mostly grounded in the retrieved context (timing algorithms, asymptotic notation, data structures, Lab 3 hash tables and graphs), but mentions 'arrays' and 'lists' which are not explicitly found in the provided context.",
+        "answer_relevance_reason": "The answer directly addresses how the module approaches algorithms and data structures, covering both theoretical concepts and practical implementation through labs, which aligns well with the question.",
+        "context_precision_reason": "The retrieved context contains relevant information about the module's coverage of timing algorithms, algorithmic analysis, and Lab 3 on hash tables and graphs, though it does not fully specify the breadth of data structures covered or provide detailed explanation of asymptotic notation."
       }
     },
     {
@@ -1078,14 +1078,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "I do not have specific information about that in your class materials yet. Please ask your teacher to add more resources. \n\nIn the meantime, how about we explore the topics covered in the online test? Would you like to go over some of the key concepts?",
+      "answer": "I do not have specific information about that in your class materials yet. Please ask your teacher to add more resources. \n\nIn the meantime, how about we discuss what topics might be covered in the online test? Would you like to go over some key concepts?",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 0.9,
         "context_precision": 0.0,
-        "faithfulness_reason": "The model honestly admits the information is not available in the class materials, which is the correct approach for unanswerable questions.",
-        "answer_relevance_reason": "The model directly addresses the question by acknowledging it cannot be answered from available materials, though the follow-up suggestion is slightly tangential.",
-        "context_precision_reason": "The retrieved context describes the online test format, weighting, and question types but contains no information about minimum pass marks, making it insufficient for answering this specific question."
+        "faithfulness_reason": "The model honestly admits the information is not available in the retrieved context, without fabricating a pass mark.",
+        "answer_relevance_reason": "The model directly addresses the unanswerable nature of the question and appropriately acknowledges the lack of information.",
+        "context_precision_reason": "The retrieved context describes the online test format and assessment weighting but contains no information about minimum pass marks."
       }
     },
     {
@@ -1117,14 +1117,14 @@
           "Week01.pdf"
         ]
       },
-      "answer": "The submission deadline for the CST2550 coursework is due **one week after Easter**. It's advised to finish uploading before the deadline and to submit early. \n\n## Quick Summary\n- Coursework due one week after Easter.\n- Submit early to avoid last-minute issues.\n- Group coursework, but individual marks will be given.\n\n**Try This:** Can you find out when Easter falls this year? That will help you determine the exact submission date!",
+      "answer": "The submission deadline for the CST2550 coursework is due **one week after Easter**. It's a good idea to finish uploading your work before the deadline to avoid any last-minute issues. \n\n## Quick Summary\n- Coursework is due one week after Easter.\n- Submit early to avoid problems.\n- Group coursework with individual marks.\n\n**Try This:** Can you create a reminder for yourself to check the exact date of Easter this year? This will help you plan your submission!",
       "scores": {
         "faithfulness": 1.0,
-        "answer_relevance": 0.9,
-        "context_precision": 0.5,
-        "faithfulness_reason": "The answer accurately uses only information from the retrieved context (Source 2 states 'Due week after Easter'), with no fabrication or unsupported claims.",
-        "answer_relevance_reason": "The answer directly addresses the question about the submission deadline, though the exact date cannot be provided since only a relative date (week after Easter) is given in the materials.",
-        "context_precision_reason": "The context contains the deadline information ('Due week after Easter') but does not provide the actual calendar date, making it only partially sufficient for a complete answer."
+        "answer_relevance": 1.0,
+        "context_precision": 1.0,
+        "faithfulness_reason": "The answer directly quotes information from the retrieved context ('Due week after Easter') and does not add unsupported claims.",
+        "answer_relevance_reason": "The answer directly addresses the question about the CST2550 coursework submission deadline by providing the specific timing information available.",
+        "context_precision_reason": "The retrieved context contains the exact deadline information needed to answer the question, stated clearly in Source 2 under 'The Coursework' section."
       }
     },
     {
@@ -1142,7 +1142,7 @@
         "distances": [
           0.517,
           0.5281,
-          0.5473,
+          0.5472,
           0.6558,
           0.7096,
           0.71
@@ -1156,14 +1156,14 @@
           "Week01.pdf"
         ]
       },
-      "answer": "I do not have specific information about that in your class materials yet. Please ask your teacher to add more resources. \n\nIn the meantime, would you like to explore some C# programming concepts or perhaps work on a simple coding exercise?",
+      "answer": "I do not have specific information about that in your class materials yet. Please ask your teacher to add more resources. \n\nIn the meantime, what aspect of C# are you most interested in? Maybe we can explore its features or how to set up a development environment together!",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 0.9,
         "context_precision": 0.0,
-        "faithfulness_reason": "The model honestly admits the information is not in the provided class materials, without fabricating any historical facts about C# release dates.",
-        "answer_relevance_reason": "The model directly acknowledges it cannot answer the question from available materials and appropriately suggests alternatives, which is the correct behavior for unanswerable questions.",
-        "context_precision_reason": "The retrieved context focuses on C# features, .NET framework architecture, and development environment setup, but contains no information about the historical release date of C#."
+        "faithfulness_reason": "The model honestly admits the information is not available in the class materials, without fabricating any historical facts about C# release dates.",
+        "answer_relevance_reason": "The model directly addresses the unanswerable nature of the question and appropriately declines to speculate, though the follow-up suggestions are slightly tangential.",
+        "context_precision_reason": "The retrieved context contains only C# feature documentation and .NET framework information, with no historical release date information present."
       }
     },
     {
@@ -1183,8 +1183,8 @@
           0.6005,
           0.6009,
           0.6032,
-          0.6617,
-          0.6921
+          0.6618,
+          0.6922
         ],
         "filenames": [
           "Week01.pdf",
@@ -1195,14 +1195,14 @@
           "All-labs-exercises.pdf"
         ]
       },
-      "answer": "I do not have specific information about that in your class materials yet. Please ask your teacher to add more resources. \n\nIn the meantime, how are you finding the course so far? Is there a particular topic you’re excited to dive into?",
+      "answer": "I do not have specific information about that in your class materials yet. Please ask your teacher to add more resources. \n\nIn the meantime, how are you finding the course so far? Are there any topics you're particularly excited about?",
       "scores": {
         "faithfulness": 1.0,
         "answer_relevance": 0.9,
         "context_precision": 1.0,
-        "faithfulness_reason": "The model honestly admits that the information is not available in the retrieved context, without fabricating enrollment numbers.",
-        "answer_relevance_reason": "The answer directly addresses the unanswerable nature of the question, though the suggestion to ask the teacher and follow-up questions are slightly tangential.",
-        "context_precision_reason": "The retrieved context is module materials that contain no enrollment data, correctly confirming the information is not present in the class materials."
+        "faithfulness_reason": "The model honestly admits that the information is not available in the provided class materials, without fabricating any enrollment numbers.",
+        "answer_relevance_reason": "The answer directly addresses the question by clarifying that the requested information is not in the available materials, which aligns with the ground truth that enrollment data is not mentioned.",
+        "context_precision_reason": "The retrieved context contains only course structure and pedagogical details for CST2550 and contains no student enrollment information, correctly supporting the conclusion that the answer cannot be found in the materials."
       }
     }
   ]
