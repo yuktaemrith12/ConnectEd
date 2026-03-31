@@ -95,10 +95,12 @@ pnpm-debug.log*
 .gemini/
 
 # ── Documentation / Planning (internal) ───────────
-ai_features/
 implementation_plans/
 *_implementation_plan*.md
 *_plan_v*.md
+
+# ── Research / Training Outputs ───────────────────
+emotion_detection_model/research/runs/
 
 # ── 3D Assets (large binary files) ────────────────
 frontend/public/3d_models/

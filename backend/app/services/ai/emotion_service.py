@@ -1,14 +1,14 @@
 """
 Emotion detection service.
 
-Uses a YOLO-based model (`emotion_det_model/best.pt`) to classify student
+Uses a YOLO-based model (`emotion_detection_model/best.pt`) to classify student
 emotional states from video frames at 1-second intervals.
 
 Detected emotions: engagement, confusion, boredom, frustration, understanding
 
 Prerequisites (when model is available):
   pip install ultralytics opencv-python-headless
-  Place the trained model at: <project_root>/emotion_det_model/best.pt
+  Place the trained model at: <project_root>/emotion_detection_model/best.pt
 
 Falls back gracefully (logs a warning, returns empty list) when:
   - The model file is not found.
@@ -17,19 +17,19 @@ Falls back gracefully (logs a warning, returns empty list) when:
 
 import logging
 import os
-from typing import List, Optional
+from typing import List
 
 logger = logging.getLogger(__name__)
 
 EMOTION_LABELS = ["engagement", "confusion", "boredom", "frustration", "understanding"]
 
-# Model path: <project_root>/emotion_det_model/best.pt
+# Model path: <project_root>/emotion_detection_model/best.pt
 # __file__ = backend/app/services/ai/emotion_service.py  (4 dirs deep inside backend)
 # One extra dirname gets us out of backend/ to the ConnectEd project root.
 _PROJECT_ROOT = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 )
-MODEL_PATH = os.path.join(_PROJECT_ROOT, "emotion_det_model", "best.pt")
+MODEL_PATH = os.path.join(_PROJECT_ROOT, "emotion_detection_model", "best.pt")
 
 _model = None   # lazy-loaded once
 

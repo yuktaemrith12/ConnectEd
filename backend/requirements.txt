@@ -1,9 +1,8 @@
 fastapi==0.115.5
 uvicorn[standard]==0.32.1
 sqlalchemy==2.0.36
-pydantic==2.10.2
-pydantic-settings==2.6.1
 pydantic[email]==2.10.2
+pydantic-settings==2.6.1
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 python-multipart==0.0.18
@@ -27,8 +26,8 @@ soundfile>=0.12.0
 torch>=2.0.0
 torchaudio>=2.0.0
 # Video Conferencing — LiveKit
-livekit-api
-# Emotion detection (requires model file at emotion_det_model/best.pt)
+livekit-api>=0.7.0
+# Emotion detection (requires model file at emotion_detection_model/best.pt)
 ultralytics>=8.0.0
 opencv-python-headless>=4.8.0
 # bundled ffmpeg binary for MP4 → WAV audio extraction (no system ffmpeg needed)

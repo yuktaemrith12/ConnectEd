@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "ConnectEd"
     DEBUG: bool = True
 
-    # Database — individual components (used by seed.py and for reference)
+    # Database — individual components (used by manage_db.py and for reference)
     DB_HOST: str = "127.0.0.1"
     DB_PORT: int = 3306
     DB_USER: str = "root"

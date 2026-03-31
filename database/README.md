@@ -1,78 +1,96 @@
-# ConnectEd — Database Migration System
+# ConnectEd — Database
 
 ## Folder Structure
 
 ```
 database/
 ├── README.md              ← You are here
-├── RUN_ALL.sql            ← Master script (fresh install)
-├── VERIFY.sql             ← Smoke-test checks
-├── migrations/            ← Schema definitions (dependency-ordered)
-│   ├── 01_users_admin.sql    roles, users, audit_logs
-│   ├── 02_academics.sql      subjects, classes, class_subjects
-│   ├── 03_profiles.sql       student/teacher profiles, junctions
-│   ├── 04_timetable.sql      timetable_entries
-│   ├── 05_attendance.sql     attendance_records
-│   ├── 06_fees.sql           fee_plans, payments, installments, notifications
-│   └── 07_events.sql         events, event_target_classes
-└── seeds/                 ← Reference / demo data
-    ├── 01_roles.sql          admin, teacher, student, parent
-    ├── 02_users.sql          4 login accounts (password: 12345)
-    └── 03_academics.sql      9 subjects + 10 classes
+├── RUN_ALL.sql            ← Master script: creates DB + runs all 16 migrations + 6 seeds
+├── VERIFY.sql             ← Smoke-test queries to run after setup
+├── manage_db.py           ← Python CLI wrapper (reads backend/.env automatically)
+│
+├── migrations/            ← Schema definitions, ordered 01 → 16
+│   ├── 01_users_admin.sql         roles, users, audit_logs
+│   ├── 02_academics.sql           subjects, classes, class_subjects
+│   ├── 03_profiles.sql            student/teacher profiles, parent_students, teacher_subjects
+│   ├── 04_timetable.sql           class_subject_teachers, locations, timetable_entries
+│   ├── 05_attendance.sql          attendance_records, attendance_sessions, session_attendance_records
+│   ├── 06_fees.sql                academic_periods, fee_plans, fee_payments, installments
+│   ├── 07_events.sql              events, event_target_classes
+│   ├── 08_homework.sql            homework, homework_attachments, homework_completions
+│   ├── 09_assignments_grading.sql assignments, submissions, ai_reviews (+ attachments)
+│   ├── 10_messaging.sql           conversations, conversation_participants, messages
+│   ├── 11_whatsapp_notifications.sql  whatsapp_notification_settings, sent_log, delivery_log, optouts
+│   ├── 12_ai_study_materials.sql  ai_study_materials (transcript → notes pipeline)
+│   ├── 13_ai_tutor.sql            ai_tutors, chapters, documents, chat, vector_chunks, infographics
+│   ├── 14_video_conferencing.sql  meetings, recordings, emotion_logs, analytics
+│   ├── 15_consent_management.sql  consent_records, consent_audit_logs
+│   └── 16_whatsapp_webhook.sql    whatsapp_delivery_log, whatsapp_optouts
+│
+└── seeds/                 ← Demo data (run after migrations)
+    ├── 01_roles.sql           admin, teacher, student, parent
+    ├── 02_users.sql           4 demo accounts (password: 12345)
+    ├── 03_academics.sql       9 subjects + 10 classes
+    ├── 04_timetable.sql       class↔subject mappings, teacher assignments, timetable slots
+    ├── 05_locations.sql       15 sample locations (classrooms, labs, halls)
+    └── 06_parent_student.sql  student profile + parent↔student link
 ```
 
-## Run Order (dependency chain)
+## Dependency Chain
 
 ```
-01_users_admin  →  02_academics  →  03_profiles  →  04_timetable
-                                        ↓
-                                  05_attendance
-                                  06_fees
-                    02_academics  →  07_events
+01_users_admin → 02_academics → 03_profiles → 04_timetable → 05_attendance
+                                             → 06_fees
+                 02_academics → 07_events
+
+08_homework → 09_assignments_grading
+10_messaging → 11_whatsapp_notifications → 16_whatsapp_webhook
+12_ai_study_materials → 13_ai_tutor
+14_video_conferencing
+15_consent_management
 ```
 
-Seeds must run **after** migrations: `01_roles` → `02_users` → `03_academics`.
+Seeds run after all migrations: `01 → 02 → 03 → 04 → 05 → 06`
 
 ## Fresh Install
 
-1. Open **MySQL Workbench** (or CLI).
-2. Open `database/RUN_ALL.sql`.
-3. Execute All — this creates the `connected_app` database, runs all migrations, and inserts seed data.
-4. Open `database/VERIFY.sql` and run it to confirm everything is correct.
+**Option A — MySQL Workbench:**
+1. File > Open SQL Script > `database/RUN_ALL.sql`
+2. Execute All (⚡)
+3. Open `database/VERIFY.sql` and run to confirm.
 
-**CLI alternative:**
+**Option B — CLI:**
 ```bash
-cd ConnectEd
 mysql -u root -p < database/RUN_ALL.sql
 mysql -u root -p connected_app < database/VERIFY.sql
 ```
 
+**Option C — manage_db.py:**
+```bash
+python database/manage_db.py --setup
+python database/manage_db.py --verify
+```
+Reads credentials automatically from `backend/.env`.
+
 ## Incremental Updates
 
-If the database already exists and you only need to apply a specific migration:
-
-1. Open the individual migration file (e.g. `migrations/06_fees.sql`).
-2. Run it in MySQL Workbench.
-
-All scripts use `CREATE TABLE IF NOT EXISTS`, so re-running is safe for tables. For column additions in the future, use the `INFORMATION_SCHEMA` pattern (see legacy files for examples).
+To apply a single migration to an existing database, open the relevant file and run it directly. All scripts use `CREATE TABLE IF NOT EXISTS`, so re-running is safe.
 
 ## Adding Future Migrations
 
-1. Create a new file: `migrations/08_your_domain.sql`.
-2. Start with `USE connected_app;`.
-3. Use `CREATE TABLE IF NOT EXISTS` for all new tables.
-4. Add a `SOURCE` line in `RUN_ALL.sql` in the correct dependency position.
-5. If seed data is needed, add a new file in `seeds/`.
+1. Create `migrations/17_your_feature.sql`
+2. Start with `USE connected_app;`
+3. Use `CREATE TABLE IF NOT EXISTS` throughout
+4. Add a `SOURCE` line in `RUN_ALL.sql`
 
-## Seed Password
+## Demo Credentials
 
-All 4 demo users share password **`12345`**, hashed with bcrypt cost 12. To regenerate:
+All 4 demo users share password **`12345`** (bcrypt cost 12).
 
-```python
-import bcrypt
-print(bcrypt.hashpw(b'12345', bcrypt.gensalt(12)).decode())
-```
+| Email | Role |
+|---|---|
+| yuktae@admin.connected.com | admin |
+| emmaak@teacher.connected.com | teacher |
+| renveerr@student.connected.com | student |
+| oormilae@parent.connected.com | parent |
 
-## Legacy Files
-
-The old migration files (`02_admin_features.sql`, `03_user_management_upgrade.sql`, etc.) have been consolidated into this modular structure. They are kept in the repository for reference but should **not** be run on new installations — use `RUN_ALL.sql` instead.
