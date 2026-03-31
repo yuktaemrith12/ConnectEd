@@ -79,30 +79,30 @@ The platform is built as a dissertation project, with a rigorous evaluation suit
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                     CLIENT LAYER (Browser)                      │
-│   React 18 + TypeScript + Vite · Role-based SPA (4 Portals)    │
+│   React 18 + TypeScript + Vite · Role-based SPA (4 Portals)     │
 └──────────────────────────┬──────────────────────────────────────┘
                            │  REST / HTTP
 ┌──────────────────────────▼──────────────────────────────────────┐
 │               BACKEND API  (FastAPI / Uvicorn)                  │
-│                                                                  │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────┐  │
-│  │   Auth +   │  │   Core     │  │  AI        │  │  Video   │  │
-│  │   RBAC     │  │ Management │  │ Services   │  │LiveKit   │  │
-│  │   (JWT)    │  │(Admin/Teach│  │ (RAG/TTS/  │  │ Egress   │  │
-│  │            │  │ /Student/  │  │ Emotion)   │  │Recording)│  │
-│  │            │  │ Parent)    │  │            │  │          │  │
-│  └────────────┘  └────────────┘  └────────────┘  └──────────┘  │
-│                           │                                      │
+│                                                                 │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────┐   │
+│  │   Auth +   │  │   Core     │  │  AI        │  │  Video   │   │
+│  │   RBAC     │  │ Management │  │ Services   │  │LiveKit   │   │
+│  │   (JWT)    │  │(Admin/Teach│  │ (RAG/TTS/  │  │ Egress   │   │
+│  │            │  │ /Student/  │  │ Emotion)   │  │Recording)│   │
+│  │            │  │ Parent)    │  │            │  │          │   │
+│  └────────────┘  └────────────┘  └────────────┘  └──────────┘   │
+│                           │                                     │
 │              SQLAlchemy ORM (async-compatible)                  │
 └──────────────────────────┬──────────────────────────────────────┘
                            │
           ┌────────────────┴────────────────┐
           │                                  │
-┌─────────▼──────────┐          ┌────────────▼───────────┐
+┌─────────▼──────────┐          ┌────────────▼─────────── ┐
 │  MySQL 8.x Database│          │  ChromaDB (Vector Store)│
 │  (connected_app)   │          │  (AI Tutor Embeddings)  │
 │  16 Migration Files│          │  text-embedding-3-small │
-└────────────────────┘          └────────────────────────┘
+└────────────────────┘          └──────────────────────── ┘
 
 External Services: Meta WhatsApp Cloud API · Anthropic Claude
                    OpenAI GPT-4o / text-embedding · Google Gemini
