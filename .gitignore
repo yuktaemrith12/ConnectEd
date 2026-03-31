@@ -101,6 +101,7 @@ implementation_plans/
 
 # ── Research / Training Outputs ───────────────────
 emotion_detection_model/research/runs/
+docs/
 
 # ── 3D Assets (large binary files) ────────────────
 frontend/public/3d_models/
