@@ -51,7 +51,7 @@ from sqlalchemy.orm import relationship
 from app.core.database import Base
 
 
-# ── Attendance ────────────────────────────────────────────────────────────────
+# Attendance
 
 class AttendanceStatusEnum(str, enum.Enum):
     Present = "Present"
@@ -79,7 +79,7 @@ class AttendanceRecord(Base):
     marked_by = relationship("User", foreign_keys=[marked_by_id])
 
 
-# ── Fees ──────────────────────────────────────────────────────────────────────
+# Fees
 
 class PaymentMethodEnum(str, enum.Enum):
     Cash          = "Cash"
@@ -164,7 +164,7 @@ class FeeNotificationEvent(Base):
     fee_plan = relationship("FeePlan", foreign_keys=[fee_plan_id])
 
 
-# ── Calendar / Events ─────────────────────────────────────────────────────────
+# Calendar / Events
 
 class EventTypeEnum(str, enum.Enum):
     Academic = "Academic"
@@ -213,7 +213,7 @@ class EventTargetClass(Base):
     class_ = relationship("Class", foreign_keys=[class_id])
 
 
-# ── Locations ─────────────────────────────────────────────────────────────────
+# Locations
 
 class Location(Base):
     __tablename__ = "locations"
@@ -227,7 +227,7 @@ class Location(Base):
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
 
-# ── Session-based Attendance (Migration 10) ───────────────────────────────────
+# Session-based Attendance (Migration 10)
 
 class SessionStatusEnum(str, enum.Enum):
     OPEN      = "OPEN"
@@ -293,7 +293,7 @@ class SessionAttendanceRecord(Base):
     marker  = relationship("User", foreign_keys=[marked_by])
 
 
-# ── Homework ─────────────────────────────────────────────────────────────────
+# Homework
 
 class HomeworkStatusEnum(str, enum.Enum):
     DRAFT     = "DRAFT"
@@ -356,7 +356,7 @@ class HomeworkCompletion(Base):
     student  = relationship("User", foreign_keys=[student_id])
 
 
-# ── Assignments + Grading (Migration 12) ─────────────────────────────────────
+# Assignments + Grading (Migration 12)
 
 class AssignmentTypeEnum(str, enum.Enum):
     ONLINE  = "ONLINE"
@@ -482,7 +482,7 @@ class AIReview(Base):
     triggered_by_user = relationship("User", foreign_keys=[triggered_by])
 
 
-# ── Messaging ─────────────────────────────────────────────────────────────────
+# Messaging
 
 class ConversationTypeEnum(str, enum.Enum):
     individual = "individual"
@@ -543,7 +543,7 @@ class Message(Base):
     sender       = relationship("User", foreign_keys=[sender_id])
 
 
-# ── WhatsApp Notification Settings (Migrations 15, 16, 18) ───────────────────
+# WhatsApp Notification Settings (Migrations 15, 16, 18)
 
 class WhatsAppNotificationSetting(Base):
     __tablename__ = "whatsapp_notification_settings"
@@ -586,7 +586,7 @@ class WhatsAppSentLog(Base):
     )
 
 
-# ── WhatsApp Webhook Support (Migration 23) ───────────────────────────────────
+# WhatsApp Webhook Support (Migration 23)
 
 class WhatsAppDeliveryLog(Base):
     __tablename__ = "whatsapp_delivery_log"
@@ -616,7 +616,7 @@ class WhatsAppOptout(Base):
     opted_out_at  = Column(DateTime, server_default=func.now())
 
 
-# ── AI Study Materials (Migration 17) ─────────────────────────────────────────
+# AI Study Materials (Migration 17)
 
 class AIStudyMaterialStatusEnum(str, enum.Enum):
     processing = "processing"
@@ -647,7 +647,7 @@ class AIStudyMaterial(Base):
     student = relationship("User", foreign_keys=[student_id])
 
 
-# ── Video Conferencing (Migration 21) ─────────────────────────────────────────
+# Video Conferencing (Migration 21)
 
 class MeetingStatusEnum(str, enum.Enum):
     active    = "active"
@@ -721,7 +721,7 @@ class MeetingAnalytics(Base):
     meeting = relationship("Meeting", back_populates="analytics")
 
 
-# ── Consent Management (Migration 22) ─────────────────────────────────────────
+# Consent Management (Migration 22)
 
 class ConsentRecord(Base):
     __tablename__ = "consent_records"

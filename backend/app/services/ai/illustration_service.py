@@ -18,7 +18,7 @@ from openai import OpenAI
 from app.core.config import settings
 
 
-# ── Step 1: Concept planning ──────────────────────────────────────────────────
+# Step 1: Concept planning
 
 def _plan_visuals_sync(notes: str) -> list[dict]:
     """
@@ -77,7 +77,7 @@ def _plan_visuals_sync(notes: str) -> list[dict]:
     return []
 
 
-# ── Step 2: Single-image generation ──────────────────────────────────────────
+# Step 2: Single-image generation
 
 def _generate_one_image_sync(prompt: str) -> str:
     """
@@ -113,7 +113,7 @@ def _generate_one_image_sync(prompt: str) -> str:
     return img_resp.data[0].url
 
 
-# ── Public API ────────────────────────────────────────────────────────────────
+# Public API
 
 async def generate_multi_illustrations(notes: str) -> list[dict]:
     """

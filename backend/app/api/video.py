@@ -58,7 +58,7 @@ _teacher = Depends(require_role("teacher"))
 _any_user = Depends(get_current_user)
 
 
-# ─── Helpers ─────────────────────────────────────────────────────────────────
+# Helpers
 
 def _meeting_to_read(meeting: Meeting, token: Optional[str] = None) -> MeetingRead:
     return MeetingRead(
@@ -93,7 +93,7 @@ def _meeting_to_read(meeting: Meeting, token: Optional[str] = None) -> MeetingRe
     )
 
 
-# ─── Endpoints ───────────────────────────────────────────────────────────────
+# Endpoints
 
 @router.post("/meetings", response_model=MeetingRead)
 def start_meeting(
@@ -274,7 +274,7 @@ def join_meeting(
     return get_meeting(meeting_id, response, db, current_user)
 
 
-# ─── Analytics ────────────────────────────────────────────────────────────────
+# Analytics
 
 @router.get("/meetings/{meeting_id}/transcript")
 def get_meeting_transcript(
@@ -412,7 +412,7 @@ def trigger_processing(
     return {"status": "processing_queued", "recording_id": recording.id}
 
 
-# ─── Webhook ──────────────────────────────────────────────────────────────────
+# Webhook
 
 @router.post("/webhook")
 async def livekit_webhook(

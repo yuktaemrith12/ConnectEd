@@ -391,7 +391,7 @@ export default function StudentHomework() {
         )}
       </div>
 
-      {/* ── Right Drawer ─────────────────────────────────────────────────── */}
+      {/* Right Drawer */}
       <AnimatePresence>
         {drawerItem && (
           <>

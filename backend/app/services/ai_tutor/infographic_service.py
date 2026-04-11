@@ -101,7 +101,7 @@ def generate_or_reuse(
     normalized = _normalize_concept(visual_intent)
     concept_hash = _compute_hash(tutor_id, normalized)
 
-    # ── 1. Cache hit: find an existing infographic for this concept ────────────
+    # 1. Cache hit: find an existing infographic for this concept
     existing = (
         db.query(AiTutorInfographic)
         .filter(
@@ -131,7 +131,7 @@ def generate_or_reuse(
         db.refresh(cached)
         return cached
 
-    # ── 2. Cache miss: generate a new image ───────────────────────────────────
+    # 2. Cache miss: generate a new image
     full_prompt = f"{visual_intent.strip()}. {_STYLE_GUARDRAIL}"
     accessibility_alt = f"Academic diagram: {normalized}"
 
@@ -141,7 +141,7 @@ def generate_or_reuse(
         logger.warning("DALL-E 3 generation failed: %s", exc)
         return None
 
-    # ── 3. Persist placeholder row first to obtain an id ─────────────────────
+    # 3. Persist placeholder row first to obtain an id
     row = AiTutorInfographic(
         tutor_id           = tutor_id,
         message_id         = message_id,
@@ -153,7 +153,7 @@ def generate_or_reuse(
     db.add(row)
     db.flush()  # get row.id without committing
 
-    # ── 4. Save PNG ────────────────────────────────────────────────────────────
+    # 4. Save PNG
     folder = _infographic_dir(tutor_id)
     filename = f"{row.id}_{uuid.uuid4().hex[:8]}.png"
     path = os.path.join(folder, filename)

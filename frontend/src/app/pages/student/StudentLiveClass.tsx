@@ -70,7 +70,7 @@ export default function StudentLiveClass() {
   const token = meeting?.participant_token ?? "";
   const isStubToken = token.startsWith("stub:");
 
-  // ── Class ended (room closed by teacher after we were connected) ─────────
+  // Class ended (room closed by teacher after we were connected)
   if (roomEnded) {
     return (
       <DashboardLayout role="student" skipConsent>
@@ -91,7 +91,7 @@ export default function StudentLiveClass() {
     );
   }
 
-  // ── Connection error (server unreachable) ─────────────────────────────────
+  // Connection error (server unreachable)
   if (connError) {
     return (
       <DashboardLayout role="student" skipConsent>
@@ -118,7 +118,7 @@ export default function StudentLiveClass() {
     );
   }
 
-  // ── Loading ──────────────────────────────────────────────────────────────
+  // Loading
   if (loading) {
     return (
       <DashboardLayout role="student" skipConsent>
@@ -130,7 +130,7 @@ export default function StudentLiveClass() {
     );
   }
 
-  // ── Error / not found ────────────────────────────────────────────────────
+  // Error / not found
   if (error || !meeting) {
     return (
       <DashboardLayout role="student" skipConsent>
@@ -153,7 +153,7 @@ export default function StudentLiveClass() {
     );
   }
 
-  // ── Live Room ─────────────────────────────────────────────────────────────
+  // Live Room
   return (
     <DashboardLayout role="student" skipConsent>
       <div className="space-y-4">

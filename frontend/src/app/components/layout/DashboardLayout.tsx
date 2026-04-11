@@ -1,3 +1,8 @@
+// Shared shell for all role dashboards (admin, teacher, student, parent).
+// Renders the Sidebar, Header, and animated page content area.
+// For student pages it also renders the ConsentGateway overlay unless
+// skipConsent is explicitly set to true (e.g. on the live class room).
+
 import { ReactNode, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Sidebar from "@/app/components/layout/Sidebar";

@@ -43,7 +43,7 @@ _admin = Depends(require_role("admin"))
 LUNCH_SLOT = "12:00"
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# Helpers
 
 def _generate_email(first_name: str, last_name: str, role: str) -> str:
     """firstname + first_letter_of_lastname @ role.connected.com"""
@@ -71,14 +71,14 @@ def _next_staff_id(db: Session) -> str:
     return f"TCH{count:03d}"
 
 
-# ── Dashboard ─────────────────────────────────────────────────────────────────
+# Dashboard
 
 @router.get("/dashboard")
 def admin_dashboard(db: Session = Depends(get_db), _=_admin):
     today = date.today()
     thirty_days_ago = today - timedelta(days=30)
 
-    # ── KPI cards ──
+    # KPI cards
     total_students = (
         db.query(User)
         .join(User.role)
@@ -135,7 +135,7 @@ def admin_dashboard(db: Session = Depends(get_db), _=_admin):
             else:
                 partial_unpaid_count += 1
 
-    # ── Attendance trend (daily) — from session-based records ──
+    # Attendance trend (daily) — from session-based records
     from sqlalchemy import case as sql_case, func as sql_func
     att_rows = (
         db.query(
@@ -165,14 +165,14 @@ def admin_dashboard(db: Session = Depends(get_db), _=_admin):
         for r in att_rows
     ]
 
-    # ── Fee status distribution (counts of students) ──
+    # Fee status distribution (counts of students)
     fee_status = [
         {"name": "Paid",    "value": paid_count,           "color": "#10b981"},
         {"name": "Pending", "value": partial_unpaid_count, "color": "#f59e0b"},
         {"name": "Overdue", "value": overdue_count,        "color": "#ef4444"},
     ]
 
-    # ── Enrolment by class/grade ──
+    # Enrolment by class/grade
     class_rows = (
         db.query(
             Class.name.label("grade"),
@@ -185,7 +185,7 @@ def admin_dashboard(db: Session = Depends(get_db), _=_admin):
     )
     enrolment_data = [{"grade": r.grade, "students": r.students} for r in class_rows]
 
-    # ── Upcoming events (next 5) ──
+    # Upcoming events (next 5)
     upcoming = (
         db.query(Event)
         .filter(Event.start_date >= today)
@@ -214,7 +214,7 @@ def admin_dashboard(db: Session = Depends(get_db), _=_admin):
     }
 
 
-# ── Admin Password Change ────────────────────────────────────────────────────
+# Admin Password Change
 
 @router.patch("/profile/password")
 def change_own_password(
@@ -238,7 +238,7 @@ def change_own_password(
     return {"detail": "Password updated successfully."}
 
 
-# ── Users ─────────────────────────────────────────────────────────────────────
+# Users
 
 @router.get("/users", response_model=List[AdminUserRead])
 def list_users(
@@ -598,7 +598,7 @@ def reset_password(
     return {"status": "ok"}
 
 
-# ── Student search (lightweight, for parent-student linking) ──────────────────
+# Student search (lightweight, for parent-student linking)
 
 @router.get("/students/search", response_model=List[StudentSearchResult])
 def search_students(
@@ -625,7 +625,7 @@ def search_students(
     return result
 
 
-# ── CSV Export ────────────────────────────────────────────────────────────────
+# CSV Export
 
 @router.get("/export/{role}")
 def export_users(
@@ -706,7 +706,7 @@ def export_users(
     )
 
 
-# ── Role-specific CSV Import ──────────────────────────────────────────────────
+# Role-specific CSV Import
 
 @router.post("/import/{role}")
 async def role_import(
@@ -855,14 +855,14 @@ def assign_class(
     )
 
 
-# ── Subjects ──────────────────────────────────────────────────────────────────
+# Subjects
 
 @router.get("/subjects", response_model=List[SubjectRead])
 def list_subjects(db: Session = Depends(get_db), _=_admin):
     return db.query(Subject).order_by(Subject.name).all()
 
 
-# ── Classes ───────────────────────────────────────────────────────────────────
+# Classes
 
 @router.get("/classes", response_model=List[ClassRead])
 def list_classes(db: Session = Depends(get_db), _=_admin):
@@ -964,7 +964,7 @@ def manage_class(
     )
 
 
-# ── Timetable ─────────────────────────────────────────────────────────────────
+# Timetable
 
 @router.get("/timetable", response_model=List[TimetableSlot])
 def get_timetable_query(
@@ -1161,7 +1161,7 @@ def save_timetable(
     return get_timetable(class_id, db, _)
 
 
-# ── Class-specific subjects & teachers (for Timetable Builder) ────────────────
+# Class-specific subjects & teachers (for Timetable Builder)
 
 @router.get("/classes/{class_id}/subjects", response_model=List[SubjectRead])
 def get_class_subjects(class_id: int, db: Session = Depends(get_db), _=_admin):
@@ -1363,7 +1363,7 @@ def get_subject_eligible_teachers(subject_id: int, db: Session = Depends(get_db)
     return [TeacherRead(id=u.id, full_name=u.full_name) for u in rows]
 
 
-# ── Timetable entry CRUD + Publish (new) ──────────────────────────────────────
+# Timetable entry CRUD + Publish (new)
 
 from app.schemas.admin import TimetableEntryCreate, TimetableEntryUpdate, TimetablePublish, TimetableEntryOut
 from app.services.timetable_service import (

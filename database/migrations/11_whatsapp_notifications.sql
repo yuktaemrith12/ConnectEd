@@ -7,7 +7,7 @@
 
 USE connected_app;
 
--- ── Notification Settings ─────────────────────────────────────
+-- Notification Settings
 -- Per-user WhatsApp preferences.
 -- Either parent_user_id or student_user_id is set (not both).
 CREATE TABLE IF NOT EXISTS whatsapp_notification_settings (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS whatsapp_notification_settings (
     CONSTRAINT fk_whatsapp_student FOREIGN KEY (student_user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Sent Log ──────────────────────────────────────────────────
+-- Sent Log
 -- Deduplication: one row per (user, event_key) prevents duplicate sends.
 CREATE TABLE IF NOT EXISTS whatsapp_sent_log (
     id              INT          NOT NULL AUTO_INCREMENT,

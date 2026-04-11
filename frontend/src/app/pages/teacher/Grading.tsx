@@ -25,7 +25,7 @@ import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import { FeedbackRenderer, isHTMLContent, markdownToHTML } from "@/app/components/FeedbackRenderer";
 
-// ── Inline markdown renderer ──────────────────────────────────────────────────
+// Inline markdown renderer
 
 function renderInline(text: string): React.ReactNode[] {
   const result: React.ReactNode[] = [];
@@ -87,7 +87,7 @@ function MarkdownText({ text, className = "" }: { text: string; className?: stri
   );
 }
 
-// ── helpers ───────────────────────────────────────────────────────────────────
+// helpers
 
 function fmtDate(iso: string | null) {
   if (!iso) return "—";
@@ -114,7 +114,7 @@ const CONF_COLORS: Record<string, string> = {
   low:    "bg-gray-50 text-gray-500 border border-gray-200",
 };
 
-// ── Convert structured AI feedback → HTML for loading into editor ─────────────
+// Convert structured AI feedback → HTML for loading into editor
 
 function structuredFeedbackToHTML(sf: StructuredFeedback, grade: number | null, maxScore: number): string {
   const md = (t: string) =>
@@ -166,7 +166,7 @@ function structuredFeedbackToHTML(sf: StructuredFeedback, grade: number | null, 
   return parts.join("\n");
 }
 
-// ── RTE Toolbar ───────────────────────────────────────────────────────────────
+// RTE Toolbar
 
 function ToolbarBtn({
   active, onClick, title, children,
@@ -287,7 +287,7 @@ function RTEToolbar({ editor }: { editor: ReturnType<typeof useEditor> }) {
   );
 }
 
-// ── Supportive Feedback Component ────────────────────────────────────────────
+// Supportive Feedback Component
 
 function SupportiveFeedback({ review, maxScore }: { review: AIReviewRead; maxScore: number }) {
   const sf = review.structured_feedback;
@@ -295,7 +295,7 @@ function SupportiveFeedback({ review, maxScore }: { review: AIReviewRead; maxSco
   return (
     <div className="space-y-4">
 
-      {/* ── Grade header card ─────────────────────────────────────────────── */}
+      {/* Grade header card */}
       <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
@@ -438,7 +438,7 @@ function SupportiveFeedback({ review, maxScore }: { review: AIReviewRead; maxSco
   );
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// Main component
 
 export default function TeacherGrading() {
   const [classes, setClasses]         = useState<TeacherClassSubjects[]>([]);
@@ -499,14 +499,14 @@ export default function TeacherGrading() {
     ? drillStudent.ai_reviews[drillStudent.ai_reviews.length - 1]
     : null;
 
-  // ── Grading form state ────────────────────────────────────────────────────
+  // Grading form state
   const [gradingGrade, setGradingGrade]     = useState<string>("");
   const [gradingFeedback, setGradingFeedback] = useState<string>("");
   const [gradingLoading, setGradingLoading] = useState(false);
   const [gradingSuccess, setGradingSuccess] = useState(false);
   const [feedbackTab, setFeedbackTab]       = useState<"editor" | "preview">("editor");
 
-  // ── TipTap editor ─────────────────────────────────────────────────────────
+  // TipTap editor
   const editor = useEditor({
     extensions: [StarterKit, Underline, Highlight.configure({ multicolor: true })],
     content: "",
@@ -751,7 +751,7 @@ export default function TeacherGrading() {
         )}
       </div>
 
-      {/* ── Drill-down panel ─────────────────────────────────────────────────── */}
+      {/* Drill-down panel */}
       <AnimatePresence>
         {selectedAssignment && (
           <motion.div
@@ -912,7 +912,7 @@ export default function TeacherGrading() {
                         </div>
                       )}
 
-                      {/* ── Section 1: AI Draft ──────────────────────────────── */}
+                      {/* Section 1: AI Draft */}
                       {latestReview && (
                         <div className="rounded-xl border border-purple-200 overflow-hidden shadow-sm">
                           <div className="flex items-center justify-between px-5 py-3.5 bg-gradient-to-r from-purple-50 to-indigo-50/60 border-b border-purple-200">
@@ -935,7 +935,7 @@ export default function TeacherGrading() {
                         </div>
                       )}
 
-                      {/* ── Section 2: Grade & Feedback Editor ──────────────── */}
+                      {/* Section 2: Grade & Feedback Editor */}
                       <div className="rounded-xl border border-gray-200 overflow-hidden shadow-sm">
                         <div className="flex items-center justify-between px-5 py-3.5 bg-gray-50/80 border-b border-gray-200">
                           <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-2">
@@ -1001,7 +1001,7 @@ export default function TeacherGrading() {
                             </label>
 
                             {feedbackTab === "editor" ? (
-                              /* ── Rich Text Editor (document-like) ── */
+                              /* Rich Text Editor (document-like) */
                               <div className="border border-gray-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-purple-200 shadow-sm">
                                 <RTEToolbar editor={editor} />
                                 <div
@@ -1014,7 +1014,7 @@ export default function TeacherGrading() {
                                 </div>
                               </div>
                             ) : (
-                              /* ── Live Preview ── */
+                              /* Live Preview */
                               <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
                                 <div className="px-4 py-2.5 bg-white border-b border-gray-100 flex items-center gap-1.5">
                                   <Eye size={12} className="text-gray-400" />

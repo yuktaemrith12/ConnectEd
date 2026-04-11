@@ -318,7 +318,7 @@ export default function TeacherRecordings() {
           </motion.div>
         )}
 
-        {/* ── Quick Analytics Modal ───────────────────────────────────── */}
+        {/* Quick Analytics Modal */}
         <AnimatePresence>
           {selectedMeeting && (
             <motion.div

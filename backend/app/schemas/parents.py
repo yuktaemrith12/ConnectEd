@@ -9,7 +9,7 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-# ── Fees ──────────────────────────────────────────────────────────────────────
+# Fees
 
 class ParentPaymentRecord(BaseModel):
     id: int
@@ -31,7 +31,7 @@ class ParentFeeStatus(BaseModel):
     payment_history: List[ParentPaymentRecord] = []
 
 
-# ── Events ────────────────────────────────────────────────────────────────────
+# Events
 
 class ParentEventItem(BaseModel):
     id: int
@@ -44,7 +44,7 @@ class ParentEventItem(BaseModel):
     description: Optional[str]
 
 
-# ── Grades ────────────────────────────────────────────────────────────────────
+# Grades
 
 class ParentGradeItem(BaseModel):
     subject: str

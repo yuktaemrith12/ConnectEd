@@ -280,7 +280,7 @@ export default function StudentTimetable() {
         )}
 
         <AnimatePresence mode="wait">
-          {/* ── Weekly View ── */}
+          {/* Weekly View */}
           {view === "weekly" && entries.length > 0 && (
             <motion.div
               key="weekly"
@@ -377,7 +377,7 @@ export default function StudentTimetable() {
             </motion.div>
           )}
 
-          {/* ── Daily View ── */}
+          {/* Daily View */}
           {view === "daily" && entries.length > 0 && (
             <motion.div
               key="daily"

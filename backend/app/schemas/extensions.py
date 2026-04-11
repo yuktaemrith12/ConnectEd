@@ -12,7 +12,7 @@ from typing import Any, List, Optional
 from pydantic import BaseModel, field_validator, model_validator
 
 
-# ── Attendance ────────────────────────────────────────────────────────────────
+# Attendance
 
 class AttendanceUpsert(BaseModel):
     student_id: int
@@ -73,7 +73,7 @@ class ChronicAbsentee(BaseModel):
     attendance_rate: float
 
 
-# ── Session-based Attendance (Migration 10) ───────────────────────────────────
+# Session-based Attendance (Migration 10)
 
 class LocationRead(BaseModel):
     id: int
@@ -178,7 +178,7 @@ class AttendanceOverviewItem(BaseModel):
     avg_attendance_rate: float
 
 
-# ── Fees ──────────────────────────────────────────────────────────────────────
+# Fees
 
 class AcademicPeriodCreate(BaseModel):
     name: str
@@ -290,7 +290,7 @@ class BulkPlanResult(BaseModel):
     skipped: int   # already had a plan for this period
 
 
-# ── Calendar / Events ─────────────────────────────────────────────────────────
+# Calendar / Events
 
 class EventCreate(BaseModel):
     title: str
@@ -344,7 +344,7 @@ class EventRead(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── Assignments + Grading ─────────────────────────────────────────────────────
+# Assignments + Grading
 
 from typing import Any, Dict  # noqa: E402 (already imported above via typing)
 
@@ -514,7 +514,7 @@ class StudentAssignmentRead(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── Messaging ─────────────────────────────────────────────────────────────────
+# Messaging
 
 class ContactRead(BaseModel):
     id: int
@@ -571,7 +571,7 @@ class SendMessageRequest(BaseModel):
     content: str
 
 
-# ── WhatsApp Notification Settings ───────────────────────────────────────────
+# WhatsApp Notification Settings
 
 class WhatsAppSettings(BaseModel):
     is_connected:         bool
@@ -610,7 +610,7 @@ class WhatsAppDeliveryLogRead(BaseModel):
     updated_at:      Optional[datetime] = None
 
 
-# ── Video Conferencing ────────────────────────────────────────────────────────
+# Video Conferencing
 
 class MeetingCreate(BaseModel):
     class_id:   int
@@ -671,7 +671,7 @@ class EmotionLogRead(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── Consent Management ────────────────────────────────────────────────────────
+# Consent Management
 
 class ConsentRecordRead(BaseModel):
     id:              int

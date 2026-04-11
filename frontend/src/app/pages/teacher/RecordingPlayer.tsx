@@ -90,7 +90,6 @@ export default function RecordingPlayer() {
   const report = analytics?.report_json;
   const engagementScore = report?.engagement_score;
 
-  // ─────────────────────────────────────────────────────────────────────────
   if (loading) {
     return (
       <DashboardLayout role="teacher">
@@ -120,7 +119,7 @@ export default function RecordingPlayer() {
   return (
     <DashboardLayout role="teacher">
       <div className="space-y-6">
-        {/* ── Header ─────────────────────────────────────────────────── */}
+        {/* Header */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate("/teacher/recordings")}
@@ -149,7 +148,7 @@ export default function RecordingPlayer() {
           )}
         </div>
 
-        {/* ── Main grid: video + sidebar ──────────────────────────────── */}
+        {/* Main grid: video + sidebar */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Video player — spans 2 columns on large screens */}
           <div className="lg:col-span-2 space-y-4">
@@ -244,7 +243,7 @@ export default function RecordingPlayer() {
           </div>
         </div>
 
-        {/* ── Analytics Tabs ──────────────────────────────────────────── */}
+        {/* Analytics Tabs */}
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           {/* Tab bar */}
           <div className="flex border-b border-gray-200">
@@ -269,7 +268,7 @@ export default function RecordingPlayer() {
           </div>
 
           <div className="p-6">
-            {/* ── Chart Tab ─────────────────────────────────────────── */}
+            {/* Chart Tab */}
             {activeTab === "chart" && (
               <>
                 {timeline.length > 0 ? (
@@ -312,7 +311,7 @@ export default function RecordingPlayer() {
               </>
             )}
 
-            {/* ── Insights Tab ──────────────────────────────────────── */}
+            {/* Insights Tab */}
             {activeTab === "insights" && (
               <div className="space-y-6">
                 {/* Confusion peaks */}
@@ -360,7 +359,7 @@ export default function RecordingPlayer() {
               </div>
             )}
 
-            {/* ── Transcript Tab ────────────────────────────────────── */}
+            {/* Transcript Tab */}
             {activeTab === "transcript" && (
               <div>
                 {report?.transcript_snippet ? (

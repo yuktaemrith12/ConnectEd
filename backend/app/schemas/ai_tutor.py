@@ -8,7 +8,7 @@ from typing import Any, List, Optional
 from pydantic import BaseModel
 
 
-# ── Helper ────────────────────────────────────────────────────────────────────
+# Helper
 
 class ClassSubjectRead(BaseModel):
     class_id:    int
@@ -17,7 +17,7 @@ class ClassSubjectRead(BaseModel):
     subject_name: str
 
 
-# ── Tutor ─────────────────────────────────────────────────────────────────────
+# Tutor
 
 class CreateTutorRequest(BaseModel):
     class_id:    int
@@ -64,7 +64,7 @@ class TutorDetail(TutorRead):
     documents: List[DocumentRead] = []
 
 
-# ── Chapter ───────────────────────────────────────────────────────────────────
+# Chapter
 
 class CreateChapterRequest(BaseModel):
     term:         str
@@ -95,7 +95,7 @@ class ChapterRead(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── Document ──────────────────────────────────────────────────────────────────
+# Document
 
 class UpdateDocumentRequest(BaseModel):
     is_enabled: Optional[bool] = None
@@ -119,7 +119,7 @@ class DocumentRead(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── Transcript ────────────────────────────────────────────────────────────────
+# Transcript
 
 class ApproveTranscriptRequest(BaseModel):
     edited_transcript: Optional[str] = None
@@ -142,7 +142,7 @@ class TranscriptRead(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── Chat ──────────────────────────────────────────────────────────────────────
+# Chat
 
 class ChatRequest(BaseModel):
     tutor_id:   int
@@ -205,7 +205,7 @@ class ChatSessionRead(BaseModel):
     message_count:    int = 0
 
 
-# ── Exercise Variation ────────────────────────────────────────────────────────
+# Exercise Variation
 
 class ExerciseVariationRequest(BaseModel):
     tutor_id:             int
@@ -220,7 +220,7 @@ class ExerciseVariationResponse(BaseModel):
     confidence: Optional[str] = None
 
 
-# ── Student Discovery ─────────────────────────────────────────────────────────
+# Student Discovery
 
 class StudentTutorRead(BaseModel):
     id:            int

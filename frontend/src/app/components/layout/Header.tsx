@@ -1,3 +1,7 @@
+// Top header bar used across all role dashboards.
+// Provides a role-aware search bar, the parent child-selector dropdown,
+// and the profile menu (settings link + logout).
+
 import { useState, useEffect, useRef } from "react";
 import { Search, ChevronDown, User, Users, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";

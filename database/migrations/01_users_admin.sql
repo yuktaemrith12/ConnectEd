@@ -6,7 +6,7 @@
 
 USE connected_app;
 
--- ── Roles ────────────────────────────────────────────────────
+-- Roles
 CREATE TABLE IF NOT EXISTS roles (
     id   INT         NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS roles (
     UNIQUE KEY uq_roles_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Users ────────────────────────────────────────────────────
+-- Users
 CREATE TABLE IF NOT EXISTS users (
     id              INT          NOT NULL AUTO_INCREMENT,
     email           VARCHAR(255) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS users (
     CONSTRAINT fk_users_role FOREIGN KEY (role_id) REFERENCES roles (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Audit Logs ───────────────────────────────────────────────
+-- Audit Logs
 -- Records sensitive admin actions (password resets, deletions, etc.)
 CREATE TABLE IF NOT EXISTS audit_logs (
     id         INT          NOT NULL AUTO_INCREMENT,

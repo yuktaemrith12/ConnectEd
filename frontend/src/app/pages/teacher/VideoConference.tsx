@@ -40,7 +40,7 @@ import {
 } from "@/app/utils/api";
 import { teacherGetAssignmentClasses } from "@/app/utils/api";
 
-// ── LiveKit imports ───────────────────────────────────────────────────────────
+// LiveKit imports
 import {
   LiveKitRoom,
   GridLayout,
@@ -71,8 +71,6 @@ function ConferenceRoomLayout() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 type SetupState = "setup" | "connecting" | "live" | "ended" | "error";
 
 export default function TeacherVideoConference() {
@@ -93,7 +91,7 @@ export default function TeacherVideoConference() {
   const selectedClass = classes.find((c) => c.id === selectedClassId);
   const subjects       = selectedClass?.subjects ?? [];
 
-  // ── Load teacher's classes, then autofill from URL params ─────────────────
+  // Load teacher's classes, then autofill from URL params
   useEffect(() => {
     teacherGetAssignmentClasses()
       .then((data) => {
@@ -115,7 +113,7 @@ export default function TeacherVideoConference() {
     }
   }, [selectedClassId, selectedSubjectId]);
 
-  // ── Start meeting ─────────────────────────────────────────────────────────
+  // Start meeting
   async function handleStartMeeting() {
     if (!selectedClassId || !selectedSubjectId || !sessionTitle.trim()) return;
     setState("connecting");
@@ -134,7 +132,7 @@ export default function TeacherVideoConference() {
     }
   }
 
-  // ── End meeting ───────────────────────────────────────────────────────────
+  // End meeting
   async function handleEndMeeting() {
     if (!meeting) return;
     try {
@@ -147,7 +145,7 @@ export default function TeacherVideoConference() {
     setMeeting(null);
   }
 
-  // ── Decide which LiveKit URL to use ───────────────────────────────────────
+  // Decide which LiveKit URL to use
   // The backend returns the HTTP URL; LiveKit SDK needs the WS URL.
   const wsUrl = meeting?.livekit_url
     ? meeting.livekit_url.replace("http://", "ws://").replace("https://", "wss://")
@@ -155,12 +153,11 @@ export default function TeacherVideoConference() {
   const token = meeting?.participant_token ?? "";
   const isStubToken = token.startsWith("stub:");
 
-  // ─────────────────────────────────────────────────────────────────────────
   return (
     <DashboardLayout role="teacher">
       <div className="space-y-6">
 
-        {/* ── Hero Banner ─────────────────────────────────────────────── */}
+        {/* Hero Banner */}
         <motion.div
           whileHover={{ scale: 1.006 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
@@ -202,7 +199,7 @@ export default function TeacherVideoConference() {
 
         <AnimatePresence mode="wait">
 
-          {/* ── SETUP FORM ─────────────────────────────────────────────── */}
+          {/* SETUP FORM */}
           {(state === "setup" || state === "error") && (
             <motion.div
               key="setup"
@@ -368,7 +365,7 @@ export default function TeacherVideoConference() {
             </motion.div>
           )}
 
-          {/* ── CONNECTING ─────────────────────────────────────────────── */}
+          {/* CONNECTING */}
           {state === "connecting" && (
             <motion.div
               key="connecting"
@@ -389,7 +386,7 @@ export default function TeacherVideoConference() {
             </motion.div>
           )}
 
-          {/* ── LIVE ROOM ──────────────────────────────────────────────── */}
+          {/* LIVE ROOM */}
           {state === "live" && meeting && (
             <motion.div
               key="live"
@@ -470,7 +467,7 @@ export default function TeacherVideoConference() {
             </motion.div>
           )}
 
-          {/* ── ENDED ──────────────────────────────────────────────────── */}
+          {/* ENDED */}
           {state === "ended" && (
             <motion.div
               key="ended"

@@ -15,7 +15,7 @@ import {
 import DashboardLayout from "@/app/components/layout/DashboardLayout";
 import { FeedbackRenderer } from "@/app/components/FeedbackRenderer";
 
-// ── helpers ───────────────────────────────────────────────────────────────────
+// helpers
 
 function formatDate(iso: string | null) {
   if (!iso) return "No deadline";
@@ -57,7 +57,7 @@ const CARD_BORDER: Record<string, string> = {
   Graded:    "border-l-green-500",
 };
 
-// ── Inline markdown renderer (same logic as teacher view) ────────────────────
+// Inline markdown renderer (same logic as teacher view)
 
 function renderInline(text: string): React.ReactNode[] {
   const result: React.ReactNode[] = [];
@@ -111,7 +111,7 @@ function MarkdownText({ text, className = "" }: { text: string; className?: stri
   );
 }
 
-// ── Supportive Feedback Card (student-facing) ──────────────────────────────
+// Supportive Feedback Card (student-facing)
 
 function SupportiveFeedbackCard({ sf, grade, maxScore }: { sf: StructuredFeedback; grade: number; maxScore: number }) {
   return (
@@ -217,7 +217,7 @@ function SupportiveFeedbackCard({ sf, grade, maxScore }: { sf: StructuredFeedbac
   );
 }
 
-// ── component ─────────────────────────────────────────────────────────────────
+// component
 
 export default function StudentAssignments() {
   const [assignments, setAssignments] = useState<AssignmentRead[]>([]);
@@ -298,7 +298,7 @@ export default function StudentAssignments() {
     <DashboardLayout role="student">
       <div>
 
-      {/* ── Hero header ─────────────────────────────────────────────────────── */}
+      {/* Hero header */}
       <div className="mb-6 rounded-2xl overflow-hidden shadow-lg">
         <div className="bg-gradient-to-br from-blue-700 via-blue-400 to-cyan-200 p-6 text-white relative">
           {/* subtle dot pattern */}
@@ -351,7 +351,7 @@ export default function StudentAssignments() {
         </div>
       </div>
 
-      {/* ── Filters ─────────────────────────────────────────────────────────── */}
+      {/* Filters */}
       <div className="mb-5">
         <div className="flex gap-3 flex-wrap">
           <div className="relative flex-1 min-w-48">
@@ -397,7 +397,7 @@ export default function StudentAssignments() {
         </div>
       )}
 
-      {/* ── List ─────────────────────────────────────────────────────────────── */}
+      {/* List */}
       <div className="space-y-3">
         {filtered.length === 0 ? (
           <div className="text-center py-20 text-gray-400">

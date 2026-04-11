@@ -21,9 +21,7 @@ CREATE DATABASE IF NOT EXISTS connected_app
 
 USE connected_app;
 
--- ═════════════════════════════════════════════════════════════
 --  SCHEMA MIGRATIONS  (run in order — dependencies first)
--- ═════════════════════════════════════════════════════════════
 
 SOURCE migrations/01_users_admin.sql;       -- Roles, Users, Audit Logs
 SOURCE migrations/02_academics.sql;         -- Subjects, Classes, Class↔Subject
@@ -42,9 +40,7 @@ SOURCE migrations/14_video_conferencing.sql; -- Meetings, Recordings, Emotion Lo
 SOURCE migrations/15_consent_management.sql; -- GDPR Consent Records + Audit Logs
 SOURCE migrations/16_whatsapp_webhook.sql;  -- WhatsApp Delivery Log + Opt-Out Registry
 
--- ═════════════════════════════════════════════════════════════
 --  SEED DATA
--- ═════════════════════════════════════════════════════════════
 
 SOURCE seeds/01_roles.sql;        -- Roles (admin, teacher, student, parent)
 SOURCE seeds/02_users.sql;        -- 4 demo accounts (password: 12345)
@@ -53,5 +49,4 @@ SOURCE seeds/04_timetable.sql;    -- Class↔Subject mappings, teacher assignmen
 SOURCE seeds/05_locations.sql;    -- Sample locations (classrooms, labs, halls)
 SOURCE seeds/06_parent_student.sql; -- Student profile + Parent↔Student link
 
--- ═════════════════════════════════════════════════════════════
 SELECT '✅ RUN_ALL complete — all migrations and seeds applied.' AS status;

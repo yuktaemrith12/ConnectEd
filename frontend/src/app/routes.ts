@@ -1,3 +1,12 @@
+// Application route definitions.
+// All protected routes use requireRole() as a loader guard. If the user
+// is not logged in they are redirected to the login page; if they have the
+// wrong role they land on /unauthorized.
+//
+// Parent routes are structured as /parent/:childId/* so the selected child
+// is always part of the URL. Visiting /parent without a childId redirects
+// to the first child returned by the API.
+
 import { createBrowserRouter } from "react-router";
 import { redirect } from "react-router";
 import { isAuthenticated, getStoredRole, parentGetChildren } from "@/app/utils/api";
@@ -10,7 +19,7 @@ function requireRole(role: string) {
     return redirect(`/?from=${from}`);
   }
   if (getStoredRole() !== role) {
-    // Authenticated but wrong role — show dedicated Unauthorized page
+    // Authenticated but wrong role
     return redirect("/unauthorized");
   }
   return null;

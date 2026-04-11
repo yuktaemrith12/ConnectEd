@@ -26,7 +26,7 @@ import {
   type ConsentChoiceItem,
 } from "@/app/utils/api";
 
-// ── Per-feature display metadata ──────────────────────────────────────────────
+// Per-feature display metadata
 
 const FEATURES: {
   type: ConsentType;
@@ -61,7 +61,7 @@ const FEATURES: {
   },
 ];
 
-// ── Component ─────────────────────────────────────────────────────────────────
+// Component
 
 export default function ConsentGateway() {
   const [records, setRecords] = useState<ConsentRecord[]>([]);

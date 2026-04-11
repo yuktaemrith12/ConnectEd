@@ -32,7 +32,7 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
-# ── Constants ──────────────────────────────────────────────────────────────────
+# Constants
 
 CHUNK_DURATION_S = 30          # seconds per audio chunk sent to MMS
 SAMPLE_RATE      = 16_000      # Hz — MMS and Whisper both expect 16 kHz
@@ -42,7 +42,7 @@ MIN_CHUNK_S      = 1           # ignore trailing chunks shorter than this
 # Keep it ≤ 4 to avoid starving the FastAPI event loop with CPU work.
 _MAX_WORKERS = min(4, os.cpu_count() or 2)
 
-# ── Module-level singletons ────────────────────────────────────────────────────
+# Module-level singletons
 
 _mms_processor  = None
 _mms_model      = None
@@ -56,7 +56,7 @@ _chunk_pool = concurrent.futures.ThreadPoolExecutor(
 )
 
 
-# ── MMS model management ───────────────────────────────────────────────────────
+# MMS model management
 
 def _load_mms():
     """
@@ -118,7 +118,7 @@ def prewarm_mms() -> None:
     print("[MMS] Pre-warming Creole model in background…")
 
 
-# ── Audio helpers ──────────────────────────────────────────────────────────────
+# Audio helpers
 
 def _split_audio(audio: np.ndarray, chunk_s: int = CHUNK_DURATION_S) -> list[np.ndarray]:
     """
@@ -134,7 +134,7 @@ def _split_audio(audio: np.ndarray, chunk_s: int = CHUNK_DURATION_S) -> list[np.
     return chunks
 
 
-# ── Per-chunk inference (runs inside the thread pool) ─────────────────────────
+# Per-chunk inference (runs inside the thread pool)
 
 def _infer_chunk(chunk: np.ndarray) -> str:
     """
@@ -164,7 +164,7 @@ def _infer_chunk(chunk: np.ndarray) -> str:
     return processor.decode(ids)
 
 
-# ── Chunked MMS runner ─────────────────────────────────────────────────────────
+# Chunked MMS runner
 
 def _run_mms_sync(
     audio_path: str,
@@ -231,7 +231,7 @@ def _run_mms_sync(
     return " ".join(r for r in results if r)
 
 
-# ── Whisper helpers (unchanged) ────────────────────────────────────────────────
+# Whisper helpers (unchanged)
 
 def _run_whisper_sync(audio_path: str, language: Optional[str] = None) -> str:
     client = OpenAI(api_key=settings.OPENAI_API_KEY)
@@ -269,7 +269,7 @@ def _fuse_sync(mms_text: str, whisper_text: str) -> str:
     return response.choices[0].message.content
 
 
-# ── Async wrappers ─────────────────────────────────────────────────────────────
+# Async wrappers
 
 async def run_whisper(audio_path: str, language: Optional[str] = None) -> str:
     return await asyncio.to_thread(_run_whisper_sync, audio_path, language)
@@ -287,7 +287,7 @@ async def fuse_transcripts(mms_text: str, whisper_text: str) -> str:
     return await asyncio.to_thread(_fuse_sync, mms_text, whisper_text)
 
 
-# ── Public API ─────────────────────────────────────────────────────────────────
+# Public API
 
 async def transcribe_audio(
     audio_path: str,

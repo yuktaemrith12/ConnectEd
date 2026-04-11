@@ -31,7 +31,7 @@ from sqlalchemy.orm import relationship
 from app.core.database import Base
 
 
-# ── Enums ─────────────────────────────────────────────────────────────────────
+# Enums
 
 class DocTypeEnum(str, enum.Enum):
     handbook       = "handbook"
@@ -89,7 +89,7 @@ class ConfidenceLevelEnum(str, enum.Enum):
     low    = "low"
 
 
-# ── Models ────────────────────────────────────────────────────────────────────
+# Models
 
 class AiTutor(Base):
     __tablename__ = "ai_tutors"

@@ -65,7 +65,7 @@ ALLOWED_EXTENSIONS = {"pdf", "docx", "doc", "jpg", "jpeg", "png", "gif", "zip", 
 MAX_FILE_SIZE = 20 * 1024 * 1024  # 20 MB
 
 
-# ── Helpers ────────────────────────────────────────────────────────────────────
+# Helpers
 
 def _get_teacher_class_subject_pairs(teacher_id: int, db: Session) -> set:
     rows = (
@@ -205,7 +205,7 @@ async def _save_files(files: List[UploadFile]) -> List[AssignmentAttachment]:
     return saved
 
 
-# ── Teacher: class list ────────────────────────────────────────────────────────
+# Teacher: class list
 
 @router.get("/teacher/my-classes")
 def teacher_get_classes(
@@ -229,7 +229,7 @@ def teacher_get_classes(
     return list(by_class.values())
 
 
-# ── Teacher: locations list ────────────────────────────────────────────────────
+# Teacher: locations list
 
 @router.get("/teacher/locations")
 def teacher_get_locations(
@@ -241,7 +241,7 @@ def teacher_get_locations(
     return [{"id": l.id, "name": l.name, "type": l.type, "capacity": l.capacity} for l in locs]
 
 
-# ── Teacher: onsite class roster ───────────────────────────────────────────────
+# Teacher: onsite class roster
 
 @router.get("/{assignment_id}/onsite-roster")
 def teacher_onsite_roster(
@@ -286,7 +286,7 @@ def teacher_onsite_roster(
     return roster
 
 
-# ── Teacher: CRUD ──────────────────────────────────────────────────────────────
+# Teacher: CRUD
 
 @router.get("/teacher")
 def teacher_list_assignments(
@@ -410,7 +410,7 @@ async def teacher_create_assignment(
         .one()
     )
 
-    # ── WhatsApp: notify parents when assignment is published immediately ─────
+    # WhatsApp: notify parents when assignment is published immediately
     if publish:
         from app.api.whatsapp import notify_assignment_published
         due_str = asgn.due_at.strftime("%b %d, %Y") if asgn.due_at else None
@@ -551,7 +551,7 @@ def teacher_publish_assignment(
     db.commit()
     db.refresh(asgn)
 
-    # ── WhatsApp: notify parents of students in this class ───────────────────
+    # WhatsApp: notify parents of students in this class
     from app.api.whatsapp import notify_assignment_published
     due_str = asgn.due_at.strftime("%b %d, %Y") if asgn.due_at else None
     notify_assignment_published(
@@ -606,7 +606,7 @@ def teacher_delete_attachment(
     return Response(status_code=204)
 
 
-# ── Submissions (teacher view) ─────────────────────────────────────────────────
+# Submissions (teacher view)
 
 @router.get("/{assignment_id}/submissions")
 def teacher_list_submissions(
@@ -633,7 +633,7 @@ def teacher_list_submissions(
     return [_serialize_submission(s) for s in submissions]
 
 
-# ── Grading ────────────────────────────────────────────────────────────────────
+# Grading
 
 @router.post("/grading/manual")
 def grading_manual(
@@ -796,7 +796,7 @@ def grading_publish(
     asgn.status = AssignmentStatusEnum.RELEASED
     db.commit()
 
-    # ── WhatsApp: notify parents of each published student ───────────────────
+    # WhatsApp: notify parents of each published student
     from app.api.whatsapp import notify_grade_published
     subject_name = asgn.subject.name if asgn.subject else "subject"
     max_score = float(asgn.max_score) if asgn.max_score else 100.0
@@ -818,7 +818,7 @@ def grading_publish(
     return {"published": len(submissions), "assignment_id": assignment_id}
 
 
-# ── Student: list + submit ─────────────────────────────────────────────────────
+# Student: list + submit
 
 @router.get("/student")
 def student_list_assignments(
@@ -932,7 +932,7 @@ async def student_submit(
     return _serialize_submission(sub)
 
 
-# ── Parent: read-only ──────────────────────────────────────────────────────────
+# Parent: read-only
 
 @router.get("/parent/{student_id}")
 def parent_view_assignments(

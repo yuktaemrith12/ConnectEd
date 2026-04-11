@@ -23,7 +23,7 @@ import {
   type WhatsAppSettings,
 } from "@/app/utils/api";
 
-// ── Toggle Switch ─────────────────────────────────────────────────────────────
+// Toggle Switch
 
 function Toggle({
   checked,
@@ -52,7 +52,7 @@ function Toggle({
   );
 }
 
-// ── Notification Preference Row ────────────────────────────────────────────────
+// Notification Preference Row
 
 interface PrefRowProps {
   icon: React.ReactNode;
@@ -83,7 +83,7 @@ function PrefRow({ icon, label, description, checked, onChange, disabled }: Pref
   );
 }
 
-// ── Connect Modal ─────────────────────────────────────────────────────────────
+// Connect Modal
 
 function ConnectModal({
   onClose,
@@ -184,7 +184,7 @@ function ConnectModal({
   );
 }
 
-// ── Main Page ─────────────────────────────────────────────────────────────────
+// Main Page
 
 export default function WhatsAppNotifications() {
   const [settings, setSettings] = useState<WhatsAppSettings | null>(null);

@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import { studentGetAssignments, AssignmentRead } from "@/app/utils/api";
 
-// ── helpers ───────────────────────────────────────────────────────────────────
+// helpers
 
 function letterGrade(pct: number): string {
   if (pct >= 97) return "A+";
@@ -41,7 +41,7 @@ function fmtDate(iso: string | null) {
   });
 }
 
-// ── component ─────────────────────────────────────────────────────────────────
+// component
 
 export default function StudentGrades() {
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ export default function StudentGrades() {
     a => a.submission?.status === "PUBLISHED" && a.submission?.grade !== null,
   );
 
-  // ── Derived stats ──────────────────────────────────────────────────────────
+  // Derived stats
 
   const avgPct = graded.length > 0
     ? Math.round(
@@ -100,7 +100,7 @@ export default function StudentGrades() {
     .sort((a, b) => a[1].ts - b[1].ts)
     .map(([month, { total, count }]) => ({ month, average: Math.round(total / count) }));
 
-  // ── Loading ────────────────────────────────────────────────────────────────
+  // Loading
 
   if (loading) return (
     <DashboardLayout role="student">
@@ -110,7 +110,7 @@ export default function StudentGrades() {
     </DashboardLayout>
   );
 
-  // ── Empty state ────────────────────────────────────────────────────────────
+  // Empty state
 
   if (graded.length === 0) return (
     <DashboardLayout role="student">
@@ -128,7 +128,7 @@ export default function StudentGrades() {
     </DashboardLayout>
   );
 
-  // ── Main render ────────────────────────────────────────────────────────────
+  // Main render
 
   return (
     <DashboardLayout role="student">

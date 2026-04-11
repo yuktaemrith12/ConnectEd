@@ -45,7 +45,7 @@ export default function UserManagement() {
   const [error, setError] = useState("");
 
 
-  // ── Add User modal ─────────────────────────────────────────────────────────
+  // Add User modal
   const [showAddUser, setShowAddUser] = useState(false);
   const [addRole, setAddRole] = useState<AddRole>("student");
   const [firstName, setFirstName] = useState("");
@@ -61,11 +61,11 @@ export default function UserManagement() {
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState("");
 
-  // ── Student autocomplete (shared — only one modal open at a time) ──────────
+  // Student autocomplete (shared — only one modal open at a time)
   const [studentQuery, setStudentQuery] = useState("");
   const [studentResults, setStudentResults] = useState<StudentSearchResult[]>([]);
 
-  // ── Edit User modal ────────────────────────────────────────────────────────
+  // Edit User modal
   const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
   const [editDetail, setEditDetail] = useState<UserDetail | null>(null);
   const [editLoading, setEditLoading] = useState(false);
@@ -85,17 +85,17 @@ export default function UserManagement() {
   const [resetting, setResetting] = useState(false);
   const [resetMsg, setResetMsg] = useState("");
 
-  // ── Delete confirmation ────────────────────────────────────────────────────
+  // Delete confirmation
   const [deletingUser, setDeletingUser] = useState<AdminUser | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  // ── Derived ───────────────────────────────────────────────────────────────
+  // Derived
   const generatedEmail =
     firstName.trim() && lastName.trim()
       ? `${firstName.trim().toLowerCase()}${lastName.trim()[0].toLowerCase()}@${addRole}.connected.com`
       : "";
 
-  // ── Data loading ───────────────────────────────────────────────────────────
+  // Data loading
   useEffect(() => {
     const handler = setTimeout(() => fetchUsers(), 300);
     return () => clearTimeout(handler);
@@ -132,7 +132,7 @@ export default function UserManagement() {
     }
   }
 
-  // ── Status / class handlers ────────────────────────────────────────────────
+  // Status / class handlers
   async function handleToggleStatus(user: AdminUser) {
     try {
       const updated = await adminToggleStatus(user.id, !user.is_active);
@@ -151,7 +151,7 @@ export default function UserManagement() {
     }
   }
 
-  // ── Export ─────────────────────────────────────────────────────────────────
+  // Export
 
   async function handleExport() {
     try {
@@ -167,7 +167,7 @@ export default function UserManagement() {
     }
   }
 
-  // ── Add User ───────────────────────────────────────────────────────────────
+  // Add User
   function resetAddForm() {
     setFirstName(""); setLastName("");
     setAddRole("student");
@@ -228,7 +228,7 @@ export default function UserManagement() {
     }
   }
 
-  // ── Edit User ──────────────────────────────────────────────────────────────
+  // Edit User
   async function openEdit(user: AdminUser) {
     setEditingUser(user);
     setEditLoading(true);
@@ -328,7 +328,7 @@ export default function UserManagement() {
     }
   }
 
-  // ── Delete ─────────────────────────────────────────────────────────────────
+  // Delete
   async function handleDelete() {
     if (!deletingUser) return;
     setDeleting(true);
@@ -343,7 +343,7 @@ export default function UserManagement() {
     }
   }
 
-  // ── Student picker helpers ─────────────────────────────────────────────────
+  // Student picker helpers
   function pickStudent(
     s: StudentSearchResult,
     selected: StudentSearchResult[],
@@ -362,7 +362,7 @@ export default function UserManagement() {
     setSelected(selected.filter((s) => s.id !== id));
   }
 
-  // ── Student picker JSX (called as a function, not a component) ────────────
+  // Student picker JSX (called as a function, not a component)
   function renderStudentPicker(
     selected: StudentSearchResult[],
     setSelected: (v: StudentSearchResult[]) => void
@@ -417,7 +417,7 @@ export default function UserManagement() {
   const initials = (name: string) =>
     name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
 
-  // ── Render ─────────────────────────────────────────────────────────────────
+  // Render
   return (
     <DashboardLayout role="admin">
       <div className="space-y-6">
@@ -583,7 +583,7 @@ export default function UserManagement() {
         </motion.div>
       </div>
 
-      {/* ── Add User Modal ──────────────────────────────────────────────────── */}
+      {/* Add User Modal */}
       <AnimatePresence>
         {showAddUser && (
           <motion.div
@@ -748,7 +748,7 @@ export default function UserManagement() {
         )}
       </AnimatePresence>
 
-      {/* ── Edit User Modal ─────────────────────────────────────────────────── */}
+      {/* Edit User Modal */}
       <AnimatePresence>
         {editingUser && (
           <motion.div
@@ -925,7 +925,7 @@ export default function UserManagement() {
         )}
       </AnimatePresence>
 
-      {/* ── Delete Confirmation Modal ───────────────────────────────────────── */}
+      {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {deletingUser && (
           <motion.div

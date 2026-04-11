@@ -15,9 +15,7 @@
 
 USE connected_app;
 
--- ════════════════════════════════════════════════════════════════
 --  1) Student profile for Renveer R
--- ════════════════════════════════════════════════════════════════
 
 INSERT IGNORE INTO student_profiles (user_id, class_id, student_code)
 SELECT u.id, c.id, 'ST0001'
@@ -25,9 +23,7 @@ FROM users u
 JOIN classes c ON c.name = 'Grade 1-A'
 WHERE u.email = 'renveerr@student.connected.com';
 
--- ════════════════════════════════════════════════════════════════
 --  2) Parent–Student link: Oormila E → Renveer R
--- ════════════════════════════════════════════════════════════════
 
 INSERT IGNORE INTO parent_students (parent_id, student_id, relationship_type)
 SELECT p.id, s.id, 'Guardian'
@@ -35,9 +31,7 @@ FROM users p
 JOIN users s ON s.email = 'renveerr@student.connected.com'
 WHERE p.email = 'oormilae@parent.connected.com';
 
--- ════════════════════════════════════════════════════════════════
 --  3) Verification
--- ════════════════════════════════════════════════════════════════
 
 SELECT 'student_profiles' AS tbl,
        u.full_name, u.email, c.name AS class_name, sp.student_code

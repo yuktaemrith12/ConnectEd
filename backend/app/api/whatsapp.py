@@ -32,7 +32,7 @@ logger = logging.getLogger("connected.whatsapp_api")
 router = APIRouter()
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# Helpers
 
 def _get_or_create_settings(user: User, db: Session) -> WhatsAppNotificationSetting:
     """Return existing row or create defaults for a parent or student user."""
@@ -117,7 +117,7 @@ def _student_settings(student_user_id: int, db: Session) -> Optional[WhatsAppNot
     )
 
 
-# ── Settings Endpoints ────────────────────────────────────────────────────────
+# Settings Endpoints
 
 @router.get("/settings", response_model=WhatsAppSettings)
 def get_whatsapp_settings(
@@ -199,7 +199,7 @@ def trigger_due_reminders(
     return Response(status_code=204)
 
 
-# ── Webhook Endpoints (public — no auth) ──────────────────────────────────────
+# Webhook Endpoints (public — no auth)
 
 @router.get("/webhook")
 def verify_webhook(
@@ -237,7 +237,7 @@ async def receive_webhook(request: Request, db: Session = Depends(get_db)):
         for change in entry.get("changes", []):
             value = change.get("value", {})
 
-            # ── Delivery receipts ─────────────────────────────────────────────
+            # Delivery receipts
             for status_obj in value.get("statuses", []):
                 wa_msg_id = status_obj.get("id")
                 phone     = status_obj.get("recipient_id", "")
@@ -269,7 +269,7 @@ async def receive_webhook(request: Request, db: Session = Depends(get_db)):
                         db.rollback()
                         logger.error("Failed to save delivery log: %s", exc)
 
-            # ── Inbound messages (opt-out + reply logging) ────────────────────
+            # Inbound messages (opt-out + reply logging)
             for msg in value.get("messages", []):
                 from_phone = msg.get("from", "")
                 text       = msg.get("text", {}).get("body", "").strip().upper()
@@ -323,7 +323,7 @@ def whatsapp_health_check(_: User = Depends(require_role("admin"))):
     return {"status": "error", "code": resp.status_code, "detail": resp.text}
 
 
-# ── Notification Dispatch (called from other routers) ─────────────────────────
+# Notification Dispatch (called from other routers)
 
 def notify_attendance(
     student_user_id: int,
@@ -341,7 +341,7 @@ def notify_attendance(
 
     status_label = "Absent" if status.upper() == "ABSENT" else "Late"
 
-    # ── notify the student directly ───────────────────────────────────────────
+    # notify the student directly
     s_settings = _student_settings(student_user_id, db)
     s_key = f"{event_key}:student:{student_user_id}"
     if s_settings and s_settings.is_connected and s_settings.notify_attendance:
@@ -368,7 +368,7 @@ def notify_attendance(
             else:
                 _send_s()
 
-    # ── notify parents ────────────────────────────────────────────────────────
+    # notify parents
     parents = _parents_of_student(student_user_id, db)
     for parent in parents:
         p_settings = (
@@ -431,7 +431,7 @@ def notify_event_published(
     seen_parents: set = set()
 
     for profile in profiles:
-        # ── notify student ────────────────────────────────────────────────────
+        # notify student
         s_settings = _student_settings(profile.user_id, db)
         s_key = f"{event_key_prefix}:student:{profile.user_id}"
         if s_settings and s_settings.is_connected and s_settings.notify_events:
@@ -458,7 +458,7 @@ def notify_event_published(
                 else:
                     _send_s()
 
-        # ── notify parents (once per parent, not per student) ─────────────────
+        # notify parents (once per parent, not per student)
         parents = _parents_of_student(profile.user_id, db)
         for parent in parents:
             if parent.id in seen_parents:
@@ -513,7 +513,7 @@ def notify_grade_published(
     """Fire WhatsApp to the student and their parents when a grade is released."""
     event_key_prefix = f"grade:assignment:{assignment_id}:student:{student_user_id}"
 
-    # ── notify student ────────────────────────────────────────────────────────
+    # notify student
     s_settings = _student_settings(student_user_id, db)
     s_key = f"{event_key_prefix}:self"
     if s_settings and s_settings.is_connected and s_settings.notify_grades:
@@ -541,7 +541,7 @@ def notify_grade_published(
             else:
                 _send_s()
 
-    # ── notify parents ────────────────────────────────────────────────────────
+    # notify parents
     parents = _parents_of_student(student_user_id, db)
     for parent in parents:
         p_settings = (
@@ -599,7 +599,7 @@ def notify_assignment_published(
     due_line = f" · Due {due_at}" if due_at else ""
 
     for profile in profiles:
-        # ── notify student ────────────────────────────────────────────────────
+        # notify student
         s_settings = _student_settings(profile.user_id, db)
         s_key = f"{event_key_prefix}:student:{profile.user_id}"
         if s_settings and s_settings.is_connected and s_settings.notify_assignments:
@@ -627,7 +627,7 @@ def notify_assignment_published(
                 else:
                     _send_s()
 
-        # ── notify parents ────────────────────────────────────────────────────
+        # notify parents
         parents = _parents_of_student(profile.user_id, db)
         for parent in parents:
             if parent.id in seen_parents:

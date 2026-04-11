@@ -25,7 +25,7 @@ ALLOWED_EXTENSIONS = {".mp3", ".wav", ".mp4", ".m4a", ".mov", ".webm", ".ogg", "
 MAX_FILE_SIZE = 100 * 1024 * 1024  # 100 MB
 
 
-# ── Background pipeline ───────────────────────────────────────────────────────
+# Background pipeline
 
 def _set_stage(job_id: int, stage: str, db: Session) -> None:
     job = db.query(AIStudyMaterial).filter(AIStudyMaterial.id == job_id).first()
@@ -101,7 +101,7 @@ async def _run_pipeline(job_id: int, audio_path: str, language: str) -> None:
             os.remove(audio_path)
 
 
-# ── Endpoints ─────────────────────────────────────────────────────────────────
+# Endpoints
 
 @router.post("/upload", status_code=202)
 async def upload_and_process(

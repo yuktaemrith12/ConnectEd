@@ -9,7 +9,7 @@
 
 USE connected_app;
 
--- ── Academic Periods ─────────────────────────────────────────
+-- Academic Periods
 CREATE TABLE IF NOT EXISTS academic_periods (
     id         INT          NOT NULL AUTO_INCREMENT,
     name       VARCHAR(100) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS academic_periods (
     UNIQUE KEY uq_academic_periods_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Fee Plans ────────────────────────────────────────────────
+-- Fee Plans
 CREATE TABLE IF NOT EXISTS fee_plans (
     id                 INT            NOT NULL AUTO_INCREMENT,
     student_id         INT            NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS fee_plans (
         FOREIGN KEY (academic_period_id) REFERENCES academic_periods(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Fee Payments ─────────────────────────────────────────────
+-- Fee Payments
 CREATE TABLE IF NOT EXISTS fee_payments (
     id             INT            NOT NULL AUTO_INCREMENT,
     fee_plan_id    INT            NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS fee_payments (
     CONSTRAINT uq_transaction_id UNIQUE (transaction_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Fee Installments ─────────────────────────────────────────
+-- Fee Installments
 CREATE TABLE IF NOT EXISTS fee_installments (
     id          INT            NOT NULL AUTO_INCREMENT,
     fee_plan_id INT            NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS fee_installments (
         FOREIGN KEY (fee_plan_id) REFERENCES fee_plans(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Fee Notification Events ──────────────────────────────────
+-- Fee Notification Events
 CREATE TABLE IF NOT EXISTS fee_notification_events (
     id           INT  NOT NULL AUTO_INCREMENT,
     type         ENUM('Upcoming Due', 'Due Today', 'Overdue', 'Payment Receipt') NOT NULL,

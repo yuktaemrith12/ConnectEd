@@ -39,7 +39,7 @@ export const TUTOR_ICONS: TutorIconEntry[] = [
   { id: "Hash",          Icon: Hash,          label: "Numbers" },
 ];
 
-// ── Render a single tutor icon by ID ─────────────────────────────────────────
+// Render a single tutor icon by ID
 
 interface TutorIconProps {
   iconId?: string | null;
@@ -62,7 +62,7 @@ export function TutorIcon({ iconId, size = 20, className = "", fallbackChar }: T
   return <Icon size={size} className={className} />;
 }
 
-// ── Icon picker grid (used in Settings tab) ───────────────────────────────────
+// Icon picker grid (used in Settings tab)
 
 interface PickerProps {
   value: string;

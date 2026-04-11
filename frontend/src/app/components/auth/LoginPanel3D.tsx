@@ -5,7 +5,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { type Role, ROLE_CONFIG } from './LoginPanel3D.types';
 
-// ─── Per-role title copy ─────────────────────────────────────────────────────
+// Per-role title copy
 const HERO_CONFIG: Record<Role, { headline: string; tagline: string }> = {
   student: { headline: 'ConnectEd \n to your future.', tagline: 'Classes, grades, and everything AI in between.' },
   teacher: { headline: 'Teach smarter,\nnot harder.', tagline: 'AI-powered insights to help every teacher relax more.' },
@@ -22,13 +22,13 @@ const MODEL_PATHS: Record<Role, string> = {
 
 const DEFAULT_CAM = new THREE.Vector3(0, 0, 4);
 
-// ─── Singleton loaders ───────────────────────────────────────────────────────
+// Singleton loaders
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
-// ─── Utilities ────────────────────────────────────────────────────────────────
+// Utilities
 const setModelOpacity = (root: THREE.Object3D, opacity: number) => {
   root.traverse((node) => {
     const mesh = node as THREE.Mesh;
@@ -126,7 +126,7 @@ const buildFallback = (role: Role): THREE.Group => {
   return group;
 };
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// Component
 interface Props { role: Role }
 
 export const LoginPanel3D: React.FC<Props> = ({ role }) => {
@@ -155,7 +155,7 @@ export const LoginPanel3D: React.FC<Props> = ({ role }) => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  // ─── One-time Three.js init ─────────────────────────────────────────────
+  // One-time Three.js init
   useEffect(() => {
     const el = mountRef.current;
     if (!el || initRef.current) return;
@@ -335,7 +335,7 @@ export const LoginPanel3D: React.FC<Props> = ({ role }) => {
     };
   }, []);
 
-  // ─── Role transition ────────────────────────────────────────────────────
+  // Role transition
   useEffect(() => {
     if (!initRef.current || !sceneRef.current || roleRef.current === role) return;
 
@@ -404,7 +404,7 @@ export const LoginPanel3D: React.FC<Props> = ({ role }) => {
     })();
   }, [role]);
 
-  // ─── Render ─────────────────────────────────────────────────────────────
+  // Render
   const cfg = HERO_CONFIG[role];
 
   return (

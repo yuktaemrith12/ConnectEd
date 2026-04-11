@@ -10,7 +10,7 @@ import { parentGetAssignments, AssignmentRead, StructuredFeedback } from "@/app/
 import DashboardLayout from "@/app/components/layout/DashboardLayout";
 import { FeedbackRenderer } from "@/app/components/FeedbackRenderer";
 
-// ── helpers ───────────────────────────────────────────────────────────────────
+// helpers
 
 function formatDate(iso: string | null) {
   if (!iso) return "No deadline";
@@ -52,7 +52,7 @@ const CARD_BORDER: Record<string, string> = {
   Graded:    "border-l-green-500",
 };
 
-// ── Shared markdown renderer (identical to student portal) ───────────────────
+// Shared markdown renderer (identical to student portal)
 
 function renderInline(text: string): React.ReactNode[] {
   const result: React.ReactNode[] = [];
@@ -208,7 +208,7 @@ function SupportiveFeedbackCard({ sf, grade, maxScore }: { sf: StructuredFeedbac
   );
 }
 
-// ── component ─────────────────────────────────────────────────────────────────
+// component
 
 export default function ParentAssignments() {
   const { childId } = useParams<{ childId: string }>();
@@ -266,7 +266,7 @@ export default function ParentAssignments() {
   return (
     <DashboardLayout role="parent">
       <div>
-        {/* ── Hero header ───────────────────────────────────────────────────── */}
+        {/* Hero header */}
         <div className="mb-6 rounded-2xl overflow-hidden shadow-lg">
           <div className="bg-gradient-to-br from-green-800 via-green-300 to-emerald-400 p-6 text-white relative">
             <div
@@ -317,7 +317,7 @@ export default function ParentAssignments() {
           </div>
         </div>
 
-        {/* ── Filters ───────────────────────────────────────────────────────── */}
+        {/* Filters */}
         <div className="mb-5">
           <div className="flex gap-3 flex-wrap">
             <div className="relative flex-1 min-w-48">
@@ -357,7 +357,7 @@ export default function ParentAssignments() {
           </div>
         )}
 
-        {/* ── List ──────────────────────────────────────────────────────────── */}
+        {/* List */}
         <div className="space-y-3">
           {filtered.length === 0 ? (
             <div className="text-center py-20 text-gray-400">

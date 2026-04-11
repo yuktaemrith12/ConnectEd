@@ -20,7 +20,7 @@ CHUNK_WORDS   = 400   # approximate words per chunk
 CHUNK_OVERLAP = 50    # words of overlap between consecutive chunks
 
 
-# ── Text extraction ───────────────────────────────────────────────────────────
+# Text extraction
 
 def _extract_text(storage_path: str, mime_type: str) -> str:
     mime = (mime_type or "").lower()
@@ -55,7 +55,7 @@ def _extract_text(storage_path: str, mime_type: str) -> str:
         return ""
 
 
-# ── Chunking ──────────────────────────────────────────────────────────────────
+# Chunking
 
 def _chunk_text(text: str) -> List[str]:
     words = text.split()
@@ -70,7 +70,7 @@ def _chunk_text(text: str) -> List[str]:
     return chunks
 
 
-# ── Embeddings ────────────────────────────────────────────────────────────────
+# Embeddings
 
 def _get_embeddings(texts: List[str]) -> List[List[float]]:
     api_key = settings.OPENAI_API_KEY
@@ -91,7 +91,7 @@ def _get_embeddings(texts: List[str]) -> List[List[float]]:
     return all_embeddings
 
 
-# ── Public API ────────────────────────────────────────────────────────────────
+# Public API
 
 def ingest_document(doc, db: Session) -> int:
     """

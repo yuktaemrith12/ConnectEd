@@ -6,7 +6,7 @@
 
 USE connected_app;
 
--- ── Events ───────────────────────────────────────────────────
+-- Events
 CREATE TABLE IF NOT EXISTS events (
     id                   INT          NOT NULL AUTO_INCREMENT,
     title                VARCHAR(255) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS events (
     CONSTRAINT chk_event_dates CHECK (end_date >= start_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Event ↔ Class targeting ──────────────────────────────────
+-- Event ↔ Class targeting
 CREATE TABLE IF NOT EXISTS event_target_classes (
     event_id INT NOT NULL,
     class_id INT NOT NULL,

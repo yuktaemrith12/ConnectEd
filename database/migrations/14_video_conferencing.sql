@@ -1,8 +1,7 @@
--- ─────────────────────────────────────────────────────────────────────────────
+
 -- Migration 21: Video Conferencing & AI Teaching Analytics
 -- Tables: meetings, meeting_recordings, meeting_emotion_logs, meeting_analytics
 -- Run AFTER migration 20.
--- ─────────────────────────────────────────────────────────────────────────────
 
 CREATE TABLE IF NOT EXISTS meetings (
     id          INT AUTO_INCREMENT PRIMARY KEY,

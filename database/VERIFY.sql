@@ -7,7 +7,7 @@
 
 USE connected_app;
 
--- ── 1. Table Count ───────────────────────────────────────────
+-- 1. Table Count
 -- Should return ~53 tables across all modules
 SELECT COUNT(*) AS total_tables
 FROM information_schema.tables
@@ -19,7 +19,7 @@ FROM information_schema.tables
 WHERE table_schema = 'connected_app'
 ORDER BY TABLE_NAME;
 
--- ── 2. Core Auth ─────────────────────────────────────────────
+-- 2. Core Auth
 -- Expected: 4 roles
 SELECT COUNT(*) AS role_count FROM roles;
 
@@ -32,14 +32,14 @@ FROM users u
 JOIN roles r ON u.role_id = r.id
 ORDER BY u.id;
 
--- ── 3. Academics ─────────────────────────────────────────────
+-- 3. Academics
 -- Expected: >= 9 subjects
 SELECT COUNT(*) AS subject_count FROM subjects;
 
 -- Expected: >= 10 classes
 SELECT COUNT(*) AS class_count FROM classes;
 
--- ── 4. Key Column Checks ─────────────────────────────────────
+-- 4. Key Column Checks
 -- users.deleted_at (soft delete)
 SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE
 FROM information_schema.columns
@@ -67,14 +67,14 @@ FROM information_schema.tables
 WHERE table_schema = 'connected_app'
   AND table_name = 'consent_records';
 
--- ── 5. Foreign Key Integrity ─────────────────────────────────
+-- 5. Foreign Key Integrity
 -- Expected: 0 (no orphaned users)
 SELECT COUNT(*) AS orphaned_users
 FROM users u
 LEFT JOIN roles r ON u.role_id = r.id
 WHERE r.id IS NULL;
 
--- ── 6. Module Coverage ───────────────────────────────────────
+-- 6. Module Coverage
 -- Confirm one key table per major module exists
 SELECT
     (SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='connected_app' AND table_name='attendance_sessions')    AS attendance_sessions,
@@ -85,5 +85,4 @@ SELECT
     (SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='connected_app' AND table_name='consent_records')       AS consent,
     (SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='connected_app' AND table_name='whatsapp_sent_log')     AS whatsapp;
 
--- ══════════════════════════════════════════════════════════════
 SELECT '✅ All verification checks complete.' AS status;

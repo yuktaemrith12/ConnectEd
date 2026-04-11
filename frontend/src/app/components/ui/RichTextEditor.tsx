@@ -11,7 +11,7 @@ import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import { List, ListOrdered } from "lucide-react";
 
-// ── Toolbar Button ────────────────────────────────────────────────────────────
+// Toolbar Button
 
 function ToolbarBtn({
   active,
@@ -41,7 +41,7 @@ function ToolbarBtn({
   );
 }
 
-// ── Toolbar ───────────────────────────────────────────────────────────────────
+// Toolbar
 
 function RTEToolbar({ editor }: { editor: ReturnType<typeof useEditor> }) {
   if (!editor) return null;
@@ -143,7 +143,7 @@ function RTEToolbar({ editor }: { editor: ReturnType<typeof useEditor> }) {
   );
 }
 
-// ── Public component ──────────────────────────────────────────────────────────
+// Public component
 
 export interface RichTextEditorProps {
   /** HTML string controlled externally */

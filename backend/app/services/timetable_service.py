@@ -45,7 +45,7 @@ def _entry_to_out(e: TimetableEntry) -> dict:
     }
 
 
-# ── Admin CRUD ────────────────────────────────────────────────────────────────
+# Admin CRUD
 
 def create_entry_admin(payload, db: Session) -> dict:
     """Create a single timetable entry as a DRAFT."""
@@ -114,7 +114,7 @@ def delete_entry_admin(entry_id: int, db: Session) -> None:
     db.commit()
 
 
-# ── Publish ───────────────────────────────────────────────────────────────────
+# Publish
 
 def publish_timetable_for_class(class_id: int, db: Session) -> int:
     """
@@ -164,7 +164,7 @@ def publish_timetable_for_class(class_id: int, db: Session) -> int:
     return count
 
 
-# ── Student query ─────────────────────────────────────────────────────────────
+# Student query
 
 def get_student_timetable(user_id: int, db: Session, view: str = "week", date_str: Optional[str] = None) -> List[dict]:
     """
@@ -194,7 +194,7 @@ def get_student_timetable(user_id: int, db: Session, view: str = "week", date_st
     return [_entry_to_out(e) for e in entries if e.subject is not None]
 
 
-# ── Teacher query ─────────────────────────────────────────────────────────────
+# Teacher query
 
 def get_teacher_timetable(user_id: int, db: Session, view: str = "week", date_str: Optional[str] = None) -> List[dict]:
     """

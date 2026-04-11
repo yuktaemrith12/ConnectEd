@@ -206,7 +206,7 @@ export default function StudentClassRecordings() {
         )}
       </div>
 
-      {/* ── Video + Transcript Modal ── */}
+      {/* Video + Transcript Modal */}
       <AnimatePresence>
         {selectedMeeting && (
           <motion.div

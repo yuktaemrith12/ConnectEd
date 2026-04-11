@@ -33,7 +33,7 @@ import {
   type ConsentChoiceItem,
 } from "@/app/utils/api";
 
-// ── Feature metadata ──────────────────────────────────────────────────────────
+// Feature metadata
 
 const FEATURES: {
   type: ConsentType;
@@ -68,7 +68,7 @@ const FEATURES: {
   },
 ];
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// Page
 
 export default function ParentConsent() {
   const { childId } = useParams<{ childId: string }>();

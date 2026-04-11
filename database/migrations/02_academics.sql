@@ -6,7 +6,7 @@
 
 USE connected_app;
 
--- ── Subjects ─────────────────────────────────────────────────
+-- Subjects
 CREATE TABLE IF NOT EXISTS subjects (
     id   INT          NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS subjects (
     UNIQUE KEY uq_subjects_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Classes ──────────────────────────────────────────────────
+-- Classes
 CREATE TABLE IF NOT EXISTS classes (
     id              INT          NOT NULL AUTO_INCREMENT,
     name            VARCHAR(100) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS classes (
         FOREIGN KEY (head_teacher_id) REFERENCES users (id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Class ↔ Subject junction ─────────────────────────────────
+-- Class ↔ Subject junction
 CREATE TABLE IF NOT EXISTS class_subjects (
     class_id   INT NOT NULL,
     subject_id INT NOT NULL,

@@ -1,3 +1,11 @@
+"""
+Application settings loaded from environment variables and the .env file.
+
+All configuration that changes between environments (dev / prod) should be
+declared here. The `settings` singleton at the bottom is what the rest of
+the app imports.
+"""
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List
 

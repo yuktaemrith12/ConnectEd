@@ -1,3 +1,11 @@
+"""
+Core user models: Role and User.
+
+The Role table is seeded once (admin, teacher, student, parent).
+User.deleted_at implements soft delete — always filter `User.deleted_at == None`
+to exclude soft-deleted accounts.
+"""
+
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func

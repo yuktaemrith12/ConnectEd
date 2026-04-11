@@ -1,3 +1,11 @@
+"""
+Generic Users API — basic read and update endpoints.
+Prefix (set in main.py): /api/v1/users
+
+Note: These are low-level endpoints without role guards. The main
+user management feature lives under /api/v1/admin and is admin-only.
+"""
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List

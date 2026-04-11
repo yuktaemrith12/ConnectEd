@@ -74,7 +74,7 @@ _teacher = Depends(require_role("teacher"))
 _student = Depends(require_role("student"))
 
 
-# ── Upload directory ───────────────────────────────────────────────────────────
+# Upload directory
 
 def _upload_dir(tutor_id: int) -> str:
     base = os.path.join(
@@ -90,7 +90,7 @@ def _upload_dir(tutor_id: int) -> str:
     return base
 
 
-# ── Shared helpers ─────────────────────────────────────────────────────────────
+# Shared helpers
 
 def _get_tutor_or_403(tutor_id: int, teacher_id: int, db: Session) -> AiTutor:
     tutor = db.query(AiTutor).filter(
@@ -179,7 +179,7 @@ def _build_transcript_read(tr: AiTutorTranscript) -> TranscriptRead:
     )
 
 
-# ── Background tasks ───────────────────────────────────────────────────────────
+# Background tasks
 
 def _ingest_document_bg(doc_id: int) -> None:
     from app.services.ai_tutor.document_ingestion import ingest_document
@@ -207,7 +207,7 @@ def _ingest_transcript_bg(transcript_id: int) -> None:
         db.close()
 
 
-# ── Teacher: class-subject discovery ──────────────────────────────────────────
+# Teacher: class-subject discovery
 
 @router.get("/teacher/class-subjects", response_model=List[ClassSubjectRead])
 def get_teacher_class_subjects(
@@ -230,7 +230,7 @@ def get_teacher_class_subjects(
     return result
 
 
-# ── Teacher: Tutor CRUD ────────────────────────────────────────────────────────
+# Teacher: Tutor CRUD
 
 @router.post("/tutors/", response_model=TutorRead)
 def create_tutor(
@@ -340,7 +340,7 @@ def delete_tutor(
     return Response(status_code=204)
 
 
-# ── Teacher: Chapter CRUD ──────────────────────────────────────────────────────
+# Teacher: Chapter CRUD
 
 @router.post("/tutors/{tutor_id}/chapters/", response_model=ChapterRead)
 def create_chapter(
@@ -412,7 +412,7 @@ def delete_chapter(
     return Response(status_code=204)
 
 
-# ── Teacher: Document management ───────────────────────────────────────────────
+# Teacher: Document management
 
 @router.post("/tutors/{tutor_id}/documents/", response_model=List[DocumentRead])
 async def upload_documents(
@@ -517,7 +517,7 @@ def delete_document(
     return Response(status_code=204)
 
 
-# ── Teacher: Transcript workflow ───────────────────────────────────────────────
+# Teacher: Transcript workflow
 
 @router.get("/tutors/{tutor_id}/transcripts/", response_model=List[TranscriptRead])
 def list_transcripts(
@@ -590,7 +590,7 @@ def reject_transcript(
     return Response(status_code=204)
 
 
-# ── Student: tutor discovery ───────────────────────────────────────────────────
+# Student: tutor discovery
 
 def _get_student_class_id(student_id: int, db: Session) -> Optional[int]:
     sp = db.query(StudentProfile).filter(StudentProfile.user_id == student_id).first()
@@ -630,7 +630,7 @@ def get_student_tutors(
     return result
 
 
-# ── Student: chat ──────────────────────────────────────────────────────────────
+# Student: chat
 
 @router.post("/student/chat/", response_model=ChatResponse)
 def student_chat(
@@ -834,7 +834,7 @@ def get_session_messages(
     ]
 
 
-# ── Student: exercise variation ────────────────────────────────────────────────
+# Student: exercise variation
 
 @router.post("/student/exercise-variation/", response_model=ExerciseVariationResponse)
 def exercise_variation(
@@ -883,7 +883,7 @@ def exercise_variation(
     )
 
 
-# ── Infographic: serve PNG ──────────────────────────────────────────────────────
+# Infographic: serve PNG
 
 @router.get("/infographics/{infographic_id}")
 def serve_infographic(

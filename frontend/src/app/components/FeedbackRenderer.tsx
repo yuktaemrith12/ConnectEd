@@ -7,7 +7,7 @@
 import React from "react";
 import DOMPurify from "dompurify";
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// Helpers
 
 /** Returns true when the content string begins with an HTML tag. */
 export function isHTMLContent(text: string): boolean {
@@ -37,7 +37,7 @@ export function markdownToHTML(text: string): string {
     .join("");
 }
 
-// ── Markdown renderer (for legacy plain-text feedback) ───────────────────────
+// Markdown renderer (for legacy plain-text feedback)
 
 function renderInline(text: string): React.ReactNode[] {
   const result: React.ReactNode[] = [];
@@ -115,7 +115,7 @@ function MarkdownContent({ text, className = "" }: { text: string; className?: s
   );
 }
 
-// ── Public component ──────────────────────────────────────────────────────────
+// Public component
 
 /**
  * Renders teacher feedback regardless of format:

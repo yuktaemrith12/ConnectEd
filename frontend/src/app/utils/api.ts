@@ -1,3 +1,7 @@
+// Central API client and typed helper functions.
+// All HTTP calls in the app go through the shared `api` axios instance so
+// the JWT is injected automatically and 401 responses redirect to login.
+
 import axios from "axios";
 
 const BASE_URL = "http://127.0.0.1:8000/api/v1";
@@ -36,7 +40,7 @@ api.interceptors.response.use(
   }
 );
 
-// ── Auth helpers ─────────────────────────────────────────────────────────────
+// Auth helpers
 
 export interface LoginResponse {
   access_token: string;
@@ -81,7 +85,7 @@ export function getStoredFullName(): string {
   return localStorage.getItem("user_full_name") || "";
 }
 
-// ── Admin — Dashboard ─────────────────────────────────────────────────────────
+// Admin — Dashboard
 
 export interface DashboardData {
   total_students: number;
@@ -99,7 +103,7 @@ export async function adminGetDashboard(): Promise<DashboardData> {
   return data;
 }
 
-// ── Admin — Profile ───────────────────────────────────────────────────────────
+// Admin — Profile
 
 export async function adminChangePassword(oldPassword: string, newPassword: string): Promise<{ detail: string }> {
   const { data } = await api.patch<{ detail: string }>("/admin/profile/password", {
@@ -109,7 +113,7 @@ export async function adminChangePassword(oldPassword: string, newPassword: stri
   return data;
 }
 
-// ── Admin — Fees CSV Export ──────────────────────────────────────────────────
+// Admin — Fees CSV Export
 
 export async function adminExportFeesCsv(params?: {
   search?: string; class_id?: number; status?: string;
@@ -121,7 +125,7 @@ export async function adminExportFeesCsv(params?: {
   return data as Blob;
 }
 
-// ── Admin types ───────────────────────────────────────────────────────────────
+// Admin types
 
 export interface AdminUser {
   id: number;
@@ -164,7 +168,7 @@ export interface TeacherOption {
   full_name: string;
 }
 
-// ── Admin — Users ─────────────────────────────────────────────────────────────
+// Admin — Users
 
 export async function adminGetUsers(role?: string, search?: string): Promise<AdminUser[]> {
   const params: Record<string, string> = {};
@@ -197,7 +201,7 @@ export async function adminBulkImport(file: File): Promise<{ created: number; sk
   return data;
 }
 
-// ── Admin — Classes & Subjects ────────────────────────────────────────────────
+// Admin — Classes & Subjects
 
 export async function adminGetClasses(): Promise<AdminClass[]> {
   const { data } = await api.get<AdminClass[]>("/admin/classes");
@@ -243,7 +247,7 @@ export async function adminGetSubjectTeachers(subjectId: number): Promise<Teache
   return data;
 }
 
-// ── Admin — Timetable ─────────────────────────────────────────────────────────
+// Admin — Timetable
 
 export async function adminGetTimetable(classId: number): Promise<TimetableSlot[]> {
   const { data } = await api.get<TimetableSlot[]>(`/admin/timetable/${classId}`);
@@ -271,7 +275,7 @@ export async function adminGetClassSubjectTeachers(
   return data;
 }
 
-// ── Admin — User Management Upgrade ──────────────────────────────────────────
+// Admin — User Management Upgrade
 
 export interface UserCreatePayload {
   first_name: string;
@@ -330,7 +334,7 @@ export async function adminCreateLink(userId: number, payload: LinkPayload): Pro
   await api.post(`/admin/users/${userId}/links`, payload);
 }
 
-// ── Admin — User Lifecycle ────────────────────────────────────────────────────
+// Admin — User Lifecycle
 
 export interface UserUpdatePayload {
   full_name?: string;
@@ -402,7 +406,7 @@ export async function adminRoleImport(
   return data;
 }
 
-// ── Admin — Attendance ────────────────────────────────────────────────────────
+// Admin — Attendance
 
 export interface AttendanceStats {
   total_students: number;
@@ -466,7 +470,7 @@ export async function adminUpsertAttendance(payload: {
   await api.post("/admin/attendance", payload);
 }
 
-// ── Admin — Fees ──────────────────────────────────────────────────────────────
+// Admin — Fees
 
 export interface AcademicPeriodRead {
   id: number;
@@ -580,7 +584,7 @@ export async function adminTriggerFeeNotifications(): Promise<{ detail: string; 
   return data;
 }
 
-// ── Admin — Events / Calendar ─────────────────────────────────────────────────
+// Admin — Events / Calendar
 
 export interface EventRead {
   id: number;
@@ -633,7 +637,7 @@ export async function adminToggleEventPublish(eventId: number): Promise<EventRea
   return data;
 }
 
-// ── Timetable Publish + Sync ──────────────────────────────────────────────────
+// Timetable Publish + Sync
 
 export interface TimetableEntryOut {
   id: number;
@@ -707,7 +711,7 @@ export async function adminPublishTimetable(payload: {
   return data;
 }
 
-// ── Session-based Attendance ───────────────────────────────────────────────────
+// Session-based Attendance
 
 export interface StudentAttendanceRow {
   student_id: number;
@@ -782,7 +786,7 @@ export interface AttendanceOverviewItem {
   avg_attendance_rate: number;
 }
 
-// ── Teacher attendance ────────────────────────────────────────────────────────
+// Teacher attendance
 
 export async function teacherGetMyClasses(): Promise<{ id: number; name: string }[]> {
   const { data } = await api.get<{ id: number; name: string }[]>("/teachers/attendance/my-classes");
@@ -823,14 +827,14 @@ export async function teacherCloseSession(sessionId: number): Promise<Attendance
   return data;
 }
 
-// ── Student attendance ────────────────────────────────────────────────────────
+// Student attendance
 
 export async function getStudentAttendanceSummary(): Promise<StudentAttendanceSummary> {
   const { data } = await api.get<StudentAttendanceSummary>("/students/attendance");
   return data;
 }
 
-// ── Parent attendance ─────────────────────────────────────────────────────────
+// Parent attendance
 
 export interface ParentChild {
   id: number;
@@ -906,7 +910,7 @@ export async function parentGetChildGrades(studentId: number): Promise<ParentGra
   return data;
 }
 
-// ── Admin — Locations ─────────────────────────────────────────────────────────
+// Admin — Locations
 
 export async function adminGetLocations(activeOnly = false): Promise<Location[]> {
   const { data } = await api.get<Location[]>("/admin/locations", { params: { active_only: activeOnly } });
@@ -932,7 +936,7 @@ export async function adminDeactivateLocation(id: number): Promise<void> {
   await api.delete(`/admin/locations/${id}`);
 }
 
-// ── Admin — Attendance Sessions ────────────────────────────────────────────────
+// Admin — Attendance Sessions
 
 export async function adminGetAttendanceSessions(params?: {
   class_id?: number; date_from?: string; date_to?: string; status?: string;
@@ -946,7 +950,7 @@ export async function adminGetAttendanceOverview(): Promise<AttendanceOverviewIt
   return data;
 }
 
-// ── Homework ─────────────────────────────────────────────────────────────────
+// Homework
 
 export interface HomeworkAttachmentRead {
   id: number;
@@ -981,7 +985,7 @@ export interface TeacherClassSubjects {
   subjects: { id: number; name: string }[];
 }
 
-// ── Teacher Homework API ─────────────────────────────────────────────────────
+// Teacher Homework API
 
 export async function teacherGetHomeworkClasses(): Promise<TeacherClassSubjects[]> {
   const { data } = await api.get<TeacherClassSubjects[]>("/homework/teacher/my-classes");
@@ -1031,7 +1035,7 @@ export async function teacherDeleteAttachment(attachmentId: number): Promise<voi
   await api.delete(`/homework/teacher/attachments/${attachmentId}`);
 }
 
-// ── Student Homework API ─────────────────────────────────────────────────────
+// Student Homework API
 
 export async function studentGetHomework(params?: {
   subject_id?: number;
@@ -1047,7 +1051,7 @@ export async function studentToggleHomework(homeworkId: number): Promise<{
   return data;
 }
 
-// ── Assignments ───────────────────────────────────────────────────────────────
+// Assignments
 
 export interface AssignmentAttachmentRead {
   id: number;
@@ -1160,7 +1164,7 @@ export interface OnsiteRosterEntry {
   submission_id: number | null;
 }
 
-// ── Teacher Assignment API ────────────────────────────────────────────────────
+// Teacher Assignment API
 
 export async function teacherGetAssignmentClasses(): Promise<TeacherClassSubjects[]> {
   const { data } = await api.get<TeacherClassSubjects[]>("/assignments/teacher/my-classes");
@@ -1263,7 +1267,7 @@ export async function gradingPublish(assignmentId: number): Promise<{ published:
   return data;
 }
 
-// ── Student Assignment API ────────────────────────────────────────────────────
+// Student Assignment API
 
 export async function studentGetAssignments(params?: {
   subject_id?: number;
@@ -1282,14 +1286,14 @@ export async function studentSubmitAssignment(
   return data;
 }
 
-// ── Parent Assignment API ─────────────────────────────────────────────────────
+// Parent Assignment API
 
 export async function parentGetAssignments(studentId: number): Promise<AssignmentRead[]> {
   const { data } = await api.get<AssignmentRead[]>(`/assignments/parent/${studentId}`);
   return data;
 }
 
-// ── Teacher Stats ─────────────────────────────────────────────────────────────
+// Teacher Stats
 
 export interface TeacherStats {
   total_students: number;
@@ -1301,7 +1305,7 @@ export async function teacherGetStats(): Promise<TeacherStats> {
   return data;
 }
 
-// ── Messaging Types ───────────────────────────────────────────────────────────
+// Messaging Types
 
 export interface MsgContact {
   id: number;
@@ -1341,7 +1345,7 @@ export interface MsgConversationDetail {
   messages: MsgMessage[];
 }
 
-// ── Messaging API ─────────────────────────────────────────────────────────────
+// Messaging API
 
 export async function msgGetContacts(): Promise<MsgContact[]> {
   const { data } = await api.get<MsgContact[]>("/messages/contacts");
@@ -1383,7 +1387,7 @@ export async function msgMarkRead(convId: number): Promise<void> {
   await api.patch(`/messages/conversations/${convId}/read`);
 }
 
-// ── Profile Types & API ────────────────────────────────────────────────────────
+// Profile Types & API
 
 export interface TeacherProfileData {
   full_name: string;
@@ -1448,7 +1452,7 @@ export async function parentChangePassword(oldPassword: string, newPassword: str
   return data;
 }
 
-// ── WhatsApp Notification Settings ───────────────────────────────────────────
+// WhatsApp Notification Settings
 
 export interface WhatsAppSettings {
   is_connected: boolean;
@@ -1505,7 +1509,7 @@ export async function studentDisconnectWhatsApp(): Promise<void> {
   await api.post("/whatsapp/disconnect");
 }
 
-// ── Transcript to Notes ───────────────────────────────────────────────────────
+// Transcript to Notes
 
 export interface T2NJob {
   job_id: number;
@@ -1554,7 +1558,7 @@ export async function t2nGetHistory(): Promise<T2NHistoryItem[]> {
   return data;
 }
 
-// ── AI Tutor ──────────────────────────────────────────────────────────────────
+// AI Tutor
 
 export interface ClassSubjectRead {
   class_id:    number;
@@ -1849,7 +1853,7 @@ export async function aiGetSessionMessages(sessionId: number): Promise<AiTutorCh
   return data;
 }
 
-// ── Video Conferencing ────────────────────────────────────────────────────────
+// Video Conferencing
 
 export interface MeetingRecordingRead {
   id: number;
@@ -1983,7 +1987,7 @@ export async function t2nFromRecording(
   return data;
 }
 
-// ── Consent Management ────────────────────────────────────────────────────────
+// Consent Management
 
 export type ConsentStatus = "pending" | "granted" | "refused" | "withdrawn" | "expired";
 export type ConsentType = "emotion_detection" | "session_recording" | "transcript_generation";

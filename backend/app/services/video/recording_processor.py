@@ -18,9 +18,6 @@ from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-
 def process_recording(
     recording_id: int,
     meeting_id: int,
@@ -49,7 +46,7 @@ def process_recording(
             logger.error("[RecordingProcessor] Recording %d not found", recording_id)
             return
 
-        # ── Step 1: Transcription ─────────────────────────────────────────────
+        # Step 1: Transcription
         transcript_text: Optional[str] = None
         try:
             transcript_text = _transcribe(file_path)
@@ -60,7 +57,7 @@ def process_recording(
         except Exception as exc:
             logger.warning("[RecordingProcessor] Transcription failed: %s", exc)
 
-        # ── Step 2: Emotion Analysis ──────────────────────────────────────────
+        # Step 2: Emotion Analysis
         emotion_summary: dict[str, Any] = {}
         try:
             from app.services.ai.emotion_service import analyze_video_emotions
@@ -73,7 +70,7 @@ def process_recording(
         except Exception as exc:
             logger.warning("[RecordingProcessor] Emotion analysis failed: %s", exc)
 
-        # ── Step 3: AI Analytics Report ───────────────────────────────────────
+        # Step 3: AI Analytics Report
         try:
             report = _generate_ai_report(transcript_text, emotion_summary, meeting_id)
             existing = (
@@ -90,7 +87,7 @@ def process_recording(
         except Exception as exc:
             logger.warning("[RecordingProcessor] AI report failed: %s", exc)
 
-        # ── Step 4: RAG Ingestion ─────────────────────────────────────────────
+        # Step 4: RAG Ingestion
         if transcript_text:
             try:
                 meeting: Optional[Meeting] = (
@@ -103,14 +100,12 @@ def process_recording(
 
     logger.info("[RecordingProcessor] Pipeline complete — recording=%d", recording_id)
 
-
-# ─── Helpers ─────────────────────────────────────────────────────────────────
+# Helpers
 
 def _transcribe(file_path: str) -> Optional[str]:
     """Extract audio and transcribe using the existing transcription service."""
     from app.services.ai.transcription_service import transcribe_audio_file
     return transcribe_audio_file(file_path)
-
 
 def _aggregate_emotions(logs: list) -> dict[str, float]:
     """Convert raw emotion log rows into percentage summary."""
@@ -121,7 +116,6 @@ def _aggregate_emotions(logs: list) -> dict[str, float]:
         counts[log.emotion] = counts.get(log.emotion, 0) + 1
     total = len(logs)
     return {emotion: round(count / total * 100, 1) for emotion, count in counts.items()}
-
 
 def _generate_ai_report(
     transcript: Optional[str],
@@ -191,7 +185,6 @@ def _generate_ai_report(
         logger.warning("[RecordingProcessor] AI report generation failed: %s", exc)
 
     return report
-
 
 def _ingest_to_rag(transcript_text: str, meeting, db) -> None:
     """Add the session transcript to the AI Tutor's RAG knowledge base."""

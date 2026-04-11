@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 _teacher = Depends(require_role("teacher"))
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# Helpers
 
 def _build_session_detail(session: AttendanceSession, db: Session) -> AttendanceSessionDetail:
     """Build the full AttendanceSessionDetail response from an ORM session."""
@@ -90,7 +90,7 @@ def _build_session_detail(session: AttendanceSession, db: Session) -> Attendance
     )
 
 
-# ── Timetable ─────────────────────────────────────────────────────────────────
+# Timetable
 
 @router.get("/timetable", response_model=List[TimetableEntryOut])
 def teacher_timetable(
@@ -107,7 +107,7 @@ def teacher_timetable(
     return [TimetableEntryOut(**r) for r in results]
 
 
-# ── Attendance ─────────────────────────────────────────────────────────────────
+# Attendance
 
 @router.get("/attendance/my-classes")
 def teacher_my_classes(
@@ -300,7 +300,7 @@ def teacher_close_session(
     db.commit()
     db.refresh(session)
 
-    # ── WhatsApp: notify parents of absent/late students ─────────────────────
+    # WhatsApp: notify parents of absent/late students
     from app.api.whatsapp import notify_attendance
     entry = db.query(TimetableEntry).filter(TimetableEntry.id == session.timetable_entry_id).first()
     subject_name = entry.subject.name if entry and entry.subject else "class"

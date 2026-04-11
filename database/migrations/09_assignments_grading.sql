@@ -6,7 +6,7 @@
 
 USE connected_app;
 
--- ── Assignments ───────────────────────────────────────────────
+-- Assignments
 CREATE TABLE IF NOT EXISTS assignments (
     id                INT          NOT NULL AUTO_INCREMENT,
     class_id          INT          NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS assignments (
     CONSTRAINT fk_asgn_teacher FOREIGN KEY (teacher_id) REFERENCES users(id)     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Assignment Attachments ────────────────────────────────────
+-- Assignment Attachments
 CREATE TABLE IF NOT EXISTS assignment_attachments (
     id            INT          NOT NULL AUTO_INCREMENT,
     assignment_id INT          NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS assignment_attachments (
     CONSTRAINT fk_aa_assignment FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Submissions ───────────────────────────────────────────────
+-- Submissions
 CREATE TABLE IF NOT EXISTS submissions (
     id            INT          NOT NULL AUTO_INCREMENT,
     assignment_id INT          NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS submissions (
     UNIQUE KEY uq_sub_asgn_student (assignment_id, student_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Submission Attachments ────────────────────────────────────
+-- Submission Attachments
 CREATE TABLE IF NOT EXISTS submission_attachments (
     id            INT          NOT NULL AUTO_INCREMENT,
     submission_id INT          NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS submission_attachments (
     CONSTRAINT fk_sa_submission FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── AI Reviews ────────────────────────────────────────────────
+-- AI Reviews
 CREATE TABLE IF NOT EXISTS ai_reviews (
     id                 INT          NOT NULL AUTO_INCREMENT,
     submission_id      INT          NOT NULL,

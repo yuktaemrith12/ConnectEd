@@ -60,7 +60,7 @@ def run_ai_review(
 
     client = anthropic.Anthropic(api_key=api_key)
 
-    # ── Rubric section ────────────────────────────────────────────────────────
+    # Rubric section
     rubric_text = ""
     if getattr(assignment, "rubric", None):
         for r in assignment.rubric:
@@ -69,12 +69,12 @@ def run_ai_review(
                 rubric_text += f": {r['description']}"
             rubric_text += "\n"
 
-    # ── Answer sheet / mark scheme ────────────────────────────────────────────
+    # Answer sheet / mark scheme
     answer_key_text = ""
     if answer_sheet_path:
         answer_key_text = extract_text_from_file(answer_sheet_path)
 
-    # ── Student submission content ─────────────────────────────────────────────
+    # Student submission content
     file_sections = []
     if getattr(submission, "sub_attachments", None):
         for att in submission.sub_attachments:
@@ -87,7 +87,7 @@ def run_ai_review(
         "\n\n".join(file_sections) if file_sections else "No files submitted."
     )
 
-    # ── Grading instruction depends on what context is available ─────────────
+    # Grading instruction depends on what context is available
     _bad_markers = ("[Could not", "[Binary", "empty", "[File path")
     has_answer_key = bool(
         answer_key_text

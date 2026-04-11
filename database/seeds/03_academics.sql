@@ -6,7 +6,7 @@
 
 USE connected_app;
 
--- ── Subjects ─────────────────────────────────────────────────
+-- Subjects
 INSERT IGNORE INTO subjects (name) VALUES
     ('Mathematics'),
     ('English'),
@@ -18,7 +18,7 @@ INSERT IGNORE INTO subjects (name) VALUES
     ('Music'),
     ('ICT');
 
--- ── Classes ──────────────────────────────────────────────────
+-- Classes
 INSERT IGNORE INTO classes (name) VALUES
     ('Grade 1-A'), ('Grade 1-B'),
     ('Grade 2-A'), ('Grade 2-B'),

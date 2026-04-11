@@ -67,7 +67,7 @@ export default function InfographicDisplay({ infographic }: Props) {
 
   return (
     <>
-      {/* ── Inline figure ── */}
+      {/* Inline figure */}
       <motion.div
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ export default function InfographicDisplay({ infographic }: Props) {
         )}
       </motion.div>
 
-      {/* ── Full-screen modal ── */}
+      {/* Full-screen modal */}
       <AnimatePresence>
         {fullscreen && blobUrl && (
           <motion.div

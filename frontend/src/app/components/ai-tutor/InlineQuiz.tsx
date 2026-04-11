@@ -112,7 +112,7 @@ export default function InlineQuiz({ questions }: Props) {
   );
 }
 
-// ── Parser helper ──────────────────────────────────────────────────────────────
+// Parser helper
 
 export function parseQuizFromContent(content: string): { quiz: { questions: QuizQuestion[] } | null; text: string } {
   const match = content.match(/```quiz\s*([\s\S]*?)```/);

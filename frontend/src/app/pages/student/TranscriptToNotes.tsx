@@ -31,7 +31,7 @@ import {
   type MeetingRead,
 } from "@/app/utils/api";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
+// Types
 type ActiveTab   = "notes" | "transcript" | "visual";
 type UploadState = "idle" | "uploading" | "processing" | "completed" | "failed";
 type SourceMode  = "upload" | "recording";
@@ -51,7 +51,7 @@ const STAGE_LABELS: Record<string, string> = {
   completed:             "Done!",
 };
 
-// ── Illustration helpers ───────────────────────────────────────────────────────
+// Illustration helpers
 interface IllustrationItem { concept: string; image: string; }
 
 function parseIllustrations(raw: string | null): IllustrationItem[] {
@@ -64,7 +64,7 @@ function parseIllustrations(raw: string | null): IllustrationItem[] {
   return [{ concept: "Visual", image: raw }];
 }
 
-// ── Markdown helpers ──────────────────────────────────────────────────────────
+// Markdown helpers
 function renderInline(text: string): React.ReactNode {
   const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
   return parts.map((part, i) => {
@@ -108,7 +108,7 @@ function MarkdownText({ text }: { text: string }) {
   );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+// Main Component
 export default function StudentTranscriptToNotes() {
   const [sourceMode, setSourceMode]       = useState<SourceMode>("upload");
   const [uploadState, setUploadState]     = useState<UploadState>("idle");
@@ -170,7 +170,7 @@ export default function StudentTranscriptToNotes() {
 
   useEffect(() => () => { if (pollRef.current) clearInterval(pollRef.current); }, []);
 
-  // ── Handlers ──────────────────────────────────────────────────────────────
+  // Handlers
 
   const handleFile = (file: File) => { setSelectedFile(file); setErrorMsg(""); };
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -307,7 +307,7 @@ export default function StudentTranscriptToNotes() {
         </AnimatePresence>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* ── Left: Input panel ── */}
+          {/* Left: Input panel */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -365,7 +365,7 @@ export default function StudentTranscriptToNotes() {
               )}
             </div>
 
-            {/* ── Upload mode: drop zone ── */}
+            {/* Upload mode: drop zone */}
             {sourceMode === "upload" && uploadState === "idle" && (
               <>
                 <input
@@ -421,7 +421,7 @@ export default function StudentTranscriptToNotes() {
               </>
             )}
 
-            {/* ── Recording mode: recording list ── */}
+            {/* Recording mode: recording list */}
             {sourceMode === "recording" && uploadState === "idle" && (
               <>
                 {recordingsLoading ? (
@@ -594,7 +594,7 @@ export default function StudentTranscriptToNotes() {
             )}
           </motion.div>
 
-          {/* ── Right: Output panel ── */}
+          {/* Right: Output panel */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

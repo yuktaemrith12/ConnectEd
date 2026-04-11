@@ -3,7 +3,7 @@ from typing import Optional, List, Dict
 from datetime import date, time
 
 
-# ── Users — Base ──────────────────────────────────────────────────────────────
+# Users — Base
 
 class AdminUserRead(BaseModel):
     id: int
@@ -25,7 +25,7 @@ class AssignClass(BaseModel):
     class_id: int
 
 
-# ── Users — Create ────────────────────────────────────────────────────────────
+# Users — Create
 
 class StudentCreateData(BaseModel):
     class_id: Optional[int] = None
@@ -58,7 +58,7 @@ class UserCreate(BaseModel):
     parent: Optional[ParentCreateData] = None
 
 
-# ── Users — Detail ────────────────────────────────────────────────────────────
+# Users — Detail
 
 class UserDetailRead(BaseModel):
     id: int
@@ -81,7 +81,7 @@ class UserDetailRead(BaseModel):
         from_attributes = True
 
 
-# ── Users — Links ─────────────────────────────────────────────────────────────
+# Users — Links
 
 class LinkCreate(BaseModel):
     type: str               # "parent_student" or "teacher_subject"
@@ -89,7 +89,7 @@ class LinkCreate(BaseModel):
     relationship: str = "Guardian"
 
 
-# ── Users — Update ────────────────────────────────────────────────────────────
+# Users — Update
 
 class UserUpdate(BaseModel):
     full_name: Optional[str] = None
@@ -99,13 +99,13 @@ class UserUpdate(BaseModel):
     parent: Optional[ParentCreateData] = None
 
 
-# ── Users — Password Reset ────────────────────────────────────────────────────
+# Users — Password Reset
 
 class PasswordReset(BaseModel):
     new_password: str = "12345"
 
 
-# ── Students — Lightweight Search Result ─────────────────────────────────────
+# Students — Lightweight Search Result
 
 class StudentSearchResult(BaseModel):
     id: int
@@ -113,7 +113,7 @@ class StudentSearchResult(BaseModel):
     class_name: Optional[str] = None
 
 
-# ── Subjects ─────────────────────────────────────────────────────────────────
+# Subjects
 
 class SubjectRead(BaseModel):
     id: int
@@ -123,7 +123,7 @@ class SubjectRead(BaseModel):
         from_attributes = True
 
 
-# ── Classes ──────────────────────────────────────────────────────────────────
+# Classes
 
 class ClassRead(BaseModel):
     id: int
@@ -152,7 +152,7 @@ class ManageClass(BaseModel):
     mappings: List[SubjectTeacherMapping] = [] # Detailed mappings
 
 
-# ── Timetable ────────────────────────────────────────────────────────────────
+# Timetable
 
 class TimetableSlot(BaseModel):
     day: str
@@ -226,7 +226,7 @@ class TimetableEntryOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── Teacher read (lightweight, for dropdowns) ────────────────────────────────
+# Teacher read (lightweight, for dropdowns)
 
 class TeacherRead(BaseModel):
     id: int
@@ -236,7 +236,7 @@ class TeacherRead(BaseModel):
         from_attributes = True
 
 
-# ── Class Config (aggregated view) ───────────────────────────────────────────
+# Class Config (aggregated view)
 
 class ClassConfigRead(BaseModel):
     head_teacher_id: Optional[int] = None

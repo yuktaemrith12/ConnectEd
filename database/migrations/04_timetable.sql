@@ -6,7 +6,7 @@
 
 USE connected_app;
 
--- ── Class-Subject-Teacher assignments ────────────────────────
+-- Class-Subject-Teacher assignments
 -- 3-way junction: which teacher delivers which subject in which class.
 CREATE TABLE IF NOT EXISTS class_subject_teachers (
     class_id   INT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS class_subject_teachers (
     CONSTRAINT fk_cst_teacher FOREIGN KEY (teacher_id) REFERENCES users(id)    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Locations ─────────────────────────────────────────────────
+-- Locations
 -- Physical rooms / labs / halls used for in-person sessions.
 CREATE TABLE IF NOT EXISTS locations (
     id         INT          NOT NULL AUTO_INCREMENT,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS locations (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Timetable Entries ─────────────────────────────────────────
+-- Timetable Entries
 -- One row per class × subject × day × time_slot.
 -- day / time_slot: legacy string keys kept for backend compatibility.
 -- day_of_week (0=Mon … 4=Fri) and start_time/end_time are the canonical schedule fields.

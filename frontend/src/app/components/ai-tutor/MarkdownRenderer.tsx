@@ -6,7 +6,7 @@ interface Props {
   className?: string;
 }
 
-// ── Code block with copy button ────────────────────────────────────────────────
+// Code block with copy button
 
 function CodeBlock({ code, language }: { code: string; language: string }) {
   const [copied, setCopied] = useState(false);
@@ -35,7 +35,7 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
   );
 }
 
-// ── Inline text renderer (bold, italic, inline code) ──────────────────────────
+// Inline text renderer (bold, italic, inline code)
 
 function renderInline(text: string): React.ReactNode[] {
   const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g);
@@ -54,7 +54,7 @@ function renderInline(text: string): React.ReactNode[] {
   });
 }
 
-// ── Table renderer ─────────────────────────────────────────────────────────────
+// Table renderer
 
 function renderTable(lines: string[]): React.ReactNode {
   const rows = lines
@@ -90,7 +90,7 @@ function renderTable(lines: string[]): React.ReactNode {
   );
 }
 
-// ── Main renderer ──────────────────────────────────────────────────────────────
+// Main renderer
 
 export default function MarkdownRenderer({ content, className = "" }: Props) {
   const lines = content.split("\n");

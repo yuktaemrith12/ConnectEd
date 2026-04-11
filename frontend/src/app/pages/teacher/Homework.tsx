@@ -401,7 +401,7 @@ export default function TeacherHomework() {
         )}
       </div>
 
-      {/* ── Create Homework Modal ──────────────────────────────────────── */}
+      {/* Create Homework Modal */}
       <AnimatePresence>
         {showCreate && (
           <motion.div

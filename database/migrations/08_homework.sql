@@ -11,9 +11,7 @@
 
 USE connected_app;
 
--- ════════════════════════════════════════════════════════════════
 --  1) homework
--- ════════════════════════════════════════════════════════════════
 
 CREATE TABLE IF NOT EXISTS homework (
     id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -32,9 +30,7 @@ CREATE TABLE IF NOT EXISTS homework (
     CONSTRAINT fk_hw_teacher FOREIGN KEY (teacher_id) REFERENCES users(id)     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ════════════════════════════════════════════════════════════════
 --  2) homework_attachments
--- ════════════════════════════════════════════════════════════════
 
 CREATE TABLE IF NOT EXISTS homework_attachments (
     id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,9 +44,7 @@ CREATE TABLE IF NOT EXISTS homework_attachments (
     CONSTRAINT fk_hwa_homework FOREIGN KEY (homework_id) REFERENCES homework(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ════════════════════════════════════════════════════════════════
 --  3) homework_completions
--- ════════════════════════════════════════════════════════════════
 
 CREATE TABLE IF NOT EXISTS homework_completions (
     id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -64,9 +58,7 @@ CREATE TABLE IF NOT EXISTS homework_completions (
     CONSTRAINT uq_hwc_student  UNIQUE (homework_id, student_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ════════════════════════════════════════════════════════════════
 --  Verification
--- ════════════════════════════════════════════════════════════════
 
 SELECT 'homework tables' AS module,
        (SELECT COUNT(*) FROM information_schema.tables

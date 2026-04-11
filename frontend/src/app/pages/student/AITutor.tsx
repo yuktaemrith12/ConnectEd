@@ -118,7 +118,7 @@ function isSystemMsg(msg: LocalMessage) {
   return msg.id === "welcome" || msg.id.startsWith("mode-switch-");
 }
 
-// ── Source citations ──────────────────────────────────────────────────────────
+// Source citations
 
 function SourceCards({ sources }: { sources: AiTutorSourceCitation[] }) {
   const [open, setOpen] = useState(false);
@@ -167,7 +167,7 @@ function SourceCards({ sources }: { sources: AiTutorSourceCitation[] }) {
   );
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// Main component
 
 export default function StudentAITutor() {
   const [tutors,     setTutors]     = useState<StudentTutorRead[]>([]);
@@ -267,7 +267,7 @@ export default function StudentAITutor() {
     setFlashTopic("");
   }
 
-  // ── Tutor selection screen ──────────────────────────────────────────────────
+  // Tutor selection screen
 
   if (!selected) {
     return (
@@ -368,7 +368,7 @@ export default function StudentAITutor() {
     );
   }
 
-  // ── Chat interface ──────────────────────────────────────────────────────────
+  // Chat interface
 
   const currentMode = MODES.find(m => m.id === mode)!;
 
@@ -376,7 +376,7 @@ export default function StudentAITutor() {
     <DashboardLayout role="student">
       <div className="flex flex-col h-[calc(100vh-148px)]">
 
-        {/* ── Header ── */}
+        {/* Header */}
         <div className="flex items-center gap-3 mb-2 px-1">
           <button
             onClick={() => setSelected(null)}
@@ -406,7 +406,7 @@ export default function StudentAITutor() {
         </div>
 
         <div className="flex-1 flex gap-4 overflow-hidden">
-          {/* ── Quick prompts sidebar ── */}
+          {/* Quick prompts sidebar */}
           <div className="hidden lg:flex flex-col w-52 flex-shrink-0 gap-2">
             {mode === "flashcards" ? (
               <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-3 space-y-2">
@@ -461,10 +461,10 @@ export default function StudentAITutor() {
             )}
           </div>
 
-          {/* ── Chat area ── */}
+          {/* Chat area */}
           <div className="flex-1 flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
-            {/* ── Mode tabs — centered inside chat card ── */}
+            {/* Mode tabs — centered inside chat card */}
             <div className={`flex justify-center gap-2 px-5 py-3.5 border-b border-gray-100 flex-wrap ${MODE_BG_SUBTLE[mode]} transition-colors duration-300`}>
               {MODES.map(m => {
                 const Icon = m.icon;
@@ -615,7 +615,7 @@ export default function StudentAITutor() {
               <div ref={bottomRef} />
             </div>
 
-            {/* ── Input bar ── */}
+            {/* Input bar */}
             <div className="p-4 border-t border-gray-100 bg-white">
               <div className="flex gap-2 items-center bg-gray-50 border border-gray-200 rounded-2xl px-4 py-1 focus-within:border-gray-300 focus-within:shadow-sm transition-all">
                 <input

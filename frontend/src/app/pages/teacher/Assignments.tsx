@@ -31,7 +31,7 @@ import DashboardLayout from "@/app/components/layout/DashboardLayout";
 import { RichTextEditor } from "@/app/components/ui/RichTextEditor";
 import { isHTMLContent, markdownToHTML } from "@/app/components/FeedbackRenderer";
 
-// ── helpers ───────────────────────────────────────────────────────────────────
+// helpers
 
 function formatDate(iso: string | null) {
   if (!iso) return "No deadline";
@@ -72,7 +72,7 @@ const SUB_STATUS_COLORS: Record<string, string> = {
   PUBLISHED: "bg-green-100 text-green-700",
 };
 
-// ── Convert structured AI feedback → editor HTML (removes JSON watermarks) ────
+// Convert structured AI feedback → editor HTML (removes JSON watermarks)
 
 function structuredFeedbackToHTML(sf: StructuredFeedback, grade: number | null, maxScore: number): string {
   const md = (t: string) =>
@@ -138,8 +138,7 @@ function feedbackToHTML(raw: string | null, grade: number | null, maxScore: numb
   return markdownToHTML(raw);
 }
 
-// ── main component ──────────────────���─────────────────────────────────────────
-
+// main component
 export default function TeacherAssignments() {
   const [assignments, setAssignments] = useState<AssignmentRead[]>([]);
   const [classes, setClasses] = useState<TeacherClassSubjects[]>([]);
@@ -456,7 +455,7 @@ export default function TeacherAssignments() {
     <DashboardLayout role="teacher">
       <div>
 
-        {/* ── Hero header ─────────────────────────────────────────────────────── */}
+        {/* Hero header */}
         <div className="mb-6 rounded-2xl overflow-hidden shadow-lg">
           <div className="bg-gradient-to-br from-purple-900 via-purple-400 to-indigo-300 p-6 text-white relative">
             {/* subtle dot pattern */}
@@ -468,7 +467,6 @@ export default function TeacherAssignments() {
               <div>
 
                 <h1 className="text-3xl font-bold mb-2">Assignments</h1>
-
 
               </div>
               <button
@@ -518,7 +516,7 @@ export default function TeacherAssignments() {
           </div>
         </div>
 
-        {/* ── Filters ─────────────────────────────────────────────────────────── */}
+        {/* Filters */}
         <div className="mb-5">
           {/* Class filter chips */}
           {classes.length > 0 && (
@@ -579,7 +577,7 @@ export default function TeacherAssignments() {
           </div>
         )}
 
-        {/* ── Assignment list ──────────────────────────────────────────────────── */}
+        {/* Assignment list */}
         <div>
           {filtered.length === 0 ? (
             <div className="text-center py-20 text-gray-400">
@@ -769,7 +767,7 @@ export default function TeacherAssignments() {
           )}
         </div>
 
-        {/* ── Grading Hub modal ───────────────────────────────────────────────── */}
+        {/* Grading Hub modal */}
         <AnimatePresence>
           {gradingHub && selected && (
             <motion.div
@@ -1110,7 +1108,7 @@ export default function TeacherAssignments() {
           )}
         </AnimatePresence>
 
-        {/* ── Create Assignment modal ──────────────────────────────────────────── */}
+        {/* Create Assignment modal */}
         <AnimatePresence>
           {showCreate && (
             <motion.div

@@ -7,7 +7,7 @@
 
 USE connected_app;
 
--- ── Attendance Records (flat / legacy model) ──────────────────
+-- Attendance Records (flat / legacy model)
 -- One row per student per date. Kept for historical data and admin overview.
 CREATE TABLE IF NOT EXISTS attendance_records (
     id           INT  NOT NULL AUTO_INCREMENT,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS attendance_records (
     UNIQUE KEY uq_att_student_date (student_id, date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Attendance Sessions (session-based model) ─────────────────
+-- Attendance Sessions (session-based model)
 -- One session per timetable entry per date, opened by the teacher.
 CREATE TABLE IF NOT EXISTS attendance_sessions (
     id                       INT          NOT NULL AUTO_INCREMENT,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS attendance_sessions (
     UNIQUE KEY uq_session (timetable_entry_id, session_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Session Attendance Records ────────────────────────────────
+-- Session Attendance Records
 -- Per-student record within a session. NULL status → set to ABSENT on session close.
 CREATE TABLE IF NOT EXISTS session_attendance_records (
     id                    INT  NOT NULL AUTO_INCREMENT,

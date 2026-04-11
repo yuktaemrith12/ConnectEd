@@ -39,7 +39,7 @@ logger = logging.getLogger(__name__)
 _any_messaging_role = Depends(require_role("teacher", "student", "parent"))
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# Helpers
 
 def _get_valid_contact_ids(me: User, db: Session) -> set:
     """Return the set of user IDs that `me` is allowed to message."""
@@ -225,7 +225,7 @@ def _send_msg(conv: Conversation, sender: User, content: str, db: Session) -> Me
     return msg
 
 
-# ── Notification helper ───────────────────────────────────────────────────────
+# Notification helper
 
 def _maybe_notify_parent(
     conv_id: int,
@@ -257,7 +257,7 @@ def _maybe_notify_parent(
         )
 
 
-# ── Endpoints ─────────────────────────────────────────────────────────────────
+# Endpoints
 
 @router.get("/contacts", response_model=List[ContactRead])
 def get_contacts(

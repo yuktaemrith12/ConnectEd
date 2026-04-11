@@ -43,10 +43,7 @@ _admin = Depends(require_role("admin"))
 
 CHRONIC_THRESHOLD = 80.0   # below this % = chronic absentee
 
-
-# ═══════════════════════════════════════════════════════════════════
-#  ATTENDANCE
-# ═══════════════════════════════════════════════════════════════════
+# Attendance
 
 def _attendance_rate(student_id: int, db: Session) -> float:
     """Overall attendance rate (%) for a student across all records."""
@@ -60,7 +57,6 @@ def _attendance_rate(student_id: int, db: Session) -> float:
         AttendanceRecord.status.in_([AttendanceStatusEnum.Present, AttendanceStatusEnum.Late]),
     ).scalar() or 0
     return round((present / total) * 100, 1)
-
 
 def _build_record_read(rec: AttendanceRecord, rate: float, history: list, db: Session) -> dict:
     sp: StudentProfile = rec.student
@@ -79,7 +75,6 @@ def _build_record_read(rec: AttendanceRecord, rate: float, history: list, db: Se
         "attendance_rate": rate,
         "history": history,
     }
-
 
 def _session_attendance_rate(user_id: int, db: Session) -> float:
     """Attendance rate (%) for a student (by users.id) from new session records."""
@@ -105,7 +100,6 @@ def _session_attendance_rate(user_id: int, db: Session) -> float:
         .scalar() or 0
     )
     return round((present / total) * 100, 1)
-
 
 @router.get("/attendance/stats", response_model=AttendanceStats)
 def get_attendance_stats(
@@ -190,7 +184,6 @@ def get_attendance_stats(
         trend_pct=trend_pct,
     )
 
-
 @router.get("/attendance/trend", response_model=List[AttendanceTrendPoint])
 def get_attendance_trend(
     date_range: str = Query("This Week", alias="range"),
@@ -239,7 +232,6 @@ def get_attendance_trend(
         for r in rows
     ]
 
-
 @router.get("/attendance/distribution", response_model=AttendanceDistribution)
 def get_attendance_distribution(
     date_range: str = Query("This Week", alias="range"),
@@ -276,7 +268,6 @@ def get_attendance_distribution(
     ).scalar() or 0
 
     return AttendanceDistribution(present=present, absent=absent, late=late)
-
 
 @router.get("/attendance/classwise", response_model=List[ClasswiseAttendance])
 def get_classwise_attendance(
@@ -328,7 +319,6 @@ def get_classwise_attendance(
         for r in rows
     ]
 
-
 @router.get("/attendance/chronic", response_model=List[ChronicAbsentee])
 def get_chronic_absentees(
     threshold: float = Query(CHRONIC_THRESHOLD),
@@ -348,7 +338,6 @@ def get_chronic_absentees(
                 attendance_rate=rate,
             ))
     return sorted(result, key=lambda x: x.attendance_rate)
-
 
 @router.get("/attendance/records", response_model=List[AttendanceRecordRead])
 def get_attendance_records(
@@ -426,7 +415,6 @@ def get_attendance_records(
 
     return result
 
-
 @router.post("/attendance", status_code=status.HTTP_201_CREATED)
 def upsert_attendance(
     payload: AttendanceUpsert,
@@ -461,10 +449,7 @@ def upsert_attendance(
     db.commit()
     return {"detail": "created"}
 
-
-# ═══════════════════════════════════════════════════════════════════
-#  FEES
-# ═══════════════════════════════════════════════════════════════════
+# Fees
 
 def _compute_fee_student(fp: FeePlan) -> dict:
     """Compute all derived fee metrics for a single FeePlan."""
@@ -534,7 +519,6 @@ def _compute_fee_student(fp: FeePlan) -> dict:
         "payment_history":    history,
     }
 
-
 def _build_fee_plan(payload: FeePlanCreate, db: Session) -> FeePlan:
     """Create a FeePlan (+ installments) from a FeePlanCreate payload. Does NOT commit."""
     total = float(payload.base_amount) - float(payload.discount_amount)
@@ -557,8 +541,7 @@ def _build_fee_plan(payload: FeePlanCreate, db: Session) -> FeePlan:
         ))
     return fp
 
-
-# ── Academic Periods ─────────────────────────────────────────────────────────
+# Academic Periods
 
 @router.get("/fees/academic-periods", response_model=List[AcademicPeriodRead])
 def list_academic_periods(
@@ -575,7 +558,6 @@ def list_academic_periods(
         )
         for p in periods
     ]
-
 
 @router.post("/fees/academic-periods", status_code=status.HTTP_201_CREATED, response_model=AcademicPeriodRead)
 def create_academic_period(
@@ -598,8 +580,7 @@ def create_academic_period(
         end_date=period.end_date.isoformat(),
     )
 
-
-# ── Fee Stats & Trend ────────────────────────────────────────────────────────
+# Fee Stats & Trend
 
 @router.get("/fees/stats", response_model=FeeStats)
 def get_fee_stats(
@@ -636,7 +617,6 @@ def get_fee_stats(
         total_students=len(plans),
     )
 
-
 @router.get("/fees/trend", response_model=List[FeeTrendPoint])
 def get_fee_trend(
     db: Session = Depends(get_db),
@@ -661,8 +641,7 @@ def get_fee_trend(
         for r in rows
     ]
 
-
-# ── Student Fee Records ──────────────────────────────────────────────────────
+# Student Fee Records
 
 @router.get("/fees/students", response_model=List[FeeStudentRead])
 def get_fee_students(
@@ -697,8 +676,7 @@ def get_fee_students(
 
     return [FeeStudentRead(**r) for r in result]
 
-
-# ── Create / Update Plans ────────────────────────────────────────────────────
+# Create / Update Plans
 
 @router.post("/fees/plans", status_code=status.HTTP_201_CREATED, response_model=FeeStudentRead)
 def create_fee_plan(
@@ -726,7 +704,6 @@ def create_fee_plan(
     db.commit()
     db.refresh(fp)
     return FeeStudentRead(**_compute_fee_student(fp))
-
 
 @router.post("/fees/plans/bulk", status_code=status.HTTP_201_CREATED, response_model=BulkPlanResult)
 def create_fee_plans_bulk(
@@ -771,7 +748,6 @@ def create_fee_plans_bulk(
     db.commit()
     return BulkPlanResult(created=created, skipped=skipped)
 
-
 @router.patch("/fees/plans/{plan_id}", response_model=FeeStudentRead)
 def update_fee_plan(
     plan_id: int,
@@ -796,8 +772,7 @@ def update_fee_plan(
     db.refresh(fp)
     return FeeStudentRead(**_compute_fee_student(fp))
 
-
-# ── Record Payment ───────────────────────────────────────────────────────────
+# Record Payment
 
 @router.post("/fees/payments", status_code=status.HTTP_201_CREATED, response_model=FeeStudentRead)
 def record_payment(
@@ -837,8 +812,7 @@ def record_payment(
     db.refresh(fp)
     return FeeStudentRead(**_compute_fee_student(fp))
 
-
-# ── Notification Trigger (daily cron) ───────────────────────────────────────
+# Notification Trigger (daily cron)
 
 @router.post("/fees/notifications/trigger", status_code=status.HTTP_200_OK)
 def trigger_notifications(
@@ -922,8 +896,7 @@ def trigger_notifications(
     db.commit()
     return {"detail": "Notification trigger complete", **counts}
 
-
-# ── Fees CSV Export ──────────────────────────────────────────────────────────
+# Fees CSV Export
 
 @router.get("/fees/export/csv")
 def export_fees_csv(
@@ -974,10 +947,7 @@ def export_fees_csv(
         headers={"Content-Disposition": "attachment; filename=fees_report.csv"},
     )
 
-
-# ═══════════════════════════════════════════════════════════════════
-#  CALENDAR / EVENTS
-# ═══════════════════════════════════════════════════════════════════
+# Calendar / Events
 
 def _build_event_read(ev: Event) -> dict:
     def _fmt_time(t) -> Optional[str]:
@@ -998,7 +968,6 @@ def _build_event_read(ev: Event) -> dict:
         "created_at": ev.created_at.isoformat() if ev.created_at else "",
         "class_ids": [etc.class_id for etc in ev.target_classes],
     }
-
 
 @router.get("/events", response_model=List[EventRead])
 def list_events(
@@ -1027,7 +996,6 @@ def list_events(
 
     events = q.order_by(Event.start_date).all()
     return [EventRead(**_build_event_read(ev)) for ev in events]
-
 
 @router.post("/events", status_code=status.HTTP_201_CREATED, response_model=EventRead)
 def create_event(
@@ -1092,7 +1060,6 @@ def create_event(
         )
 
     return EventRead(**_build_event_read(ev))
-
 
 @router.put("/events/{event_id}", response_model=EventRead)
 def update_event(
@@ -1160,7 +1127,6 @@ def update_event(
 
     return EventRead(**_build_event_read(ev))
 
-
 @router.delete("/events/{event_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_event(
     event_id: int,
@@ -1174,7 +1140,6 @@ def delete_event(
     db.delete(ev)
     db.commit()
     return Response(status_code=204)
-
 
 @router.patch("/events/{event_id}/publish", response_model=EventRead)
 def toggle_event_publish(
@@ -1192,7 +1157,7 @@ def toggle_event_publish(
     db.commit()
     db.refresh(ev)
 
-    # ── WhatsApp: fire only when transitioning to published, for All/Parents audience ──
+    # WhatsApp: fire only when transitioning to published, for All/Parents audience
     audience = ev.target_audience_type.value if hasattr(ev.target_audience_type, "value") else str(ev.target_audience_type)
     if ev.published and not was_published and audience in ("All", "Parents"):
         from app.api.whatsapp import notify_event_published
@@ -1210,10 +1175,7 @@ def toggle_event_publish(
 
     return EventRead(**_build_event_read(ev))
 
-
-# ═══════════════════════════════════════════════════════════════════
-#  LOCATIONS
-# ═══════════════════════════════════════════════════════════════════
+# Locations
 
 @router.get("/locations", response_model=List[LocationRead])
 def list_locations(
@@ -1226,7 +1188,6 @@ def list_locations(
         q = q.filter(Location.is_active == True)  # noqa: E712
     return q.order_by(Location.name).all()
 
-
 @router.post("/locations", status_code=201, response_model=LocationRead)
 def create_location(
     payload: LocationCreate,
@@ -1238,7 +1199,6 @@ def create_location(
     db.commit()
     db.refresh(loc)
     return loc
-
 
 @router.put("/locations/{location_id}", response_model=LocationRead)
 def update_location(
@@ -1262,7 +1222,6 @@ def update_location(
     db.refresh(loc)
     return loc
 
-
 @router.delete("/locations/{location_id}", status_code=204)
 def deactivate_location(
     location_id: int,
@@ -1277,10 +1236,7 @@ def deactivate_location(
     db.commit()
     return FastAPIResponse(status_code=204)
 
-
-# ═══════════════════════════════════════════════════════════════════
-#  ATTENDANCE SESSIONS OVERVIEW (session-based)
-# ═══════════════════════════════════════════════════════════════════
+# Attendance Sessions Overview (Session-Based)
 
 def _session_counts(session: AttendanceSession) -> dict:
     counts = {"total": 0, "present": 0, "absent": 0, "late": 0, "excused": 0, "unmarked": 0}
@@ -1297,7 +1253,6 @@ def _session_counts(session: AttendanceSession) -> dict:
         else:
             counts["unmarked"] += 1
     return counts
-
 
 @router.get("/attendance/sessions", response_model=List[AdminSessionRead])
 def admin_list_sessions(
@@ -1348,7 +1303,6 @@ def admin_list_sessions(
             unmarked_count=counts["unmarked"],
         ))
     return result
-
 
 @router.get("/attendance/overview", response_model=List[AttendanceOverviewItem])
 def admin_attendance_overview(

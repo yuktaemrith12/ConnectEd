@@ -21,7 +21,7 @@ from app.services.timetable_service import get_student_timetable as _svc_student
 router = APIRouter()
 
 
-# ── Timetable ─────────────────────────────────────────────────────────────────
+# Timetable
 
 @router.get("/timetable", response_model=List[TimetableEntryOut])
 def student_timetable(
@@ -38,7 +38,7 @@ def student_timetable(
     return [TimetableEntryOut(**r) for r in results]
 
 
-# ── Attendance ─────────────────────────────────────────────────────────────────
+# Attendance
 
 @router.get("/attendance", response_model=StudentAttendanceSummary)
 def student_attendance(

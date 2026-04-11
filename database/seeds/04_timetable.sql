@@ -16,9 +16,7 @@
 
 USE connected_app;
 
--- ════════════════════════════════════════════════════════════════
 --  1) SUBJECTS  (10+ standard subjects)
--- ════════════════════════════════════════════════════════════════
 
 INSERT IGNORE INTO subjects (name) VALUES
   ('Mathematics'),
@@ -33,9 +31,7 @@ INSERT IGNORE INTO subjects (name) VALUES
   ('Religious Education'),
   ('Drama');
 
--- ════════════════════════════════════════════════════════════════
 --  2) CLASSES  (4+ base classes)
--- ════════════════════════════════════════════════════════════════
 
 INSERT IGNORE INTO classes (name) VALUES
   ('Grade 1-A'),
@@ -43,10 +39,8 @@ INSERT IGNORE INTO classes (name) VALUES
   ('Grade 2-A'),
   ('Grade 2-B');
 
--- ════════════════════════════════════════════════════════════════
 --  3) TEACHER ↔ SUBJECT capability  (teacher_subjects)
 --     Links the sample teachers seeded in 02_users.sql.
--- ════════════════════════════════════════════════════════════════
 
 INSERT IGNORE INTO teacher_subjects (teacher_id, subject_id)
 SELECT u.id, s.id FROM users u, subjects s
@@ -97,9 +91,7 @@ INSERT IGNORE INTO teacher_subjects (teacher_id, subject_id)
 SELECT u.id, s.id FROM users u, subjects s
 WHERE u.email = 'emmaak@teacher.connected.com'         AND s.name = 'Drama';
 
--- ════════════════════════════════════════════════════════════════
 --  4) CLASS ↔ SUBJECT assignments  (class_subjects)
--- ════════════════════════════════════════════════════════════════
 
 -- Grade 1-A: core + electives (including Drama for Emma AK)
 INSERT IGNORE INTO class_subjects (class_id, subject_id)
@@ -125,9 +117,7 @@ SELECT c.id, s.id FROM classes c, subjects s
 WHERE c.name = 'Grade 2-B'
   AND s.name IN ('Mathematics','English','Science','History','Geography','ICT');
 
--- ════════════════════════════════════════════════════════════════
 --  5) CLASS-SUBJECT-TEACHER  (class_subject_teachers)
--- ════════════════════════════════════════════════════════════════
 
 -- Grade 1-A
 INSERT IGNORE INTO class_subject_teachers (class_id, subject_id, teacher_id)
@@ -216,10 +206,8 @@ INSERT IGNORE INTO class_subject_teachers (class_id, subject_id, teacher_id)
 SELECT c.id, s.id, u.id FROM classes c, subjects s, users u
 WHERE c.name='Grade 2-B' AND s.name='ICT'         AND u.email='lisa.thompson@teacher.connected.com';
 
--- ════════════════════════════════════════════════════════════════
 --  6) TIMETABLE ENTRIES  (Grade 1-A and Grade 2-A, Mon + Tue)
 --     Uses DELETE + INSERT IGNORE for idempotent re-runs.
--- ════════════════════════════════════════════════════════════════
 
 SET SQL_SAFE_UPDATES = 0;
 DELETE FROM timetable_entries
@@ -308,9 +296,7 @@ SELECT c.id, s.id, u.id, 'Tuesday', '1:00'
   FROM classes c, subjects s, users u
  WHERE c.name='Grade 2-A' AND s.name='Science' AND u.email='michael.chen@teacher.connected.com';
 
--- ════════════════════════════════════════════════════════════════
 --  7) VERIFICATION SUMMARY
--- ════════════════════════════════════════════════════════════════
 
 SELECT 'subjects'               AS table_name, COUNT(*) AS count FROM subjects
 UNION ALL

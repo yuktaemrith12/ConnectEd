@@ -1,3 +1,11 @@
+"""
+Database engine, session factory, and the shared SQLAlchemy Base.
+
+Every model file imports `Base` from here so all tables are registered
+under the same metadata object. The `get_db` function is used as a
+FastAPI dependency to inject a database session into route handlers.
+"""
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker

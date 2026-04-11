@@ -36,7 +36,7 @@ import {
   type ConsentAuditLog,
 } from "@/app/utils/api";
 
-// ── Feature metadata ──────────────────────────────────────────────────────────
+// Feature metadata
 
 const FEATURES: {
   type: ConsentType;
@@ -102,7 +102,7 @@ const ACTION_COLORS: Record<string, string> = {
   blocked_attempt: "bg-yellow-100 text-yellow-700",
 };
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// Page
 
 export default function StudentConsent() {
   const [records, setRecords] = useState<ConsentRecord[]>([]);

@@ -38,7 +38,7 @@ import {
   type AdminUser,
 } from "@/app/utils/api";
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// Helpers
 
 const FEATURE_META: Record<string, { label: string; icon: React.ReactNode; color: string }> = {
   emotion_detection:    { label: "Emotion Detection",    icon: <Eye className="w-4 h-4" />,      color: "text-purple-600" },
@@ -68,7 +68,7 @@ function RateBar({ rate, color }: { rate: number; color: string }) {
   );
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// Page
 
 export default function AdminConsentCompliance() {
   const [overview, setOverview] = useState<ComplianceOverview | null>(null);

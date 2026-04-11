@@ -7,7 +7,7 @@
 
 USE connected_app;
 
--- ── AI Tutors ─────────────────────────────────────────────────
+-- AI Tutors
 -- One configurable RAG tutor per class × subject.
 CREATE TABLE IF NOT EXISTS ai_tutors (
     id             INT          NOT NULL AUTO_INCREMENT,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS ai_tutors (
     CONSTRAINT fk_tutor_teacher FOREIGN KEY (teacher_id) REFERENCES users(id)    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Chapters ──────────────────────────────────────────────────
+-- Chapters
 CREATE TABLE IF NOT EXISTS ai_tutor_chapters (
     id           INT          NOT NULL AUTO_INCREMENT,
     tutor_id     INT          NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS ai_tutor_chapters (
     CONSTRAINT fk_chapter_tutor FOREIGN KEY (tutor_id) REFERENCES ai_tutors(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Documents ─────────────────────────────────────────────────
+-- Documents
 CREATE TABLE IF NOT EXISTS ai_tutor_documents (
     id                INT          NOT NULL AUTO_INCREMENT,
     tutor_id          INT          NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS ai_tutor_documents (
     CONSTRAINT fk_doc_uploader  FOREIGN KEY (uploaded_by) REFERENCES users(id)             ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Transcripts ───────────────────────────────────────────────
+-- Transcripts
 CREATE TABLE IF NOT EXISTS ai_tutor_transcripts (
     id                  INT         NOT NULL AUTO_INCREMENT,
     tutor_id            INT         NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS ai_tutor_transcripts (
     CONSTRAINT fk_transcript_reviewer FOREIGN KEY (reviewed_by) REFERENCES users(id)             ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Chat Sessions ─────────────────────────────────────────────
+-- Chat Sessions
 CREATE TABLE IF NOT EXISTS ai_tutor_chat_sessions (
     id               INT     NOT NULL AUTO_INCREMENT,
     tutor_id         INT     NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS ai_tutor_chat_sessions (
     CONSTRAINT fk_session_student FOREIGN KEY (student_id) REFERENCES users(id)     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Chat Messages ─────────────────────────────────────────────
+-- Chat Messages
 CREATE TABLE IF NOT EXISTS ai_tutor_chat_messages (
     id            INT      NOT NULL AUTO_INCREMENT,
     session_id    INT      NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS ai_tutor_chat_messages (
     CONSTRAINT fk_msg_session FOREIGN KEY (session_id) REFERENCES ai_tutor_chat_sessions(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Vector Chunks ─────────────────────────────────────────────
+-- Vector Chunks
 CREATE TABLE IF NOT EXISTS ai_tutor_vector_chunks (
     id            INT          NOT NULL AUTO_INCREMENT,
     tutor_id      INT          NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS ai_tutor_vector_chunks (
     CONSTRAINT fk_chunk_transcript FOREIGN KEY (transcript_id) REFERENCES ai_tutor_transcripts(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Infographics ──────────────────────────────────────────────
+-- Infographics
 -- DALL-E 3 image cache, keyed by concept_hash to avoid duplicate generation.
 CREATE TABLE IF NOT EXISTS ai_tutor_infographics (
     id                 INT          NOT NULL AUTO_INCREMENT,

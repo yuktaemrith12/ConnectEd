@@ -1,3 +1,7 @@
+// Navigation sidebar used across all role dashboards.
+// The navigationConfig object defines which menu items appear for each role.
+// The sidebar can be collapsed to icon-only mode via the toggle button.
+
 import { motion } from "motion/react";
 import { Link, useLocation, useParams } from "react-router";
 import type { LucideIcon } from "lucide-react";

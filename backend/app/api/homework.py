@@ -37,7 +37,7 @@ ALLOWED_EXTENSIONS = {"pdf", "docx", "doc", "jpg", "jpeg", "png", "gif"}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# Helpers
 
 def _hw_to_dict(hw: Homework, student_id: int | None = None) -> dict:
     """Serialize a Homework ORM instance to a dict."""
@@ -97,7 +97,7 @@ def _get_teacher_class_subject_pairs(teacher_id: int, db: Session) -> set[tuple[
     return {(r[0], r[1]) for r in rows}
 
 
-# ── Teacher Endpoints ─────────────────────────────────────────────────────────
+# Teacher Endpoints
 
 @router.get("/teacher")
 def teacher_list_homework(
@@ -336,7 +336,7 @@ def teacher_delete_attachment(
     return {"detail": "Attachment deleted."}
 
 
-# ── Teacher helper: Classes & Subjects I teach ─────────────────────────────────
+# Teacher helper: Classes & Subjects I teach
 
 @router.get("/teacher/my-classes")
 def teacher_homework_classes(
@@ -361,7 +361,7 @@ def teacher_homework_classes(
     return list(classes.values())
 
 
-# ── Student Endpoints ─────────────────────────────────────────────────────────
+# Student Endpoints
 
 @router.get("/student")
 def student_list_homework(

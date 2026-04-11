@@ -39,7 +39,7 @@ CONSENT_VERSION = "v1.0"
 EXPIRY_DAYS = 365
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# Helpers
 
 def _ensure_consent_records(db: Session, student_id: int) -> List[ConsentRecord]:
     """Idempotently create 'pending' records for any missing consent types."""
@@ -124,7 +124,7 @@ def _get_client_ip(request: Request) -> Optional[str]:
     return request.client.host if request.client else None
 
 
-# ── Student endpoints ─────────────────────────────────────────────────────────
+# Student endpoints
 
 @router.get("/my")
 def get_my_consents(
@@ -137,7 +137,7 @@ def get_my_consents(
     return [_record_to_dict(r, db) for r in records]
 
 
-# ── Shared: save / withdraw ───────────────────────────────────────────────────
+# Shared: save / withdraw
 
 @router.post("/save")
 def save_consents(
@@ -262,7 +262,7 @@ def withdraw_consent(
     return {"detail": "Consent withdrawn."}
 
 
-# ── Admin / Teacher endpoints ─────────────────────────────────────────────────
+# Admin / Teacher endpoints
 
 @router.get("/compliance/overview")
 def get_compliance_overview(

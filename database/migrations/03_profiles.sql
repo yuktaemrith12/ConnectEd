@@ -7,7 +7,7 @@
 
 USE connected_app;
 
--- ── Student Profiles ─────────────────────────────────────────
+-- Student Profiles
 CREATE TABLE IF NOT EXISTS student_profiles (
     id           INT         NOT NULL AUTO_INCREMENT,
     user_id      INT         NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS student_profiles (
     CONSTRAINT fk_sp_class FOREIGN KEY (class_id) REFERENCES classes (id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Teacher Profiles ─────────────────────────────────────────
+-- Teacher Profiles
 CREATE TABLE IF NOT EXISTS teacher_profiles (
     id       INT          NOT NULL AUTO_INCREMENT,
     user_id  INT          NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS teacher_profiles (
     CONSTRAINT fk_tp_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Parent ↔ Student links (many-to-many) ────────────────────
+-- Parent ↔ Student links (many-to-many)
 CREATE TABLE IF NOT EXISTS parent_students (
     parent_id         INT         NOT NULL,
     student_id        INT         NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS parent_students (
     CONSTRAINT fk_ps_student FOREIGN KEY (student_id) REFERENCES users (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ── Teacher ↔ Subject links (many-to-many) ───────────────────
+-- Teacher ↔ Subject links (many-to-many)
 CREATE TABLE IF NOT EXISTS teacher_subjects (
     teacher_id INT NOT NULL,
     subject_id INT NOT NULL,

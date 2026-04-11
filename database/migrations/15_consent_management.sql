@@ -1,7 +1,6 @@
--- ─────────────────────────────────────────────────────────────────────────────
+
 -- Migration 22: Consent Management System (GDPR Compliant)
 -- Tables: consent_records, consent_audit_logs
--- ─────────────────────────────────────────────────────────────────────────────
 
 -- Granular per-student consent records for AI biometric features
 CREATE TABLE IF NOT EXISTS consent_records (

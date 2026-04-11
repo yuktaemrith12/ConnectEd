@@ -73,7 +73,7 @@ function fmtDate(s: string) {
   try { return new Date(s).toLocaleDateString(); } catch { return s; }
 }
 
-// ── Main page component ────────────────────────────────────────────────────────
+// Main page component
 
 export default function TeacherAITutorManagement() {
   const [tutors, setTutors]           = useState<AiTutorRead[]>([]);
@@ -124,7 +124,7 @@ export default function TeacherAITutorManagement() {
     if (selectedTutor?.id === updated.id) setSelected(prev => prev ? { ...prev, ...updated } : prev);
   }
 
-  // ── Render: Tutor grid ──────────────────────────────────────────────────────
+  // Render: Tutor grid
 
   if (!selectedTutor) {
     return (
@@ -217,7 +217,7 @@ export default function TeacherAITutorManagement() {
     );
   }
 
-  // ── Render: Tutor detail ────────────────────────────────────────────────────
+  // Render: Tutor detail
 
   return (
     <DashboardLayout role="teacher">
@@ -308,7 +308,7 @@ export default function TeacherAITutorManagement() {
   );
 }
 
-// ── Create Tutor Modal ─────────────────────────────────────────────────────────
+// Create Tutor Modal
 
 function CreateTutorModal({ onClose, onCreated }: {
   onClose: () => void;
@@ -410,7 +410,7 @@ function CreateTutorModal({ onClose, onCreated }: {
   );
 }
 
-// ── Chapters Tab ───────────────────────────────────────────────────────────────
+// Chapters Tab
 
 function ChaptersTab({ tutorId, chapters, setChapters, showAdd, setShowAdd }: {
   tutorId: number;
@@ -545,7 +545,7 @@ function AddChapterModal({ tutorId, onClose, onAdded }: {
   );
 }
 
-// ── Documents Tab ──────────────────────────────────────────────────────────────
+// Documents Tab
 
 function DocumentsTab({ tutorId, chapters, documents, onRefresh, showUpload, setShowUpload }: {
   tutorId: number;
@@ -710,7 +710,7 @@ function UploadModal({ tutorId, chapters, onClose, onUploaded }: {
   );
 }
 
-// ── Transcripts Tab ────────────────────────────────────────────────────────────
+// Transcripts Tab
 
 function TranscriptsTab({ tutorId, chapters, transcripts, onRefresh, reviewing, setReviewing }: {
   tutorId: number;
@@ -898,7 +898,7 @@ function ReviewModal({ transcript, chapters, onClose, onApproved, onRejected }: 
   );
 }
 
-// ── Settings Tab ───────────────────────────────────────────────────────────────
+// Settings Tab
 
 const PERSONALITY_OPTIONS = [
   { value: "supportive", label: "Supportive", desc: "Encouraging, patient, builds confidence" },
