@@ -4,7 +4,7 @@ import {
   Plus, Search, GraduationCap, Monitor, School,
   Clock, X, Upload, Trash2, Eye,
   AlertCircle, Loader2, Bot, Star, Send, Users, FileText,
-  Download, CheckCircle, MapPin,
+  Download, CheckCircle, MapPin, BookOpenCheck,
 } from "lucide-react";
 import {
   teacherGetAssignmentClasses,
@@ -27,7 +27,6 @@ import {
   OnsiteRosterEntry,
   StructuredFeedback,
 } from "@/app/utils/api";
-import { BookOpenCheck } from "lucide-react";
 import DashboardLayout from "@/app/components/layout/DashboardLayout";
 import { RichTextEditor } from "@/app/components/ui/RichTextEditor";
 import { isHTMLContent, markdownToHTML } from "@/app/components/FeedbackRenderer";
@@ -788,17 +787,26 @@ export default function TeacherAssignments() {
                 className="w-full max-w-5xl bg-white flex flex-col h-full shadow-2xl"
               >
                 {/* Hub header */}
-                <div className="bg-gradient-to-r from-purple-400 to-indigo-500 px-6 py-4 text-white flex items-start justify-between flex-shrink-0">
-                  <div>
-                    <p className="text-purple-200 text-xs uppercase tracking-widest">
+                <div className="relative overflow-hidden bg-gradient-to-br from-[#0c0a1e] via-[#1c1457] to-[#2e1c7a] px-8 py-6 text-white flex items-start justify-between flex-shrink-0">
+                  {/* Aurora glow — top right */}
+                  <div className="absolute -top-10 -right-10 w-80 h-56 bg-[radial-gradient(ellipse,rgba(139,92,246,0.45),transparent_65%)] blur-2xl pointer-events-none" />
+                  {/* Aurora glow — bottom left */}
+                  <div className="absolute -bottom-10 -left-6 w-64 h-44 bg-[radial-gradient(ellipse,rgba(79,70,229,0.3),transparent_65%)] blur-2xl pointer-events-none" />
+                  {/* Subtle pink accent — centre */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-24 bg-[radial-gradient(ellipse,rgba(167,139,250,0.12),transparent_70%)] pointer-events-none" />
+                  {/* Top shimmer line */}
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent pointer-events-none" />
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <p className="text-violet-300/70 text-xs font-semibold uppercase tracking-widest mb-1">
                       {selected.type === "ON_SITE" ? "On-site Grading Hub" : "Grading Hub"}
                     </p>
-                    <h2 className="text-lg font-bold mt-0.5">{selected.title}</h2>
-                    <p className="text-purple-200 text-sm mt-0.5">
+                    <h2 className="text-xl font-bold tracking-tight">{selected.title}</h2>
+                    <p className="text-violet-300/60 text-sm mt-1">
                       {selected.subject_name} · {selected.class_name} · Max {selected.max_score} pts
                     </p>
                   </div>
-                  <div className="flex items-center gap-3 mt-1">
+                  <div className="relative z-10 flex items-center gap-3 mt-1">
                     {selected.answer_sheet_url && (
                       <a
                         href={`http://127.0.0.1:8000${selected.answer_sheet_url}`}
@@ -809,14 +817,14 @@ export default function TeacherAssignments() {
                         <BookOpenCheck size={13} /> Answer Key
                       </a>
                     )}
-                    <button onClick={() => setGradingHub(false)} className="text-white/70 hover:text-white">
-                      <X size={22} />
+                    <button onClick={() => setGradingHub(false)} className="text-white/40 hover:text-white transition-colors">
+                      <X size={20} />
                     </button>
                   </div>
                 </div>
 
                 {/* Stats bar */}
-                <div className="flex items-center gap-6 px-6 py-3 bg-purple-50 border-b border-purple-100 text-sm flex-shrink-0 flex-wrap">
+                <div className="flex items-center gap-6 px-8 py-3.5 bg-[#f4f1fd] border-b border-purple-100/70 text-sm flex-shrink-0 flex-wrap">
                   <span className="text-gray-600">
                     {selected.type === "ON_SITE" ? "Not graded" : "Pending"}: <strong>{pendingCount}</strong>
                   </span>
@@ -862,13 +870,13 @@ export default function TeacherAssignments() {
 
                   {/* Left: student list */}
                   <div className="w-72 border-r border-gray-200 flex flex-col flex-shrink-0">
-                    <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                        {selected.type === "ON_SITE" ? "Class Roster" : "Students"}
+                    <div className="px-4 py-3.5 border-b border-gray-100 bg-gray-50/80">
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <Users size={12} />
+                        {selected.type === "ON_SITE"
+                          ? `Class Roster (${roster.length})`
+                          : `Students (${submissions.length})`}
                       </p>
-                      {selected.type === "ON_SITE" && (
-                        <span className="text-xs text-gray-400">{roster.length} students</span>
-                      )}
                     </div>
                     <div className="flex-1 overflow-y-auto">
                       {subLoading ? (
@@ -883,19 +891,19 @@ export default function TeacherAssignments() {
                             <button
                               key={entry.student_id}
                               onClick={() => selectRosterEntry(entry)}
-                              className={`w-full text-left px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${gradingRosterEntry?.student_id === entry.student_id ? "bg-purple-50 border-l-2 border-l-purple-500" : ""}`}
+                              className={`w-full text-left px-4 py-4 border-b border-gray-100 transition-all ${gradingRosterEntry?.student_id === entry.student_id ? "bg-purple-50 border-l-[3px] border-l-purple-500" : "hover:bg-gray-50/80 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.04)]"}`}
                             >
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-800">{entry.student_name ?? `Student #${entry.student_id}`}</p>
-                                  {entry.student_code && <p className="text-xs text-gray-400">{entry.student_code}</p>}
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0">
+                                  <p className="text-sm font-semibold text-gray-800 truncate">{entry.student_name ?? `Student #${entry.student_id}`}</p>
+                                  {entry.student_code && <p className="text-xs text-gray-400 mt-0.5">{entry.student_code}</p>}
                                 </div>
-                                <span className={`text-xs px-2 py-0.5 rounded-full ${SUB_STATUS_COLORS[entry.submission_status]}`}>
+                                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full tracking-wide flex-shrink-0 ${SUB_STATUS_COLORS[entry.submission_status]}`}>
                                   {entry.submission_status}
                                 </span>
                               </div>
                               {entry.grade !== null && (
-                                <p className="text-xs text-green-600 font-semibold mt-0.5">{entry.grade} / {selected.max_score}</p>
+                                <p className="text-xs text-emerald-600 font-semibold mt-1.5">{entry.grade} / {selected.max_score} pts</p>
                               )}
                             </button>
                           ))
@@ -908,26 +916,26 @@ export default function TeacherAssignments() {
                             <button
                               key={sub.id}
                               onClick={() => selectSub(sub)}
-                              className={`w-full text-left px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${gradingSub?.id === sub.id ? "bg-purple-50 border-l-2 border-l-purple-500" : ""}`}
+                              className={`w-full text-left px-4 py-4 border-b border-gray-100 transition-all ${gradingSub?.id === sub.id ? "bg-purple-50 border-l-[3px] border-l-purple-500" : "hover:bg-gray-50/80 hover:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.04)]"}`}
                             >
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-800">{sub.student_name ?? `Student #${sub.student_id}`}</p>
-                                  {sub.student_code && <p className="text-xs text-gray-400">{sub.student_code}</p>}
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0">
+                                  <p className="text-sm font-semibold text-gray-800 truncate">{sub.student_name ?? `Student #${sub.student_id}`}</p>
+                                  {sub.student_code && <p className="text-xs text-gray-400 mt-0.5">{sub.student_code}</p>}
                                 </div>
-                                <div className="flex items-center gap-1 flex-wrap justify-end">
+                                <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                                   {sub.ai_reviewed && (
-                                    <span className="text-xs bg-purple-100 text-purple-600 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                                      <Bot size={10} /> AI
+                                    <span className="text-[10px] font-semibold bg-purple-50 text-purple-600 border border-purple-200 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                                      <Bot size={9} /> AI
                                     </span>
                                   )}
-                                  <span className={`text-xs px-2 py-0.5 rounded-full ${SUB_STATUS_COLORS[sub.status]}`}>
+                                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full tracking-wide ${SUB_STATUS_COLORS[sub.status]}`}>
                                     {sub.status}
                                   </span>
                                 </div>
                               </div>
                               {sub.grade !== null && (
-                                <p className="text-xs text-green-600 font-semibold mt-0.5">{sub.grade} / {selected.max_score}</p>
+                                <p className="text-xs text-emerald-600 font-semibold mt-1.5">{sub.grade} / {selected.max_score} pts</p>
                               )}
                             </button>
                           ))

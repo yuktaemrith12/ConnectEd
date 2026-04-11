@@ -162,6 +162,10 @@ export const LoginPanel3D: React.FC<Props> = ({ role }) => {
     initRef.current = true;
     mountedRef.current = true;
 
+    // Local validity flag — invalidated by *this* cleanup run, regardless of
+    // mountedRef (which setup 2 resets to true before setup 1's GLB callback fires).
+    let valid = true;
+
     // Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setClearColor(0x000000, 0);
@@ -223,6 +227,7 @@ export const LoginPanel3D: React.FC<Props> = ({ role }) => {
 
     // Animation loop
     const animate = () => {
+      if (!valid) return; // stop loop if this setup run was cleaned up
       animFrameRef.current = requestAnimationFrame(animate);
       const t = (performance.now() - startTimeRef.current) / 1000;
       const model = modelRef.current;
@@ -268,7 +273,7 @@ export const LoginPanel3D: React.FC<Props> = ({ role }) => {
     gltfLoader.load(
       MODEL_PATHS[roleRef.current],
       (gltf) => {
-        if (!mountedRef.current) return;
+        if (!valid) return; // guard against stale callbacks from prior setup run
         const model = fitModel(gltf.scene);
         setModelOpacity(model, 0);
         scene.add(model);
@@ -276,12 +281,12 @@ export const LoginPanel3D: React.FC<Props> = ({ role }) => {
         baseYRef.current = model.position.y + 0.38; // shift up in frame
         baseScaleRef.current = model.scale.x;
         fadeOpacity(model, 0, 1, 400).then(() => {
-          if (mountedRef.current) setIsLoading(false);
+          if (valid) setIsLoading(false);
         });
       },
       undefined,
       (err) => {
-        if (!mountedRef.current) return;
+        if (!valid) return;
         console.warn('GLB load failed, using fallback:', err);
         const fb = buildFallback(roleRef.current);
         scene.add(fb);
@@ -289,7 +294,7 @@ export const LoginPanel3D: React.FC<Props> = ({ role }) => {
         baseYRef.current = 0;
         baseScaleRef.current = 1;
         fadeOpacity(fb, 0, 1, 400).then(() => {
-          if (mountedRef.current) setIsLoading(false);
+          if (valid) setIsLoading(false);
         });
       },
     );
@@ -306,6 +311,7 @@ export const LoginPanel3D: React.FC<Props> = ({ role }) => {
     ro.observe(el);
 
     return () => {
+      valid = false; // invalidate this setup run's callbacks and animation loop
       initRef.current = false;
       mountedRef.current = false;
       cancelAnimationFrame(animFrameRef.current);
