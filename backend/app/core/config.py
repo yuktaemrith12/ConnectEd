@@ -52,6 +52,13 @@ class Settings(BaseSettings):
     WHATSAPP_USE_TEMPLATES:    bool = False # set True in production after templates are approved
     FRONTEND_URL:              str  = ""    # base URL of the frontend, e.g. https://yourapp.com
 
+    # LiveKit video conferencing
+    LIVEKIT_URL:               str  = "ws://localhost:7880"
+    LIVEKIT_API_KEY:           str  = "devkey"
+    LIVEKIT_API_SECRET:        str  = "secret"
+    LIVEKIT_EGRESS_ENABLED:    bool = False
+    LIVEKIT_RECORDING_DIR:     str  = ""
+
     def get_database_url(self) -> str:
         """Return DATABASE_URL from .env if set, otherwise build from DB_* components."""
         if self.DATABASE_URL:

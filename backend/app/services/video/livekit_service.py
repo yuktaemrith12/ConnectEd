@@ -14,9 +14,11 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-LIVEKIT_URL        = os.getenv("LIVEKIT_URL",        "ws://localhost:7880")
-LIVEKIT_API_KEY    = os.getenv("LIVEKIT_API_KEY",    "devkey")
-LIVEKIT_API_SECRET = os.getenv("LIVEKIT_API_SECRET", "secret")
+from app.core.config import settings as _settings
+
+LIVEKIT_URL        = _settings.LIVEKIT_URL
+LIVEKIT_API_KEY    = _settings.LIVEKIT_API_KEY
+LIVEKIT_API_SECRET = _settings.LIVEKIT_API_SECRET
 
 
 def _try_import_livekit_api():
@@ -140,8 +142,10 @@ def start_egress_recording(room_name: str) -> Optional[str]:
     egress_filepath = f"/tmp/recordings/{room_name}.mp4"
 
     # Ensure the host recordings directory exists (backend reads from here)
-    host_dir = os.getenv("LIVEKIT_RECORDING_DIR", "/tmp/recordings")
+    host_dir = _settings.LIVEKIT_RECORDING_DIR or "/tmp/recordings"
     os.makedirs(host_dir, exist_ok=True)
+
+    logger.info("[LiveKitService] start_egress_recording — room=%s  path=%s", room_name, egress_filepath)
 
     try:
         import asyncio
@@ -175,6 +179,10 @@ async def start_egress_recording_async(room_name: str) -> Optional[str]:
     """
     Async version of start_egress_recording for use inside async FastAPI handlers.
     Uses await instead of asyncio.run() so it works inside a running event loop.
+
+    Before starting egress, checks that at least one participant is present in
+    the room — starting egress against an empty room is the most common cause
+    of EGRESS_ABORTED.
     """
     lk = _try_import_livekit_api()
     if lk is None:
@@ -191,11 +199,47 @@ async def start_egress_recording_async(room_name: str) -> Optional[str]:
         return None
 
     egress_filepath = f"/tmp/recordings/{room_name}.mp4"
-    host_dir = os.getenv("LIVEKIT_RECORDING_DIR", "/tmp/recordings")
+    host_dir = _settings.LIVEKIT_RECORDING_DIR or "/tmp/recordings"
     os.makedirs(host_dir, exist_ok=True)
+
+    logger.info(
+        "[LiveKitService] start_egress_recording_async — room=%s  path=%s",
+        room_name, egress_filepath,
+    )
 
     try:
         svc = lk.LiveKitAPI(LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET)
+
+        # ── Participant guard ─────────────────────────────────────────────
+        # Starting egress before any participant is publishing media causes
+        # EGRESS_ABORTED.  Check the participant list first; if nobody is
+        # there yet, bail out — the participant_joined webhook will retry.
+        try:
+            from livekit.protocol.room import ListParticipantsRequest  # type: ignore[import]
+            part_resp = await svc.room.list_participants(
+                ListParticipantsRequest(room=room_name)
+            )
+            participant_count = len(part_resp.participants)
+            logger.info(
+                "[LiveKitService] Room %s has %d participant(s) before egress start",
+                room_name, participant_count,
+            )
+            if participant_count == 0:
+                logger.warning(
+                    "[LiveKitService] No participants yet in room %s — "
+                    "deferring egress to participant_joined event",
+                    room_name,
+                )
+                await svc.aclose()
+                return None
+        except Exception as check_exc:
+            # Participant check is best-effort; proceed even if it fails
+            logger.debug(
+                "[LiveKitService] Could not check participants for room %s: %s — proceeding",
+                room_name, check_exc,
+            )
+
+        # ── Start egress ──────────────────────────────────────────────────
         req = RoomCompositeEgressRequest(
             room_name=room_name,
             layout="grid",
@@ -208,8 +252,17 @@ async def start_egress_recording_async(room_name: str) -> Optional[str]:
         )
         resp = await svc.egress.start_room_composite_egress(req)
         await svc.aclose()
-        logger.info("[LiveKitService] Egress %s started for room %s", resp.egress_id, room_name)
-        return resp.egress_id
+
+        egress_id     = resp.egress_id
+        egress_status = str(getattr(resp, "status", "unknown"))
+        logger.info(
+            "[LiveKitService] Egress %s started (status=%s) for room %s",
+            egress_id, egress_status, room_name,
+        )
+        return egress_id
     except Exception as exc:
-        logger.error("[LiveKitService] Failed to start egress for room %s: %s", room_name, exc)
+        logger.error(
+            "[LiveKitService] Failed to start egress for room %s: %s",
+            room_name, exc, exc_info=True,
+        )
         return None

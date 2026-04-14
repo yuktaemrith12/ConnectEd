@@ -29,6 +29,9 @@ if errorlevel 1 (
 )
 
 :StartServers
+:: ── Emotion Inference Server ─────────────────────────────────────────────────
+start "Emotion Inference Server" cmd /k "cd /d %~dp0backend && venv\Scripts\activate && cd /d %~dp0emotion_detection_model\research\webapp && python app.py"
+
 :: ── Backend ──────────────────────────────────────────────────────────────────
 start "ConnectEd Backend" cmd /k "cd /d %~dp0backend && venv\Scripts\activate && uvicorn app.main:app --reload --port 8000"
 

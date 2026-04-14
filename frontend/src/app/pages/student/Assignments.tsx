@@ -246,7 +246,9 @@ export default function StudentAssignments() {
     studentGetAssignments().then(setAssignments).catch(() => {});
   }
 
-  const filtered = assignments.filter(a => {
+  const filtered = [...assignments].sort((a, b) =>
+    new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime()
+  ).filter(a => {
     const matchSearch = a.title.toLowerCase().includes(search.toLowerCase()) ||
       (a.subject_name ?? "").toLowerCase().includes(search.toLowerCase());
     const matchType = filterType === "ALL" || a.type === filterType;

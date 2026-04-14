@@ -14,6 +14,7 @@ Endpoints:
   POST   /recordings/notify     — called by recording pipeline when file is ready
 """
 
+import asyncio
 import logging
 import os
 import uuid
@@ -47,7 +48,6 @@ from app.services.video.livekit_service import (
     generate_participant_token,
     generate_room_name,
     is_livekit_configured,
-    start_egress_recording,
     start_egress_recording_async,
 )
 
@@ -56,6 +56,11 @@ logger = logging.getLogger(__name__)
 
 _teacher = Depends(require_role("teacher"))
 _any_user = Depends(get_current_user)
+
+# In-memory set of room names where egress has already been started this
+# server session. Prevents double-starting when both room_started and
+# participant_joined fire for the same room.
+_egress_rooms: set = set()
 
 
 # Helpers
@@ -96,7 +101,7 @@ def _meeting_to_read(meeting: Meeting, token: Optional[str] = None) -> MeetingRe
 # Endpoints
 
 @router.post("/meetings", response_model=MeetingRead)
-def start_meeting(
+async def start_meeting(
     payload: MeetingCreate,
     db: Session = Depends(get_db),
     current_user: User = _teacher,
@@ -131,6 +136,10 @@ def start_meeting(
         is_teacher=True,
     )
 
+    # Egress is started by the room_started webhook once the LiveKit room
+    # actually exists (created when the first participant joins).  Starting it
+    # here would fail with "room does not exist" and then be skipped by the
+    # dedup guard when room_started fires.
     logger.info(
         "Meeting %d started by teacher %d  room=%s  livekit_ready=%s",
         meeting.id,
@@ -440,6 +449,8 @@ async def livekit_webhook(
 
     if event == "room_started":
         await _handle_room_started(body)
+    elif event == "participant_joined":
+        await _handle_participant_joined(body)
     elif event == "egress_ended":
         _handle_egress_ended(body, background_tasks, db)
     elif event == "room_finished":
@@ -448,18 +459,51 @@ async def livekit_webhook(
     return {"status": "ok"}
 
 
-async def _handle_room_started(body: dict):
-    """Room now exists on LiveKit — safe to start egress recording."""
-    if os.getenv("LIVEKIT_EGRESS_ENABLED", "0").lower() not in ("1", "true", "yes"):
+async def _start_egress_for_room(room_name: str) -> None:
+    """Start egress recording for a room (deduped via _egress_rooms)."""
+    from app.core.config import settings as _cfg
+    if not _cfg.LIVEKIT_EGRESS_ENABLED:
+        logger.info("[VideoWebhook] Egress disabled (LIVEKIT_EGRESS_ENABLED=False) — skipping")
         return
-    room_name = body.get("room", {}).get("name", "")
-    if not room_name:
+    if room_name in _egress_rooms:
+        logger.info("[VideoWebhook] Egress already started for room %s — skipping duplicate", room_name)
         return
+    _egress_rooms.add(room_name)
     egress_id = await start_egress_recording_async(room_name)
     if egress_id:
         logger.info("[VideoWebhook] Egress %s started for room %s", egress_id, room_name)
     else:
         logger.warning("[VideoWebhook] Egress start failed for room %s", room_name)
+        # Remove from set so a retry is possible on the next event
+        _egress_rooms.discard(room_name)
+
+
+async def _handle_room_started(body: dict):
+    """Room now exists on LiveKit — wait briefly, then start egress recording.
+
+    The 2-second delay lets the LiveKit server finish initialising the room
+    before we ask the Egress service to composite it.  Starting too quickly
+    (before any media frames are flowing) is the most common cause of
+    EGRESS_ABORTED.
+    """
+    room_name = body.get("room", {}).get("name", "")
+    logger.info("[VideoWebhook] room_started — room=%s  (waiting 2s before egress)", room_name)
+    if not room_name:
+        return
+    await asyncio.sleep(2)
+    await _start_egress_for_room(room_name)
+
+
+async def _handle_participant_joined(body: dict):
+    """
+    Fallback egress trigger: start egress when the first participant joins.
+    Handles cases where room_started either was not sent or was missed.
+    Uses _egress_rooms dedup so only one egress starts per room.
+    """
+    room_name = body.get("room", {}).get("name", "")
+    if not room_name:
+        return
+    await _start_egress_for_room(room_name)
 
 
 def _handle_egress_ended(body: dict, background_tasks: BackgroundTasks, db: Session):
@@ -467,29 +511,72 @@ def _handle_egress_ended(body: dict, background_tasks: BackgroundTasks, db: Sess
     LiveKit has finished writing the recording to disk.
     Register the recording and trigger the post-processing pipeline.
     """
-    egress = body.get("egressInfo", {})
-    room_name = egress.get("roomName", "")
-    raw_path  = egress.get("file", {}).get("filename", "")
+    # Support both camelCase (protobuf JSON) and snake_case (older SDK) keys
+    egress = body.get("egressInfo", body.get("egress_info", {}))
+    room_name = egress.get("roomName", egress.get("room_name", ""))
+
+    # Try multiple locations for the filename across SDK versions:
+    #   1. "file.filename"          — older livekit-api / SDK <= 1.0
+    #   2. "fileResults[0].filename" — newer SDK (>= 1.1)
+    #   3. "files[0].filename"      — egress service internal format
+    raw_path: str = egress.get("file", {}).get("filename", "")
+    if not raw_path:
+        for key in ("fileResults", "file_results", "files"):
+            results_list = egress.get(key, [])
+            if results_list:
+                raw_path = results_list[0].get(
+                    "filename", results_list[0].get("location", "")
+                )
+                if raw_path:
+                    break
+
+    # Capture error details from the egressInfo payload for diagnostics
+    egress_error      = egress.get("error",     egress.get("Error",      ""))
+    egress_error_code = egress.get("errorCode", egress.get("error_code", ""))
+    egress_status     = str(egress.get("status", egress.get("Status", ""))).upper()
+
+    logger.info(
+        "[VideoWebhook] egress_ended — room=%s  raw_path=%s  status=%s  "
+        "error=%r  error_code=%r  body_keys=%s",
+        room_name, raw_path, egress_status,
+        egress_error, egress_error_code, list(egress.keys()),
+    )
+
+    # Skip aborted / failed egress — no file was written so there's nothing to process
+    if egress_status and any(s in egress_status for s in ("ABORTED", "FAILED", "LIMIT")):
+        logger.warning(
+            "[VideoWebhook] Egress ended with status=%s for room %s — skipping pipeline",
+            egress_status, room_name,
+        )
+        _egress_rooms.discard(room_name)   # allow retry on next meeting with same room name
+        return
 
     # Try multiple locations for duration (SDK source puts it in fileResults)
     duration: int = int(egress.get("duration", 0) or 0) // 1_000_000_000
     if duration == 0:
-        file_results = egress.get("fileResults", [])
-        if file_results:
-            duration = int(file_results[0].get("duration", 0) or 0) // 1_000_000_000
+        for key in ("fileResults", "file_results", "files"):
+            results_list = egress.get(key, [])
+            if results_list:
+                duration = int(results_list[0].get("duration", 0) or 0) // 1_000_000_000
+                if duration:
+                    break
     if duration == 0:
-        started = int(egress.get("startedAt", 0) or 0)
-        ended   = int(egress.get("endedAt",   0) or 0)
+        started = int(egress.get("startedAt", egress.get("started_at", 0)) or 0)
+        ended   = int(egress.get("endedAt",   egress.get("ended_at",   0)) or 0)
         if started and ended:
             duration = (ended - started) // 1_000_000_000
 
     if not room_name or not raw_path:
-        logger.warning("[VideoWebhook] EGRESS_ENDED missing room/file info")
+        logger.warning(
+            "[VideoWebhook] EGRESS_ENDED missing room/file info — room=%r  path=%r  full_body=%s",
+            room_name, raw_path, body,
+        )
         return
 
     # Egress reports the Linux container path (e.g. /tmp/recordings/room.mp4).
     # Re-map to the host-local directory so the backend can open the file.
-    recording_dir = os.getenv("LIVEKIT_RECORDING_DIR", "/tmp/recordings")
+    from app.core.config import settings as _cfg
+    recording_dir = _cfg.LIVEKIT_RECORDING_DIR or "/tmp/recordings"
     filename = os.path.basename(raw_path)
     file_path = os.path.join(recording_dir, filename)
 

@@ -6,10 +6,13 @@
  *   2. POST /video/meetings  → gets room_name + participant_token.
  *   3. LiveKitRoom component connects to the LiveKit server with the token.
  *   4. Teacher sees the full conference UI (camera, mic, participant grid).
- *   5. "End Class" → POST /video/meetings/{id}/end → room closes.
+ *   5. Real-time emotion-detection frames are sent to the inference server
+ *      (localhost:5000) via the InClassEngagement sidebar component.
+ *   6. "End Class" → POST /video/meetings/{id}/end → room closes.
  *
  * Dependencies (run `pnpm install` after updating package.json):
  *   @livekit/components-react  @livekit/components-styles  livekit-client
+ *   socket.io-client
  *
  * Environment variables (backend .env):
  *   LIVEKIT_URL          ws://localhost:7880
@@ -17,7 +20,7 @@
  *   LIVEKIT_API_SECRET   secret
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router";
 import DashboardLayout from "@/app/components/layout/DashboardLayout";
 import { motion, AnimatePresence } from "motion/react";
@@ -31,6 +34,7 @@ import {
   Zap,
   CheckCircle,
   Sparkles,
+  Brain,
 } from "lucide-react";
 import {
   videoStartMeeting,
@@ -48,21 +52,73 @@ import {
   ControlBar,
   RoomAudioRenderer,
   useTracks,
+  useLocalParticipant,
 } from "@livekit/components-react";
 import { Track } from "livekit-client";
 import "@livekit/components-styles";
 
-/** Inner room layout — must live inside <LiveKitRoom> so hooks resolve. */
-function ConferenceRoomLayout() {
+// Engagement sidebar
+import InClassEngagement, {
+  type InClassEngagementHandle,
+} from "@/app/components/video/InClassEngagement";
+
+// ── Inner room layout ─────────────────────────────────────────────────────
+// Must live inside <LiveKitRoom> so hooks resolve.
+
+interface ConferenceRoomLayoutProps {
+  /** Called once the local camera video element is available for frame capture. */
+  onLocalVideoReady?: (el: HTMLVideoElement) => void;
+}
+
+function ConferenceRoomLayout({ onLocalVideoReady }: ConferenceRoomLayoutProps) {
   const tracks = useTracks(
     [
-      { source: Track.Source.Camera, withPlaceholder: true },
+      { source: Track.Source.Camera,      withPlaceholder: true },
       { source: Track.Source.ScreenShare, withPlaceholder: false },
     ],
     { onlySubscribed: false },
   );
+
+  const { localParticipant } = useLocalParticipant();
+  const hiddenVideoRef   = useRef<HTMLVideoElement>(null);
+  const attachedTrackRef = useRef<any>(null);
+
+  // Attach the local camera track to a hidden <video> for frame capture.
+  // Re-runs if the participant publishes their camera after mount.
+  useEffect(() => {
+    const el = hiddenVideoRef.current;
+    if (!el || !localParticipant) return;
+
+    function tryAttach() {
+      const pub   = localParticipant.getTrackPublication(Track.Source.Camera);
+      const track = pub?.track;
+      if (track && attachedTrackRef.current !== track) {
+        // Detach old track first
+        if (attachedTrackRef.current) {
+          attachedTrackRef.current.detach(el!);
+        }
+        track.attach(el!);
+        attachedTrackRef.current = track;
+        onLocalVideoReady?.(el!);
+      }
+    }
+
+    tryAttach(); // In case camera is already published
+    localParticipant.on("localTrackPublished", tryAttach);
+
+    return () => {
+      localParticipant.off("localTrackPublished", tryAttach);
+      if (attachedTrackRef.current && el) {
+        attachedTrackRef.current.detach(el);
+        attachedTrackRef.current = null;
+      }
+    };
+  }, [localParticipant, onLocalVideoReady]);
+
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      {/* Hidden video used exclusively for frame capture */}
+      <video ref={hiddenVideoRef} style={{ display: "none" }} autoPlay muted playsInline />
       <GridLayout tracks={tracks} style={{ flex: 1, minHeight: 0 }}>
         <ParticipantTile />
       </GridLayout>
@@ -71,34 +127,42 @@ function ConferenceRoomLayout() {
   );
 }
 
+// ── Main page component ───────────────────────────────────────────────────
+
 type SetupState = "setup" | "connecting" | "live" | "ended" | "error";
 
 export default function TeacherVideoConference() {
   const [searchParams] = useSearchParams();
-  const [classes, setClasses] = useState<TeacherClassSubjects[]>([]);
-  const [selectedClassId, setSelectedClassId]   = useState<number | "">("");
-  const [selectedSubjectId, setSelectedSubjectId] = useState<number | "">("");
-  const [sessionTitle, setSessionTitle]           = useState("");
-  const [state, setState]   = useState<SetupState>("setup");
-  const [meeting, setMeeting] = useState<MeetingRead | null>(null);
-  const [error, setError]     = useState<string | null>(null);
-  const [loadingClasses, setLoadingClasses] = useState(true);
-  // Ref to track successful connection — prevents connection failures from
-  // silently swallowing the "ended" transition.
-  const wasConnectedRef = useRef(false);
+  const [classes,          setClasses]          = useState<TeacherClassSubjects[]>([]);
+  const [selectedClassId,  setSelectedClassId]  = useState<number | "">("");
+  const [selectedSubjectId,setSelectedSubjectId]= useState<number | "">("");
+  const [sessionTitle,     setSessionTitle]      = useState("");
+  const [state,            setState]             = useState<SetupState>("setup");
+  const [meeting,          setMeeting]           = useState<MeetingRead | null>(null);
+  const [error,            setError]             = useState<string | null>(null);
+  const [loadingClasses,   setLoadingClasses]    = useState(true);
+  const [showEngagement,   setShowEngagement]    = useState(true);
 
-  // Derive subjects for the selected class
+  // Ref to track successful connection
+  const wasConnectedRef  = useRef(false);
+
+  // Frame-capture refs
+  const canvasRef        = useRef<HTMLCanvasElement>(null);
+  const localVideoRef    = useRef<HTMLVideoElement | null>(null);
+  const captureLoopRef   = useRef<number | null>(null);
+  const engagementRef    = useRef<InClassEngagementHandle>(null);
+
   const selectedClass = classes.find((c) => c.id === selectedClassId);
-  const subjects       = selectedClass?.subjects ?? [];
+  const subjects      = selectedClass?.subjects ?? [];
 
-  // Load teacher's classes, then autofill from URL params
+  // Load teacher's classes, autofill from URL params
   useEffect(() => {
     teacherGetAssignmentClasses()
       .then((data) => {
         setClasses(data);
-        const classId = Number(searchParams.get("classId")) || "";
+        const classId   = Number(searchParams.get("classId"))   || "";
         const subjectId = Number(searchParams.get("subjectId")) || "";
-        if (classId) setSelectedClassId(classId);
+        if (classId)   setSelectedClassId(classId);
         if (subjectId) setSelectedSubjectId(subjectId);
       })
       .catch(() => setError("Failed to load classes"))
@@ -113,14 +177,67 @@ export default function TeacherVideoConference() {
     }
   }, [selectedClassId, selectedSubjectId]);
 
-  // Start meeting
+  // Start / stop the frame-capture loop when meeting state changes
+  useEffect(() => {
+    if (state === "live") {
+      startCaptureLoop();
+    } else {
+      stopCaptureLoop();
+    }
+    return () => stopCaptureLoop();
+  }, [state]);
+
+  // ── Frame capture helpers ─────────────────────────────────────────────
+
+  /** Called by ConferenceRoomLayout when the local video element is ready. */
+  const handleLocalVideoReady = useCallback((el: HTMLVideoElement) => {
+    localVideoRef.current = el;
+  }, []);
+
+  function startCaptureLoop() {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let lastCapture = 0;
+
+    function loop(timestamp: number) {
+      // Throttle to ~10 FPS
+      if (timestamp - lastCapture >= 100) {
+        const video = localVideoRef.current;
+        if (video && video.readyState >= 2 && video.videoWidth > 0) {
+          canvas!.width  = video.videoWidth;
+          canvas!.height = video.videoHeight;
+          ctx!.drawImage(video, 0, 0);
+          const base64 = canvas!.toDataURL("image/jpeg", 0.7);
+          engagementRef.current?.sendFrame(base64);
+          lastCapture = timestamp;
+        }
+      }
+      captureLoopRef.current = requestAnimationFrame(loop);
+    }
+
+    captureLoopRef.current = requestAnimationFrame(loop);
+  }
+
+  function stopCaptureLoop() {
+    if (captureLoopRef.current !== null) {
+      cancelAnimationFrame(captureLoopRef.current);
+      captureLoopRef.current = null;
+    }
+    localVideoRef.current = null;
+  }
+
+  // ── Meeting actions ───────────────────────────────────────────────────
+
   async function handleStartMeeting() {
     if (!selectedClassId || !selectedSubjectId || !sessionTitle.trim()) return;
     setState("connecting");
     setError(null);
     try {
       const mtg = await videoStartMeeting({
-        class_id:   selectedClassId as number,
+        class_id:   selectedClassId  as number,
         subject_id: selectedSubjectId as number,
         title:      sessionTitle.trim(),
       });
@@ -132,7 +249,6 @@ export default function TeacherVideoConference() {
     }
   }
 
-  // End meeting
   async function handleEndMeeting() {
     if (!meeting) return;
     try {
@@ -140,18 +256,18 @@ export default function TeacherVideoConference() {
     } catch {
       // ignore — DB may already be updated; still transition UI
     }
-    wasConnectedRef.current = false; // prevent onDisconnected from double-firing
+    wasConnectedRef.current = false;
     setState("ended");
     setMeeting(null);
   }
 
-  // Decide which LiveKit URL to use
-  // The backend returns the HTTP URL; LiveKit SDK needs the WS URL.
   const wsUrl = meeting?.livekit_url
     ? meeting.livekit_url.replace("http://", "ws://").replace("https://", "wss://")
     : "ws://localhost:7880";
-  const token = meeting?.participant_token ?? "";
+  const token       = meeting?.participant_token ?? "";
   const isStubToken = token.startsWith("stub:");
+
+  // ── Render ────────────────────────────────────────────────────────────
 
   return (
     <DashboardLayout role="teacher">
@@ -178,7 +294,6 @@ export default function TeacherVideoConference() {
               </p>
             </div>
           </div>
-          {/* Animated orbs */}
           <motion.div
             animate={{ scale: [1, 1.25, 1], opacity: [0.06, 0.12, 0.06] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -189,7 +304,6 @@ export default function TeacherVideoConference() {
             transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
             className="absolute right-16 -bottom-16 w-72 h-72 bg-purple-300 rounded-full pointer-events-none"
           />
-          {/* Shimmer sweep */}
           <motion.div
             animate={{ x: ["-110%", "220%"] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.5, repeatDelay: 4 }}
@@ -199,7 +313,7 @@ export default function TeacherVideoConference() {
 
         <AnimatePresence mode="wait">
 
-          {/* SETUP FORM */}
+          {/* ── SETUP FORM ── */}
           {(state === "setup" || state === "error") && (
             <motion.div
               key="setup"
@@ -208,7 +322,7 @@ export default function TeacherVideoConference() {
               exit={{ opacity: 0 }}
               className="grid grid-cols-1 lg:grid-cols-5 gap-6"
             >
-              {/* Left: Form (3 cols) */}
+              {/* Left: Form */}
               <div className="lg:col-span-3 space-y-4">
                 {error && (
                   <motion.div
@@ -222,7 +336,6 @@ export default function TeacherVideoConference() {
                 )}
 
                 <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-                  {/* Card header */}
                   <div className="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-white flex items-center gap-3">
                     <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                       <Video size={16} className="text-purple-600" />
@@ -238,12 +351,10 @@ export default function TeacherVideoConference() {
                       </div>
                     ) : (
                       <>
-                        {/* Step 1 — Class */}
+                        {/* Class select */}
                         <div>
                           <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                            <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-700 text-xs flex items-center justify-center font-bold flex-shrink-0">
-                              1
-                            </span>
+                            <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-700 text-xs flex items-center justify-center font-bold flex-shrink-0">1</span>
                             Select Class
                           </label>
                           <select
@@ -261,12 +372,10 @@ export default function TeacherVideoConference() {
                           </select>
                         </div>
 
-                        {/* Step 2 — Subject */}
+                        {/* Subject select */}
                         <div>
                           <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                            <span className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold flex-shrink-0 transition-colors ${selectedClassId ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-400"}`}>
-                              2
-                            </span>
+                            <span className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold flex-shrink-0 transition-colors ${selectedClassId ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-400"}`}>2</span>
                             Select Subject
                           </label>
                           <select
@@ -282,12 +391,10 @@ export default function TeacherVideoConference() {
                           </select>
                         </div>
 
-                        {/* Step 3 — Session Title */}
+                        {/* Session title */}
                         <div>
                           <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                            <span className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold flex-shrink-0 transition-colors ${selectedSubjectId ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-400"}`}>
-                              3
-                            </span>
+                            <span className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold flex-shrink-0 transition-colors ${selectedSubjectId ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-400"}`}>3</span>
                             Session Title
                           </label>
                           <input
@@ -322,7 +429,6 @@ export default function TeacherVideoConference() {
                         >
                           <RadioTower size={18} />
                           Launch Live Class
-                          {/* Shimmer */}
                           <motion.span
                             animate={{ x: ["-100%", "250%"] }}
                             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.5 }}
@@ -335,7 +441,7 @@ export default function TeacherVideoConference() {
                 </div>
               </div>
 
-              {/* Right: Info panel (2 cols) */}
+              {/* Right: Info panel */}
               <div className="lg:col-span-2 space-y-4">
                 <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
                   <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-white">
@@ -343,10 +449,10 @@ export default function TeacherVideoConference() {
                   </div>
                   <div className="p-5 space-y-4">
                     {([
-                      { icon: Users,   title: "Students are notified",  desc: "Students in this class see a live banner on their timetable with a direct Join button." },
-                      { icon: Video,   title: "Auto-recording",          desc: "The session is recorded automatically. No extra setup needed." },
-                      { icon: Zap,     title: "AI post-processing",      desc: "After class, AI generates transcripts, emotion analytics, and teaching insights." },
-                      { icon: Sparkles,title: "Attendance linking",      desc: "Open a session from your Timetable to mark attendance for the same class simultaneously." },
+                      { icon: Users,    title: "Students are notified",  desc: "Students in this class see a live banner on their timetable with a direct Join button." },
+                      { icon: Video,    title: "Auto-recording",          desc: "The session is recorded automatically. No extra setup needed." },
+                      { icon: Zap,      title: "AI post-processing",      desc: "After class, AI generates transcripts, emotion analytics, and teaching insights." },
+                      { icon: Sparkles, title: "Attendance linking",      desc: "Open a session from your Timetable to mark attendance for the same class simultaneously." },
                     ] as const).map(({ icon: Icon, title, desc }) => (
                       <div key={title} className="flex gap-3">
                         <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -360,12 +466,11 @@ export default function TeacherVideoConference() {
                     ))}
                   </div>
                 </div>
-
               </div>
             </motion.div>
           )}
 
-          {/* CONNECTING */}
+          {/* ── CONNECTING ── */}
           {state === "connecting" && (
             <motion.div
               key="connecting"
@@ -386,7 +491,7 @@ export default function TeacherVideoConference() {
             </motion.div>
           )}
 
-          {/* LIVE ROOM */}
+          {/* ── LIVE ROOM ── */}
           {state === "live" && meeting && (
             <motion.div
               key="live"
@@ -403,15 +508,34 @@ export default function TeacherVideoConference() {
                     {meeting.class_name} · {meeting.subject_name}
                   </span>
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleEndMeeting}
-                  className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm transition-colors"
-                >
-                  <PhoneOff size={16} />
-                  End Class
-                </motion.button>
+                <div className="flex items-center gap-2">
+                  {/* Engagement panel toggle */}
+                  {!isStubToken && (
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => setShowEngagement((v) => !v)}
+                      title={showEngagement ? "Hide engagement panel" : "Show engagement panel"}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-xs transition-colors ${
+                        showEngagement
+                          ? "bg-purple-100 text-purple-700"
+                          : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                      }`}
+                    >
+                      <Brain size={14} />
+                      Engagement
+                    </motion.button>
+                  )}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleEndMeeting}
+                    className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm transition-colors"
+                  >
+                    <PhoneOff size={16} />
+                    End Class
+                  </motion.button>
+                </div>
               </div>
 
               {/* Stub-token warning */}
@@ -420,10 +544,7 @@ export default function TeacherVideoConference() {
                   <AlertCircle size={18} className="text-amber-500 mt-0.5 flex-shrink-0" />
                   <div className="text-sm text-amber-800">
                     <p className="font-semibold">LiveKit not connected</p>
-                    <p>
-                      Install the LiveKit packages and start the server to see the live video room.
-                      Meeting ID: {meeting.id} — will appear in Recordings once ended.
-                    </p>
+                    <p>Install the LiveKit packages and start the server to see the live video room.</p>
                     <p className="mt-1 font-mono text-xs bg-amber-100 px-2 py-1 rounded">pnpm install   # frontend</p>
                     <p className="mt-1 font-mono text-xs bg-amber-100 px-2 py-1 rounded">pip install livekit-api   # backend</p>
                     <p className="mt-1 font-mono text-xs bg-amber-100 px-2 py-1 rounded">docker run -d -p 7880:7880 livekit/livekit-server --dev</p>
@@ -431,30 +552,56 @@ export default function TeacherVideoConference() {
                 </div>
               )}
 
-              {/* LiveKit Room */}
+              {/* Video room + Engagement panel side by side */}
               {!isStubToken && (
-                <div className="rounded-xl overflow-hidden border border-gray-200" style={{ height: "70vh" }}>
-                  <LiveKitRoom
-                    serverUrl={wsUrl}
-                    token={token}
-                    connect={true}
-                    audio={true}
-                    video={true}
-                    data-lk-theme="default"
-                    style={{ height: "100%" }}
-                    onConnected={() => { wasConnectedRef.current = true; }}
-                    onDisconnected={() => {
-                      if (wasConnectedRef.current) {
-                        wasConnectedRef.current = false;
-                        setState("ended");
-                      }
-                    }}
+                <div className="flex gap-4 items-start">
+                  {/* LiveKit Room */}
+                  <div
+                    className="flex-1 min-w-0 rounded-xl overflow-hidden border border-gray-200"
+                    style={{ height: "70vh" }}
                   >
-                    <ConferenceRoomLayout />
-                    <RoomAudioRenderer />
-                  </LiveKitRoom>
+                    <LiveKitRoom
+                      serverUrl={wsUrl}
+                      token={token}
+                      connect={true}
+                      audio={true}
+                      video={true}
+                      data-lk-theme="default"
+                      style={{ height: "100%" }}
+                      onConnected={() => { wasConnectedRef.current = true; }}
+                      onDisconnected={() => {
+                        if (wasConnectedRef.current) {
+                          wasConnectedRef.current = false;
+                          setState("ended");
+                        }
+                      }}
+                    >
+                      <ConferenceRoomLayout onLocalVideoReady={handleLocalVideoReady} />
+                      <RoomAudioRenderer />
+                    </LiveKitRoom>
+                  </div>
+
+                  {/* Engagement sidebar */}
+                  <AnimatePresence>
+                    {showEngagement && (
+                      <motion.div
+                        key="engagement"
+                        initial={{ opacity: 0, x: 24 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 24 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="flex-shrink-0"
+                        style={{ width: "288px" }}
+                      >
+                        <InClassEngagement ref={engagementRef} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
+
+              {/* Hidden canvas for frame capture */}
+              <canvas ref={canvasRef} style={{ display: "none" }} />
 
               {/* Share link helper */}
               <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 text-sm text-purple-700">
@@ -467,7 +614,7 @@ export default function TeacherVideoConference() {
             </motion.div>
           )}
 
-          {/* ENDED */}
+          {/* ── ENDED ── */}
           {state === "ended" && (
             <motion.div
               key="ended"

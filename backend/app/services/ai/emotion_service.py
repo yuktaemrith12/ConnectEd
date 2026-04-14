@@ -23,13 +23,17 @@ logger = logging.getLogger(__name__)
 
 EMOTION_LABELS = ["engagement", "confusion", "boredom", "frustration", "understanding"]
 
-# Model path: <project_root>/emotion_detection_model/best.pt
+# Model path: <project_root>/emotion_detection_model/research/runs/emotion_detect_phase2/weights/best.pt
 # __file__ = backend/app/services/ai/emotion_service.py  (4 dirs deep inside backend)
 # One extra dirname gets us out of backend/ to the ConnectEd project root.
 _PROJECT_ROOT = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 )
-MODEL_PATH = os.path.join(_PROJECT_ROOT, "emotion_detection_model", "best.pt")
+MODEL_PATH = os.path.join(
+    _PROJECT_ROOT,
+    "emotion_detection_model", "research", "runs",
+    "emotion_detect_phase2", "weights", "best.pt",
+)
 
 _model = None   # lazy-loaded once
 

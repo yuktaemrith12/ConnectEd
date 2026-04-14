@@ -304,7 +304,7 @@ export default function RecordingPlayer() {
                     <BarChart3 size={32} className="text-gray-300 mx-auto mb-3" />
                     <p className="text-gray-500 text-sm">
                       Emotion timeline not yet available.
-                      {" "}Place your trained model at <code className="text-xs bg-gray-100 px-1 py-0.5 rounded">emotion_det_model/best.pt</code> and reprocess.
+                      {" "}Place your trained model at <code className="text-xs bg-gray-100 px-1 py-0.5 rounded">emotion_detection_model/research/runs/emotion_detect_phase2/weights/best.pt</code> and reprocess.
                     </p>
                   </div>
                 )}

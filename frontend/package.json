@@ -51,6 +51,7 @@
     "@tiptap/starter-kit": "^3.20.0",
     "@types/dompurify": "^3.0.5",
     "axios": "^1.13.5",
+    "socket.io-client": "^4.8.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
